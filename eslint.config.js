@@ -1,4 +1,6 @@
+import unocss from '@unocss/eslint-config/flat'
 module.exports = {
+  unocss,
   // 项目代码运行的环境
   env: {
     // 浏览器环境
