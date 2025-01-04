@@ -1,4 +1,85 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json"
+  // 继承配置
+  "extends": "./.nuxt/tsconfig.json",
+  // 重写配置,根据需要进行自定义配置
+  // TS 编译器选项
+  "compilerOptions": {
+    // 默认所有可见的 @types 包会在编译过程中被包含进来。
+    // 包含什么目录下的类型声明文件
+    // "typeRoots": [],
+    // 包含 node_modules/@types 或者 typeRoots 配置项
+    // 指定的目录里面的哪些库的类型声明文件包
+    // "types": [],
+    // TS 代码编译成的 JS 代码的目标版本
+    "target": "ES2015",
+    // TS 代码编译成的 JS 代码的使用的模块化标准
+    "module": "ESNext",
+    // 允许在项目中使用 js 文件
+    "allowJs": true,
+    // 是否生成 TS 代码转换成 JS 代码时的源码映射文件
+    "sourceMap": true,
+    // 是否将 class 声明中的字段语义从 [[Set]] 变更到 [[Define]]
+    "useDefineForClassFields": true,
+    // 编译过程中需要引入的库
+    // 可选值参考：https://www.tslang.cn/docs/handbook/compiler-options.html
+    "lib": ["ES2015", "ESNext", "DOM", "DOM.Iterable"],
+    // 是否忽略对所有的声明文件（ *.d.ts）的类型检查
+    "skipLibCheck": true,
+    /* Bundler mode 打包模式配置 */
+    // 模块解析策略
+    "moduleResolution": "Node",
+    // 是否允许导入 TypeScript 文件时省略文件的后缀
+    "allowImportingTsExtensions": true,
+    // 是否允许 JSON 文件作为模块导入
+    "resolveJsonModule": true,
+    // 是否将每个文件作为单独的模块
+    "isolatedModules": true,
+    // 是否不生成 TS 代码编译成 JS 代码的输出文件
+    "noEmit": true,
+    // 编译后生成的代码中会保留 JSX 代码，后续代码的使用需要代码转换工具进行转换操作，
+    // 如 Babel，输出文件会带有 .jsx 扩展名
+    "jsx": "preserve",
+    // 指定 jsx 导入源
+    "jsxImportSource": "vue",
+    /* Linting */
+    // 是否开启所有严格模式选项
+    "strict": true,
+    // 当 this 表达式的值为 any 类型的时候，生成一个错误。
+    "noImplicitThis": true,
+    // 是否强制代码中使用的模块文件名必须和文件系统中的文件名保持大小写一致
+    "forceConsistentCasingInFileNames": true,
+    // 是否允许从没有设置默认导出的模块中默认导入
+    "allowSyntheticDefaultImports": false,
+    // 对于没有使用的局部变量是否报错
+    "noUnusedLocals": true,
+    // 对于没有使用的参数是否报错
+    "noUnusedParameters": true,
+    // 对于 switch 语句中的 case 穿透是否报错
+    "noFallthroughCasesInSwitch": true,
+    // 对于在表达式和声明上有隐含的 any 类型时是否报错
+    "noImplicitAny": true
+    // 由于继承的配置中已经进行了目录别名的配置所以这里不重复进行配置
+    //    // 解析非相对模块名的基准目录，从当前 tsconfig.json 文件所在的目录开始查找
+    //    // 由于 tsconfig.json 文件在项目根目录中，所以从项目根目录开始查找
+    //    "baseUrl": ".",
+    //    // 配置模块名基于 baseUrl 配置的基准目录的路径映射
+    //    "paths": {
+    //      // 配置项目根目录下 src 目录的别名为 @
+    //      "@/*": [
+    //        "src/*"
+    //      ]
+    //    }
+  }
+  // 在继承的配置中，已经对需要 TS 编译器处理的目录和文件以及排除的目录和文件进行了配置，以继承的为主，不重复配置
+  //  // 配置需要被编译的文件或文件夹
+  //  "include": [
+  //    "src/**/*.ts",
+  //    "src/**/*.tsx",
+  //    "src/**/*.vue"
+  //  ],
+  //  // 配置哪些文件不需要 TypeScript 编译器进行处理
+  //  "exclude": [
+  //    "node_modules"
+  //  ]
 }
