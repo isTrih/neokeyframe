@@ -1,0 +1,7 @@
+body {
+    user-select: none;
+}
+
+body::selection {
+    background-color: transparent;
+}

@@ -12,11 +12,7 @@ export default defineNuxtConfig({
       title: "关键帧丨每一秒都是关键帧",
       meta: [],
       link: [],
-      script: [
-        {
-          src: "/np.js",
-        },
-      ],
+      script: [],
     },
   },
   css: ["~/assets/main.css"],
