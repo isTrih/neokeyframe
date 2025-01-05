@@ -7,6 +7,7 @@ import Components from 'unplugin-vue-components/vite'
 
 // 运行或构建项目时，能够自动执行 ESLint 代码检查和修复的插件
 export default defineNuxtConfig({
+  css: ['~/assets/main.css'],
   // srcDir: 'src/',
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
