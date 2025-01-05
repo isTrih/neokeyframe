@@ -1,4 +1,4 @@
 <template>
-  <div>
-  </div>
+
+  <nuxt-layout/>
 </template>
