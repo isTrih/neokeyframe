@@ -1,10 +1,8 @@
 <template>
   <n-config-provider inline-theme-disabled :theme-overrides="themeOverrides">
-    <div @contextmenu.prevent>
       <NuxtLayout>
         <NuxtPage></NuxtPage>
       </NuxtLayout>
-    </div>
   </n-config-provider>
 </template>
 <script setup lang="ts">
