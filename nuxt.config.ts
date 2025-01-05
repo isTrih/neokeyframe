@@ -14,7 +14,7 @@ export default defineNuxtConfig({
       link: [],
       script: [
         {
-          src: "~/assets/np.js",
+          src: "/np.js",
         },
       ],
     },
