@@ -3,6 +3,7 @@
 // 运行或构建项目时，能够自动执行 ESLint 代码检查和修复的插件
 import eslint from 'vite-plugin-eslint'
 export default defineNuxtConfig({
+  // srcDir: 'src/',
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   // typescript 配置
@@ -12,9 +13,7 @@ export default defineNuxtConfig({
     // 开启严格模式
     strict: true
   },
-  modules: [
-    '@unocss/nuxt',
-  ],
+  modules: ['@unocss/nuxt', 'nuxtjs-naive-ui'],
   // vite 构建工具配置
   vite: {
     // vite 插件配置
