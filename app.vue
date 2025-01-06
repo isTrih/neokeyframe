@@ -1,9 +1,11 @@
 <template>
   <n-config-provider inline-theme-disabled :theme-overrides="themeOverrides">
     <div @contextmenu.prevent>
-      <NuxtLayout>
-        <NuxtPage></NuxtPage>
-      </NuxtLayout>
+      <n-message-provider>
+        <NuxtLayout>
+          <NuxtPage></NuxtPage>
+        </NuxtLayout>
+      </n-message-provider>
     </div>
   </n-config-provider>
 </template>

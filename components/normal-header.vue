@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Search from "~/components/icons/search.vue";
+import {Search} from "@vicons/ionicons5";
 </script>
 <template>
   <client-only>
