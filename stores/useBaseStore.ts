@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 export const useBaseStore = defineStore(
   "Base",
   () => {
-    const Theme = ref("");
+    const Theme = ref("system");
 
     function SetTheme(val: string) {
       Theme.value = val;

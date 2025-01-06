@@ -34,9 +34,10 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@pinia/nuxt",
     "pinia-plugin-persistedstate",
+    "@vueuse/nuxt",
   ],
   pinia: {
-    storesDirs: ["./stores/**"],
+    storesDirs: ['./stores/**', './custom-folder/stores/**'],
   },
   // vite 构建工具配置
   vite: {
