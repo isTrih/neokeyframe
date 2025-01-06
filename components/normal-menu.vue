@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { ref, h, type Component } from "vue";
-import {
-  NIcon,
-  type MenuOption,
-} from "naive-ui";
+import { NIcon, type MenuOption } from "naive-ui";
 import home from "~/components/icons/home.vue";
 import avatar from "~/components/icons/avatar.vue";
 import {
@@ -54,15 +51,17 @@ function renderIcon(icon: Component, props: string | null = null) {
 //region 更多选项
 import moreMenuHead from "~/components/moreMenuHead.vue";
 import { NText, NButton } from "naive-ui";
-import {NuxtLink} from "#components";
+import { NuxtLink } from "#components";
+import moreMenuButton from "~/components/moreMenuButton.vue";
+import moreMenuTheme from "~/components/moreMenuTheme.vue";
 
 // 控制是否显示更多选项
-const showMore = ref(false);
+// const showMore = ref(false);
 
 const aboutTitle = function () {
   return h(moreMenuHead, {
     title: "关于关键帧",
-    onBack(){
+    onBack() {
       currentMore.value = baseMore;
     },
   });
@@ -70,32 +69,63 @@ const aboutTitle = function () {
 const docsTitle = function () {
   return h(moreMenuHead, {
     title: "隐私、协议",
-    onBack(){
+    onBack() {
       currentMore.value = baseMore;
     },
+  });
+};
+const aboutButton = function () {
+  return h(moreMenuButton, {
+    title: "关于关键帧",
+    onClick: () => {
+      currentMore.value = aboutMore;
+    },
+  });
+};
+const docsButton = function () {
+  return h(moreMenuButton, {
+    title: "隐私、协议",
+    onClick: () => {
+      currentMore.value = docsMore;
+    },
+  });
+};
+const themeSettings = function () {
+  return h(moreMenuTheme, {
+    title: "深色模式",
   });
 };
 // 默认更多选项
 const baseMore = [
   {
-    label: "关于关键帧",
-    key: "about",
+    type: "render",
+    render: aboutButton,
+    show: true,
   },
   {
-    label: "隐私、协议",
-    key: "docs",
+    type: "render",
+    render: docsButton,
+    show: true,
   },
   {
     type: "divider",
     key: "none",
+    show: true,
   },
   {
     type: "render",
     render: renderSetting,
+    show: true,
   },
   {
-    label: "设置",
-    key: "set",
+    type: "render",
+    render: themeSettings,
+    show: true,
+  },
+  {
+    label: "render",
+    key: "??",
+    show: false,
   },
 ];
 // 关于更多选项
@@ -103,45 +133,55 @@ const aboutMore = [
   {
     type: "render",
     render: aboutTitle,
+    show: true,
   },
   {
     type: "divider",
     key: "d1",
+    show: true,
   },
   {
     label: "关于我们",
     key: "about-1",
+    show: true,
   },
   {
     type: "divider",
     key: "d2",
+    show: true,
   },
   {
     type: "render",
     render: renderCertification,
-  }
+    show: true,
+  },
 ];
 // 隐私更多选项
 const docsMore = [
   {
     type: "render",
     render: docsTitle,
+    show: true,
   },
   {
     type: "divider",
     key: "d1",
+    show: true,
   },
   {
     label: "隐私协议",
     key: "about-1",
+    show: true,
   },
   {
     label: "用户协议",
     key: "agreement",
+    show: true,
   },
 ];
 // 当前更多选项
 const currentMore = ref(baseMore);
+
 // 设置渲染
 function renderSetting() {
   return h(
@@ -164,49 +204,154 @@ function renderSetting() {
  */
 function renderCertification() {
   return h(
-      "div",
-      {
-        style: "display: flex; align-items: center; padding: 8px 12px;",
-      },
-      [
-        h("div", null, [
-          h("div", { style: "font-size: 12px;" }, [
-            h(NuxtLink, { style: "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;",to:'https://beian.miit.gov.cn/',target:'_blank'}, { default: () => "皖ICP备2024039162号-6" }),
-            h('a', { style: "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none"}, { default: () => "丨" }),
-            h(NuxtLink, { style: "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;",to:'https://www.helloimg.com/i/2025/01/06/677b702d6bd5a.jpg',target:'_blank'}, { default: () => "营业执照" }),
-            h('a', { style: "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none"}, { default: () => "丨" }),
-            h(NuxtLink, { style: "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;",to:'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000696',target:'_blank'}, { default: () => "皖公网安备34020202000696号" }),
-            h('a', { style: "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none"}, { default: () => "丨" }),
-            h(NuxtLink, { style: "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;",to:'https://www.helloimg.com/i/2025/01/06/677b702ddaae5.jpg',target:'_blank'}, { default: () => "字体授权证书" }),
-            h('a', { style: "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none"}, { default: () => "丨" }),
-            h(NuxtLink, { style: "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;",to:'https://12377.qinglangwuhu.cn/',target:'_blank'}, { default: () => "违法不良信息举报电话：12377" }),
-            h('a', { style: "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none"}, { default: () => "丨" }),
-            h(NuxtLink, { style: "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;",to:'https://12377.qinglangwuhu.cn/',target:'_blank'}, { default: () => "芜湖市互联网举报中心" }),
-            h('a', { style: "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none"}, { default: () => "丨" }),
-            h(NuxtLink, { style: "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;",to:'https://www.12377.cn/',target:'_blank'}, { default: () => "网上有害信息举报专区" }),
-          ]),
-          h("div", { style: "font-size: 12px;" }, [
-            h(NText, { depth: 3 }, { default: () => "© 2024-2025" }),
-          ]),
-          h("div", { style: "font-size: 12px;" }, [
-            h(NText, { depth: 3 }, { default: () => "芜湖超正经科技有限公司" }),
-          ]),
-          h("div", { style: "font-size: 12px;" }, [
-            h(NText, { depth: 3 }, { default: () => "地址：安徽省芜湖市镜湖区范罗山街道蜂牛产业园D423室" }),
-          ]),
-          h("div", { style: "font-size: 12px;" }, [
-            h(NText, { depth: 3 }, { default: () => "邮箱：help@chaozj.com" }),
-          ])
+    "div",
+    {
+      style: "display: flex; align-items: center; padding: 8px 12px;",
+    },
+    [
+      h("div", null, [
+        h("div", { style: "font-size: 12px;" }, [
+          h(
+            NuxtLink,
+            {
+              style:
+                "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;",
+              to: "https://beian.miit.gov.cn/",
+              target: "_blank",
+            },
+            { default: () => "皖ICP备2024039162号-6" },
+          ),
+          h(
+            "a",
+            {
+              style:
+                "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none",
+            },
+            { default: () => "丨" },
+          ),
+          h(
+            NuxtLink,
+            {
+              style:
+                "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;",
+              to: "https://www.helloimg.com/i/2025/01/06/677b702d6bd5a.jpg",
+              target: "_blank",
+            },
+            { default: () => "营业执照" },
+          ),
+          h(
+            "a",
+            {
+              style:
+                "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none",
+            },
+            { default: () => "丨" },
+          ),
+          h(
+            NuxtLink,
+            {
+              style:
+                "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;",
+              to: "https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000696",
+              target: "_blank",
+            },
+            { default: () => "皖公网安备34020202000696号" },
+          ),
+          h(
+            "a",
+            {
+              style:
+                "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none",
+            },
+            { default: () => "丨" },
+          ),
+          h(
+            NuxtLink,
+            {
+              style:
+                "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;",
+              to: "https://www.helloimg.com/i/2025/01/06/677b702ddaae5.jpg",
+              target: "_blank",
+            },
+            { default: () => "字体授权证书" },
+          ),
+          h(
+            "a",
+            {
+              style:
+                "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none",
+            },
+            { default: () => "丨" },
+          ),
+          h(
+            NuxtLink,
+            {
+              style:
+                "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;",
+              to: "https://12377.qinglangwuhu.cn/",
+              target: "_blank",
+            },
+            { default: () => "违法不良信息举报电话：12377" },
+          ),
+          h(
+            "a",
+            {
+              style:
+                "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none",
+            },
+            { default: () => "丨" },
+          ),
+          h(
+            NuxtLink,
+            {
+              style:
+                "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;",
+              to: "https://12377.qinglangwuhu.cn/",
+              target: "_blank",
+            },
+            { default: () => "芜湖市互联网举报中心" },
+          ),
+          h(
+            "a",
+            {
+              style:
+                "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none",
+            },
+            { default: () => "丨" },
+          ),
+          h(
+            NuxtLink,
+            {
+              style:
+                "font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;",
+              to: "https://www.12377.cn/",
+              target: "_blank",
+            },
+            { default: () => "网上有害信息举报专区" },
+          ),
         ]),
-      ],
+        h("div", { style: "font-size: 12px;" }, [
+          h(NText, { depth: 3 }, { default: () => "© 2024-2025" }),
+        ]),
+        h("div", { style: "font-size: 12px;" }, [
+          h(NText, { depth: 3 }, { default: () => "芜湖超正经科技有限公司" }),
+        ]),
+        h("div", { style: "font-size: 12px;" }, [
+          h(
+            NText,
+            { depth: 3 },
+            {
+              default: () =>
+                "地址：安徽省芜湖市镜湖区范罗山街道蜂牛产业园D423室",
+            },
+          ),
+        ]),
+        h("div", { style: "font-size: 12px;" }, [
+          h(NText, { depth: 3 }, { default: () => "邮箱：help@chaozj.com" }),
+        ]),
+      ]),
+    ],
   );
-}
-/**
- * @description 切换 更多选项 显示状态
- * @returns void
- */
-function clickMore() {
-  showMore.value = !showMore.value;
 }
 
 /**
@@ -216,14 +361,9 @@ function clickMore() {
  */
 function handleSelect(key: string | number) {
   switch (key) {
-    case "about":
-      currentMore.value = aboutMore;
-      break;
     case "about-1":
       window.open("/about/");
-      break;
-    case "docs":
-      currentMore.value = docsMore;
+      currentMore.value = baseMore;
       break;
   }
 }
@@ -236,10 +376,10 @@ function handleSelect(key: string | number) {
     <n-flex class="h-full" vertical align="stretch">
       <div class="w-full h-auto flex-items-stretch">
         <n-menu
-            class="fw-600 !p--0"
-            :icon-size="26"
-            v-model:value="activeKey"
-            :options="menuOptions"
+          class="fw-600 !p--0"
+          :icon-size="26"
+          v-model:value="activeKey"
+          :options="menuOptions"
         />
         <n-button block class="mt-1.5" type="primary" size="large" round>
           登录
@@ -248,14 +388,12 @@ function handleSelect(key: string | number) {
       <div class="h-full"></div>
       <div class="flex-items-end w-full h-6dvh mb-4">
         <n-dropdown
-            :show="showMore"
-            class="w-64 rounded-xl"
-            :options="currentMore"
-            @select="handleSelect"
+          trigger="click"
+          class="w-64 rounded-3xl"
+          :options="currentMore"
+          @select="handleSelect"
         >
-          <n-button @click="clickMore" block quaternary size="large" round
-          >更多
-          </n-button>
+          <n-button block quaternary size="large" round> 更多 </n-button>
         </n-dropdown>
       </div>
     </n-flex>

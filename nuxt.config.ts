@@ -8,7 +8,7 @@ import Components from "unplugin-vue-components/vite";
 // 运行或构建项目时，能够自动执行 ESLint 代码检查和修复的插件
 export default defineNuxtConfig({
   ssr: true,
-  router:{},
+  router: {},
   app: {
     head: {
       title: "关键帧丨每一秒都是关键帧",
@@ -28,7 +28,16 @@ export default defineNuxtConfig({
     // 开启严格模式
     strict: true,
   },
-  modules: ["@unocss/nuxt", "nuxtjs-naive-ui", "@nuxt/eslint", "@pinia/nuxt"],
+  modules: [
+    "@unocss/nuxt",
+    "nuxtjs-naive-ui",
+    "@nuxt/eslint",
+    "@pinia/nuxt",
+    "pinia-plugin-persistedstate",
+  ],
+  pinia: {
+    storesDirs: ["./stores/**"],
+  },
   // vite 构建工具配置
   vite: {
     // vite 插件配置
