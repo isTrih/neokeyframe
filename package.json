@@ -13,12 +13,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/eslint": "0.7.4",
     "@pinia/nuxt": "0.9.0",
     "@vueuse/nuxt": "12.3.0",
     "axios": "^1.7.9",
-    "current-device": "^0.10.2",
-    "eslint": "^8.57.0 || ^9.0.0",
     "nuxt": "^3.15.0",
     "nuxtjs-naive-ui": "1.0.2",
     "pinia": "^2.3.0",
@@ -29,6 +26,8 @@
   },
   "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321",
   "devDependencies": {
+    "@nuxt/eslint": "0.7.4",
+    "eslint": "^8.57.0 || ^9.0.0",
     "@unocss/eslint-config": "^0.65.3",
     "@unocss/nuxt": "^0.65.3",
     "@vicons/ionicons5": "^0.13.0",
