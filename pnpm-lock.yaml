@@ -17,6 +17,9 @@ importers:
       axios:
         specifier: ^1.7.9
         version: 1.7.9
+      current-device:
+        specifier: ^0.10.2
+        version: 0.10.2
       eslint:
         specifier: ^8.57.0 || ^9.0.0
         version: 9.17.0(jiti@2.4.2)
@@ -2071,6 +2074,9 @@ packages:
 
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
+
+  current-device@0.10.2:
+    resolution: {integrity: sha512-FN223n2Cp1fRI/gyjJEAdagHhJ/2Z2STz3tUg1t4F259BhmVRCChkmxcgFtjYJsWuIacQEs7bqJpnAczIXIkWw==}
 
   date-fns-tz@3.2.0:
     resolution: {integrity: sha512-sg8HqoTEulcbbbVXeg84u5UnlsQa8GS5QXMqjjYIhS4abEVVKIUwe0/l/UhrZdKaL/W5eWZNlbTeEIiOXTcsBQ==}
@@ -6945,6 +6951,8 @@ snapshots:
   csstype@3.0.11: {}
 
   csstype@3.1.3: {}
+
+  current-device@0.10.2: {}
 
   date-fns-tz@3.2.0(date-fns@3.6.0):
     dependencies:

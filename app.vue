@@ -1,16 +1,17 @@
 <template>
   <n-config-provider inline-theme-disabled :theme-overrides="themeOverrides">
     <div @contextmenu.prevent>
+      <NuxtLayout>
       <n-message-provider>
-        <NuxtLayout>
-          <NuxtPage></NuxtPage>
-        </NuxtLayout>
+        <NuxtLoadingIndicator />
+        <NuxtPage />
       </n-message-provider>
+        </NuxtLayout>
     </div>
   </n-config-provider>
 </template>
 <script setup lang="ts">
-import {NConfigProvider, type GlobalThemeOverrides} from "naive-ui";
+import { NConfigProvider, type GlobalThemeOverrides } from "naive-ui";
 
 const themeOverrides: GlobalThemeOverrides = {
   common: {

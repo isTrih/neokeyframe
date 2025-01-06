@@ -7,6 +7,7 @@ import Components from "unplugin-vue-components/vite";
 
 // 运行或构建项目时，能够自动执行 ESLint 代码检查和修复的插件
 export default defineNuxtConfig({
+  router:{},
   app: {
     head: {
       title: "关键帧丨每一秒都是关键帧",
