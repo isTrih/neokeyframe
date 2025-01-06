@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   nitro: {
     compressPublicAssets: true,        // 启动压缩
   },
-  ssr: true,
+  // ssr: true,
   router: {},
   app: {
     head: {
