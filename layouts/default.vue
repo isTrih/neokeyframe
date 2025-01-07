@@ -28,7 +28,6 @@
           </div>
         </n-gi>
         <n-gi class="mx-4" span="14 560:10 700:11 1000:12">
-          <div class="">这是默认布局内容</div>
           <slot />
         </n-gi>
       </n-grid>

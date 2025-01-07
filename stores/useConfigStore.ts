@@ -1,17 +1,13 @@
 import { defineStore } from "pinia";
 
-export const useBaseStore = defineStore(
-  "Base",
+export const useConfigStore = defineStore(
+  "ConfigStore",
   () => {
-    const Theme = ref("system");
-
-    function SetTheme(val: string) {
-      Theme.value = val;
-    }
-
+    const ColorMode = ref(0);
+    const CurrentMenu = ref('home');
     return {
-      Theme,
-      SetTheme,
+        ColorMode,
+        CurrentMenu
     };
   },
   {

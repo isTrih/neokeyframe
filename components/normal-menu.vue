@@ -3,32 +3,70 @@ import { ref, h, type Component } from "vue";
 import { NIcon, type MenuOption } from "naive-ui";
 import home from "~/components/icons/home.vue";
 import avatar from "~/components/icons/avatar.vue";
+import moreMenuHead from "~/components/moreMenuHead.vue";
+import { NText, NButton } from "naive-ui";
+import { NuxtLink } from "#components";
+import moreMenuButton from "~/components/moreMenuButton.vue";
+import moreMenuTheme from "~/components/moreMenuTheme.vue";
 import {
   AddCircleOutline as CreateIcon,
   NotificationsOutline as NotifIcon,
 } from "@vicons/ionicons5";
-
 //region 菜单
-
+//菜单选中值
+const { CurrentMenu } = storeToRefs(useConfigStore());
 // 菜单选项 TODO: 将登陆状态绑定到菜单上
 const menuOptions: MenuOption[] = [
   {
-    label: "首页",
+    label: () =>
+      h(
+        NuxtLink,
+        {
+          to: "/",
+        },
+        { default: () => "首页" },
+      ),
     key: "home",
     icon: renderIcon(home),
   },
   {
-    label: "创作",
+    label: () =>
+      h(
+        NuxtLink,
+        {
+          to: "/upload",
+        },
+        { default: () => "创作" },
+      ),
     key: "upload",
     icon: renderIcon(CreateIcon),
   },
   {
-    label: "通知",
+    label: () =>
+      h(
+        NuxtLink,
+        {
+          to: "/notification",
+        },
+        { default: () => "通知" },
+      ),
     key: "notification",
     icon: renderIcon(NotifIcon),
   },
   {
-    label: "我",
+    label: () =>
+      h(
+        NuxtLink,
+        {
+          to: {
+            name: "user-uid",
+            params: {
+              uid: "1",
+            },
+          },
+        },
+        { default: () => "我" },
+      ),
     key: "user",
     show: true,
     icon: renderIcon(
@@ -38,9 +76,6 @@ const menuOptions: MenuOption[] = [
   },
 ];
 
-// 菜单选中值
-const activeKey = ref("");
-
 //菜单图标渲染器
 function renderIcon(icon: Component, props: string | null = null) {
   return () => h(NIcon, null, { default: () => h(icon, { src: props }) });
@@ -49,11 +84,6 @@ function renderIcon(icon: Component, props: string | null = null) {
 //endregion
 
 //region 更多选项
-import moreMenuHead from "~/components/moreMenuHead.vue";
-import { NText, NButton } from "naive-ui";
-import { NuxtLink } from "#components";
-import moreMenuButton from "~/components/moreMenuButton.vue";
-import moreMenuTheme from "~/components/moreMenuTheme.vue";
 
 // 控制是否显示更多选项
 // const showMore = ref(false);
@@ -376,16 +406,16 @@ function handleSelect(key: string | number) {
     <n-flex class="h-full" vertical align="stretch">
       <div class="w-full h-auto flex-items-stretch">
         <n-menu
+          v-model:value="CurrentMenu"
           class="fw-600 !p--0"
           :icon-size="26"
-          v-model:value="activeKey"
           :options="menuOptions"
         />
         <n-button block class="mt-1.5" type="primary" size="large" round>
           登录
         </n-button>
       </div>
-      <div class="h-full"></div>
+      <div class="h-full" />
       <div class="flex-items-end w-full h-6dvh mb-4">
         <n-dropdown
           trigger="click"
@@ -393,7 +423,7 @@ function handleSelect(key: string | number) {
           :options="currentMore"
           @select="handleSelect"
         >
-          <n-button block quaternary size="large" round> 更多 </n-button>
+          <n-button block quaternary size="large" round> 更多</n-button>
         </n-dropdown>
       </div>
     </n-flex>
