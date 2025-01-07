@@ -54,6 +54,9 @@ importers:
       '@vicons/material':
         specifier: ^0.13.0
         version: 0.13.0
+      '@vue/compiler-sfc':
+        specifier: ^3.3.0
+        version: 3.5.13
       eslint:
         specifier: ^8.57.0 || ^9.0.0
         version: 9.17.0(jiti@2.4.2)
@@ -84,6 +87,9 @@ importers:
       vue-tsc:
         specifier: ^2.1.6
         version: 2.1.6(typescript@5.7.2)
+      webpack:
+        specifier: ^5.97.1
+        version: 5.97.1(esbuild@0.24.2)
 
 packages:
 
