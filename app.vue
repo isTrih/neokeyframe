@@ -76,7 +76,6 @@
 
   function InitTheme() {
     if (ColorMode.value === 0) {
-      const colorMode = useColorMode();
       switch (colorMode.value) {
         case 'light':
           theme.value = null;
