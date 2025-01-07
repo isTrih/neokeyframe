@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
 export const useConfigStore = defineStore(
   'ConfigStore',
@@ -7,13 +7,13 @@ export const useConfigStore = defineStore(
     const CurrentMenu = ref('home');
     return {
       ColorMode,
-      CurrentMenu,
+      CurrentMenu
     };
   },
   {
     persist: {
       // 设置存储方式为LocalStorage
-      storage: piniaPluginPersistedstate.localStorage(),
-    },
-  },
+      storage: piniaPluginPersistedstate.localStorage()
+    }
+  }
 );

@@ -1,9 +1,12 @@
 <template>
-  <n-avatar round :size="24" :src="props.src" />
+  <n-avatar round :size="24" :src="src" />
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  src: String,
-});
+  defineProps({
+    src: {
+      type: String,
+      default: ''
+    }
+  });
 </script>

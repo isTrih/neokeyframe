@@ -3,16 +3,16 @@
 <template>
   <client-only>
     <n-watermark
-        content="关键帧丨超绝开发中"
-        cross
-        fullscreen
-        :font-size="16"
-        :line-height="16"
-        :width="384"
-        :height="384"
-        :x-offset="12"
-        :y-offset="60"
-        :rotate="-15"
+      content="关键帧丨超绝开发中"
+      cross
+      fullscreen
+      :font-size="16"
+      :line-height="16"
+      :width="384"
+      :height="384"
+      :x-offset="12"
+      :y-offset="60"
+      :rotate="-15"
     />
   </client-only>
   <div class="flex flex-col h-screen">

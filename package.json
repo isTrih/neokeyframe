@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "eslint ./",
     "fix": "eslint ./ --fix",
+    "lint:prettier": "prettier --check .",
     "preinstall": "node ./scripts/preinstall.js",
     "build": "nuxt build",
     "dev": "nuxt dev",

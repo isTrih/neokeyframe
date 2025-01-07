@@ -1,15 +1,7 @@
 <template>
   <svg class="h-34px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 902 318">
     <g fill="none" fill-rule="evenodd">
-      <rect
-        width="901"
-        height="317"
-        x=".5"
-        y=".5"
-        fill="#2764AD"
-        stroke="#979797"
-        rx="136"
-      />
+      <rect width="901" height="317" x=".5" y=".5" fill="#2764AD" stroke="#979797" rx="136" />
       <path
         stroke="#FFF"
         stroke-width="12"
