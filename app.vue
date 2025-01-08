@@ -101,6 +101,9 @@
     }
   }
 
+  const runtimeConfig = useRuntimeConfig();
+  console.log(runtimeConfig.public.baseUrl);
+
   watch([ColorMode, colorMode], () => {
     InitTheme();
   });
