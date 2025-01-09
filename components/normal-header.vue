@@ -8,7 +8,7 @@
         <icons-keyframe />
       </n-gi>
       <n-gi offset="2 " span="10 320:12">
-        <n-input round placeholder="搜索更多内容">
+        <n-input id="search" round placeholder="搜索更多内容">
           <!--          TODO:实现搜索逻辑-->
           <template #suffix>
             <n-icon :component="Search" />

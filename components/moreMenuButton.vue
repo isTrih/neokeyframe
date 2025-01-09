@@ -1,7 +1,14 @@
 <script setup lang="ts">
   import { ArrowForwardIosRound } from '@vicons/material';
   defineProps({
-    title: String
+    title: {
+      type: String,
+      default: '默认'
+    },
+    icon: {
+      type: Boolean,
+      default: true
+    }
   });
 </script>
 
@@ -13,7 +20,7 @@
           {{ title }}
         </div>
         <div>
-          <n-icon>
+          <n-icon v-if="icon">
             <ArrowForwardIosRound />
           </n-icon>
         </div>

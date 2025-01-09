@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-  defineProps({
+  const { src } = defineProps({
     src: {
       type: String,
       default: ''

@@ -2,7 +2,9 @@
 
 <template>
   <div class="h-full w-full flex flex-col justify-center">
-    <n-empty size="huge" description="通知" />
+    <client-only>
+      <n-empty size="huge" description="通知" />
+    </client-only>
   </div>
 </template>
 

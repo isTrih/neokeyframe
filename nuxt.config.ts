@@ -7,8 +7,14 @@ import Components from 'unplugin-vue-components/vite';
 
 // 运行或构建项目时，能够自动执行 ESLint 代码检查和修复的插件
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      baseUrl: process.env.NUXT_BASE_API_URL
+    }
+  },
   build: {
-    transpile: ['vueuc']
+    transpile: ['vueuc'],
+    analyze: false
   },
   nitro: {
     compressPublicAssets: true // 启动压缩
