@@ -377,7 +377,7 @@ function renderCertification() {
             h(
                 NuxtLink,
                 {
-                  style: 'font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;',
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
                   to: 'https://beian.miit.gov.cn/',
                   target: '_blank'
                 },
@@ -386,14 +386,14 @@ function renderCertification() {
             h(
                 'a',
                 {
-                  style: 'font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none'
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
                 },
                 {default: () => '丨'}
             ),
             h(
                 NuxtLink,
                 {
-                  style: 'font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;',
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
                   to: 'https://www.helloimg.com/i/2025/01/06/677b702d6bd5a.jpg',
                   target: '_blank'
                 },
@@ -402,14 +402,14 @@ function renderCertification() {
             h(
                 'a',
                 {
-                  style: 'font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none'
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
                 },
                 {default: () => '丨'}
             ),
             h(
                 NuxtLink,
                 {
-                  style: 'font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;',
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
                   to: 'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000696',
                   target: '_blank'
                 },
@@ -418,14 +418,14 @@ function renderCertification() {
             h(
                 'a',
                 {
-                  style: 'font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none'
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
                 },
                 {default: () => '丨'}
             ),
             h(
                 NuxtLink,
                 {
-                  style: 'font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;',
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
                   to: 'https://www.helloimg.com/i/2025/01/06/677b702ddaae5.jpg',
                   target: '_blank'
                 },
@@ -434,14 +434,14 @@ function renderCertification() {
             h(
                 'a',
                 {
-                  style: 'font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none'
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
                 },
                 {default: () => '丨'}
             ),
             h(
                 NuxtLink,
                 {
-                  style: 'font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;',
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
                   to: 'https://12377.qinglangwuhu.cn/',
                   target: '_blank'
                 },
@@ -450,14 +450,14 @@ function renderCertification() {
             h(
                 'a',
                 {
-                  style: 'font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none'
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
                 },
                 {default: () => '丨'}
             ),
             h(
                 NuxtLink,
                 {
-                  style: 'font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;',
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
                   to: 'https://12377.qinglangwuhu.cn/',
                   target: '_blank'
                 },
@@ -466,34 +466,34 @@ function renderCertification() {
             h(
                 'a',
                 {
-                  style: 'font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;pointer:none'
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
                 },
                 {default: () => '丨'}
             ),
             h(
                 NuxtLink,
                 {
-                  style: 'font-size: 12px;color:rgb(118, 124, 130);text-decoration: none;',
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
                   to: 'https://www.12377.cn/',
                   target: '_blank'
                 },
                 {default: () => '网上有害信息举报专区'}
             )
           ]),
-          h('div', {style: 'font-size: 12px;'}, [h(NText, {depth: 3}, {default: () => '© 2024-2025'})]),
-          h('div', {style: 'font-size: 12px;'}, [
-            h(NText, {depth: 3}, {default: () => '芜湖超正经科技有限公司'})
+          h('div', {style: 'font-size: 12px;color:var(--n-text-color)'}, [h(NText, null, {default: () => '© 2024-2025'})]),
+          h('div', {style: 'font-size: 12px;color:var(--n-text-color)'}, [
+            h(NText, null, {default: () => '芜湖超正经科技有限公司'})
           ]),
-          h('div', {style: 'font-size: 12px;'}, [
+          h('div', {style: 'font-size: 12px;color:var(--n-text-color)'}, [
             h(
                 NText,
-                {depth: 3},
+                null,
                 {
                   default: () => '地址：安徽省芜湖市镜湖区范罗山街道蜂牛产业园D423室'
                 }
             )
           ]),
-          h('div', {style: 'font-size: 12px;'}, [h(NText, {depth: 3}, {default: () => '邮箱：help@chaozj.com'})])
+          h('div', {style: 'font-size: 12px;color:var(--n-text-color)'}, [h(NText, null, {default: () => '邮箱：help@chaozj.com'})])
         ])
       ]
   );
