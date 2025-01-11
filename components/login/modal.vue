@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type {FormInst, FormItemRule} from 'naive-ui';
-// import { useMessage } from 'naive-ui';
-//
-// // const message = useMessage();
+import {SendCode} from '~/apis/user.ts';
+
+// 关闭弹窗事件
+const emit = defineEmits(['closeLogin']);
+// 发送消息
+const message = useMessage()
 
 // 当前表单
 const currentLogin = ref('login');
@@ -22,7 +25,7 @@ function logCheck(checked: boolean) {
 
 // region 注册
 function sendSms() {
-  console.log('发送验证码');
+  SendCode('18655311015')
 }
 
 // 表单对象
@@ -38,6 +41,33 @@ const regFormValue = ref({
 });
 // 表单验证
 const regRules = {
+  name: {
+    required: true,
+    message: '用户名不超过12个字',
+    trigger: 'blur',
+    validator: (rule: FormItemRule, value: string) => {
+      console.log(rule);
+      return !(value.length > 12 || value.length <= 0);
+    },
+  },
+  sms: {
+    required: true,
+    message: '请输入6位验证码',
+    trigger: 'blur',
+    validator: (rule: FormItemRule, value: string) => {
+      console.log(rule);
+      return value.length === 6;
+    },
+  },
+  rePassword: {
+    required: true,
+    trigger: 'blur',
+    message:'两次密码输入不一致',
+    validator: (rule: FormItemRule, value: string) => {
+      console.log(rule);
+      return value === regFormValue.value.password
+    }
+  },
   password: {
     required: true,
     message: '请输入密码'
@@ -75,17 +105,60 @@ const logFormValue = ref({
 const logRules = {
   password: {
     required: true,
-    message: '请输入密码'
+    trigger: 'blur',
+    message: '请输入6-20位密码',
+    validator: (rule: FormItemRule, value: string) => {
+      console.log(rule, value);
+      return !(value.length < 6 || value.length > 20);
+    }
   },
   phone: {
     required: true,
     trigger: 'blur',
+    message: '请输入账号',
     validator: (rule: FormItemRule, value: string) => {
       console.log(rule, value);
       return /^1+[3,8]+\d{9}$/.test(value);
     }
+  },
+  agreement: {
+    required: true,
+    trigger: 'change',
+    message: '请阅读并同意协议',
+    validator: (rule: FormItemRule, value: boolean) => {
+      console.log(rule, value);
+      return value;
+    }
   }
 };
+
+const login = function (e: MouseEvent) {
+  e.preventDefault()
+  logFormRef.value?.validate((errors,) => {
+    if (errors) {
+      message.error('请检查填写要求', {duration: 1800})
+    } else {
+
+      message.loading('登录中',)
+      const useUser = useUserStore()
+      useUser.UserLogin({
+        mobile: logFormValue.value.phone,
+        password: logFormValue.value.password,
+      }).then((res) => {
+        if (res.code === 0) {
+          message.destroyAll()
+          message.success('登录成功')
+          emit('closeLogin')
+        } else {
+          message.destroyAll()
+          message.error(res.msg)
+        }
+
+      })
+
+    }
+  })
+}
 // endregion
 </script>
 
@@ -112,7 +185,9 @@ const logRules = {
               <n-input v-model:value="logFormValue.phone" round placeholder="请输入账号（手机号）"/>
             </n-form-item>
             <n-form-item label="密码" path="password">
-              <n-input v-model:value="logFormValue.password" round placeholder="请输入密码"/>
+              <n-input
+                  v-model:value="logFormValue.password" type="password" show-password-on="mousedown"
+                  autocomplete="current-password" maxlength="20" round placeholder="请输入密码"/>
             </n-form-item>
             <n-form-item path="agreement">
               <n-checkbox size="small" @update:checked="logCheck">
@@ -134,7 +209,7 @@ const logRules = {
               </n-checkbox>
             </n-form-item>
             <n-form-item>
-              <n-button type="primary" round block> 登录</n-button>
+              <n-button class="mt-2" type="primary" round block @click="login"> 登录</n-button>
             </n-form-item>
           </n-form>
         </div>
@@ -155,10 +230,17 @@ const logRules = {
               <n-input v-model:value="regFormValue.sms" round placeholder="请输入验证码"/>
             </n-form-item>
             <n-form-item path="password">
-              <n-input v-model:value="regFormValue.password" round placeholder="请输入密码"/>
+              <n-input
+                  v-model:value="regFormValue.password" type="password" maxlength="20"
+                  show-password-on="mousedown" round autocomplete="new-password"
+
+                  placeholder="请输入密码"/>
             </n-form-item>
             <n-form-item path="rePassword">
-              <n-input v-model:value="regFormValue.rePassword" round placeholder="请确认密码"/>
+              <n-input
+                  v-model:value="regFormValue.rePassword" type="password" maxlength="20"
+                  autocomplete="new-password" show-password-on="mousedown" round
+                  placeholder="请确认密码"/>
             </n-form-item>
             <n-form-item path="agreement">
               <n-checkbox size="small" @update:checked="regCheck">
@@ -180,7 +262,7 @@ const logRules = {
               </n-checkbox>
             </n-form-item>
             <n-form-item>
-              <n-button type="primary" round block>注册</n-button>
+              <n-button class="mt-2" type="primary" round block>注册</n-button>
             </n-form-item>
           </n-form>
         </div>

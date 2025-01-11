@@ -17,12 +17,16 @@ const modal = useModal();
 const {UserInfo, IsLogin} = storeToRefs(useUser);
 // endregion
 const showLogin = function () {
-  // const m =
-  modal.create({
+  const m = modal.create({
     class: 'border-rd-xl w-40rem',
     preset: 'card',
     closable: false,
-    content: () => h(LoginModal, {class: 'flex items-center justify-center w-full'}, {}),
+    content: () => h(LoginModal, {class: 'flex items-center justify-center w-full',
+    onCloseLogin:()=>{
+      m.destroy()
+    }}, {
+
+    }),
     transformOrigin: 'center'
   });
   // UserInfo.value = {
@@ -519,20 +523,20 @@ function handleSelect(key: string | number) {
 
 <template>
   <client-only>
-    <n-flex class="h-full" vertical align="stretch">
-      <div class="w-full h-auto flex-items-stretch">
-        <n-menu v-model:value="CurrentMenu" class="fw-600 !p--0" :icon-size="26" :options="menuOptions"/>
-        <n-button v-show="!IsLogin" block class="mt-1.5" type="primary" size="large" round @click="showLogin">
-          登录
-        </n-button>
-      </div>
-      <div class="h-full"/>
-      <div class="flex-items-end w-full h-6dvh mb-4">
-        <n-dropdown trigger="click" class="w-64 rounded-3xl" :options="currentMore" @select="handleSelect">
-          <n-button block quaternary size="large" round> 更多</n-button>
-        </n-dropdown>
-      </div>
-    </n-flex>
+      <n-flex class="h-full" vertical align="stretch">
+        <div class="w-full h-auto flex-items-stretch">
+          <n-menu v-model:value="CurrentMenu" class="fw-600 !p--0" :icon-size="26" :options="menuOptions"/>
+          <n-button v-show="!IsLogin" block class="mt-1.5" type="primary" size="large" round @click="showLogin">
+            登录
+          </n-button>
+        </div>
+        <div class="h-full"/>
+        <div class="flex-items-end w-full h-6dvh mb-4">
+          <n-dropdown trigger="click" class="w-64 rounded-3xl" :options="currentMore" @select="handleSelect">
+            <n-button block quaternary size="large" round> 更多</n-button>
+          </n-dropdown>
+        </div>
+      </n-flex>
   </client-only>
 </template>
 

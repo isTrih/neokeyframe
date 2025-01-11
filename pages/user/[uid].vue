@@ -1,8 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+const userId = useRoute().params.uid
+
+</script>
 
 <template>
   <div class="h-full w-full flex flex-col justify-center">
-    <n-empty size="huge" description="用户界面" />
+    <n-empty size="huge" description="用户界面" >
+      {{userId}}
+    </n-empty>
   </div>
 </template>
 
