@@ -7,7 +7,7 @@ import moreMenuHead from '~/components/moreMenuHead.vue';
 import {NuxtLink, LoginModal} from '#components';
 import moreMenuButton from '~/components/moreMenuButton.vue';
 import moreMenuTheme from '~/components/moreMenuTheme.vue';
-import {AddCircleOutline as CreateIcon, NotificationsOutline as NotifIcon} from '@vicons/ionicons5';
+import {AddCircleOutline as CreateIcon, NotificationsOutline as NotifIcon, Menu} from '@vicons/ionicons5';
 
 const useUser = useUserStore();
 
@@ -533,7 +533,11 @@ function handleSelect(key: string | number) {
         <div class="h-full"/>
         <div class="flex-items-end w-full h-6dvh mb-4">
           <n-dropdown trigger="click" class="w-64 rounded-3xl" :options="currentMore" @select="handleSelect">
-            <n-button block quaternary size="large" round> 更多</n-button>
+            <n-button block quaternary size="large" round>
+              <template #icon>
+                <Menu/>
+              </template>
+              更多</n-button>
           </n-dropdown>
         </div>
       </n-flex>

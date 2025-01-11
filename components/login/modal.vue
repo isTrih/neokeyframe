@@ -78,7 +78,7 @@ const regRules = {
     message: '请输入正确的手机号',
     validator: (rule: FormItemRule, value: string) => {
       console.log(rule, value);
-      return /^1+[3,8]+\d{9}$/.test(value);
+      return /^1[3456789]\d{9}$/.test(value);
     }
   },
   agreement: {
@@ -118,7 +118,7 @@ const logRules = {
     message: '请输入账号',
     validator: (rule: FormItemRule, value: string) => {
       console.log(rule, value);
-      return /^1+[3,8]+\d{9}$/.test(value);
+      return /^1[3456789]\d{9}$/.test(value);
     }
   },
   agreement: {
