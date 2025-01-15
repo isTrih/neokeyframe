@@ -9,7 +9,7 @@ import Components from 'unplugin-vue-components/vite';
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
-      baseUrl: process.env.NUXT_BASE_API_URL
+      baseUrl: 'https://api.checkpoint321.com/v1'
     }
   },
   build: {

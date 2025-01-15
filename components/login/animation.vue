@@ -2,7 +2,7 @@
 const tips = [
   '你知道吗？关键帧还有一个名字叫做“正片叠底”',
   'CheckPoint也是关键帧的意思',
-  'PDC Desidero te videre et tecum esse.',
+  'Persicum somnium frigida, te videre cupio.',
   '超正经科技中，绝大部分人都是INFP',
   '不知道说什么了，随便再来一条',
   '讨厌上大学',
