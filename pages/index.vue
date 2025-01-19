@@ -60,16 +60,17 @@ const load = async () => {
   }
 };
 
-// const {run} = useRequest(load, {
-//   manual: true,
-//   debounceWait: 1000,
-// })
 // 主页卡片结束////////////////////////////////////////////////////////////////
-
+const InitMenu = () => {
+  const {CurrentMenu} = storeToRefs(useConfigStore());
+  CurrentMenu.value = 'home';
+}
 onMounted(async () => {
+  InitMenu()
   await doQuery(0, '');
   console.log('mounted');
   resizeWaterFall(columns, card_columns, arrHeight, cards)
+
 });
 
 const {WaterFallHeight} = storeToRefs(useConfigStore())

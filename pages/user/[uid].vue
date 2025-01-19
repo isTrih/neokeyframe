@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import {UserInfo} from "~/apis/user";
+import {GetUserInfo} from "~/apis/user";
 import type {User} from "~/types/user";
+import {IosArrowBack} from "@vicons/ionicons4"
 
+const {ContainerWidth} = storeToRefs(useConfigStore())
+const {UserInfo} = storeToRefs(useUserStore())
+const userId = useRoute().params.uid
 // 签名格式化
 const signatureFormat = (signature: string) => {
   if (signature === 'CHAOZJ' || signature === '') {
@@ -21,7 +25,9 @@ const getProvince = (location: string): string => {
   }
   return '未知';
 }
-
+const checkUser = () => {
+  return UserInfo.value.user_id === Number(userId);
+}
 // {
 //   "user_id": 10,
 //     "user_name": "三氢超正经",
@@ -35,8 +41,8 @@ const getProvince = (location: string): string => {
 //     "follow_count": 0,
 //     "ip_location": "中国|0|江苏省|0|移动"
 // }
-const {ContainerWidth} = storeToRefs(useConfigStore())
-const userId = useRoute().params.uid
+
+// 检查是否是自己
 const CurrentUser = ref<User>({
   user_id: 0,
   user_name: '',
@@ -50,11 +56,18 @@ const CurrentUser = ref<User>({
   follow_count: 0,
   ip_location: '',
 })
+// 初始化菜单
+const InitMenu = () => {
+  const {CurrentMenu} = storeToRefs(useConfigStore());
+  CurrentMenu.value = 'user';
+}
 onMounted(async () => {
-  const res = await UserInfo(Number(userId))
-  console.log('==用户页面初始化==')
-  console.log(res.data)
-  console.log(ContainerWidth)
+  const res = await GetUserInfo(Number(userId))
+
+  if (checkUser()) {
+    InitMenu()
+  }
+
   CurrentUser.value = res.data
 })
 
@@ -62,15 +75,26 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-flex vertical class="h-full" align="center">
+  <n-flex vertical class="h-full" align="center" :size="0">
+      <n-flex class="w-full" align="start">
+        <n-button circle size="small" text @click="() => useRouter().back()">
+          <template #icon>
+            <n-icon>
+              <IosArrowBack/>
+            </n-icon>
+          </template>
+          返回
+        </n-button>
+      </n-flex>
     <div class="w-full">
-      <n-grid class="w-full mt-4" cols="20 760:24" item-responsive>
-        <n-gi class="flex flex-col justify-center" offset="2" span="4">
-            <n-avatar
-                :size="ContainerWidth<760?70:132"
-                round
-                :src="CurrentUser.avatar"
-            />
+      <n-grid class="w-full" cols="20 760:24" item-responsive>
+        <n-gi span="1"/>
+        <n-gi class="flex flex-col justify-center" offset="1" span="4">
+          <n-avatar
+              :size="ContainerWidth<760?70:132"
+              round
+              :src="CurrentUser.avatar"
+          />
 
         </n-gi>
         <n-gi offset="1" span="12">
@@ -116,7 +140,7 @@ onMounted(async () => {
           <n-flex vertical class="mt-2 mx-2" :size="0">
             <div v-show="ContainerWidth<760">
               <div>
-                <n-text class="text-3.5 font-400" depth="2"  style="white-space: pre-wrap;">
+                <n-text class="text-3.5 font-400" depth="2" style="white-space: pre-wrap;">
                   {{ signatureFormat(CurrentUser.signature) }}
                 </n-text>
               </div>

@@ -5,7 +5,7 @@ export const Login = async function (mobile: string, password: string) {
     }));
 }
 
-export const UserInfo = async function (uid: number) {
+export const GetUserInfo = async function (uid: number) {
     return use$Post('/user/info', JSON.stringify({
         "user_id": uid
     }));
