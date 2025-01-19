@@ -235,7 +235,7 @@ const heightCaculate = (len: number, height: number, width: number) => {
 
 section {
   break-inside: avoid; /* 防止卡片被分割在两列中 */
-  margin: 0.8rem 0.8rem 0.8rem 0.8rem;
+  margin: 0.1rem 0.3rem 1.2rem 0.3rem;
   transition: all 0.4s ease;
 
 }

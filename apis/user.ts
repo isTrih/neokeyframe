@@ -5,8 +5,13 @@ export const Login = async function (mobile: string, password: string) {
     }));
 }
 
+export const UserInfo = async function (uid: number) {
+    return use$Post('/user/info', JSON.stringify({
+        "user_id": uid
+    }));
+}
 
-export const SendCode = async (mobile: string) => {
+export const SendCode = async  (mobile: string) => {
     return use$Post('/user/verify-code', JSON.stringify({
         mobile: mobile
     }))

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 const gridRef = ref(null);
-const {WaterFallHeight} = storeToRefs(useConfigStore())
+const {WaterFallHeight, ContainerWidth} = storeToRefs(useConfigStore())
 const {stop} = useResizeObserver(gridRef, (entries) => {
   for (const entry of entries) {
-    const {height} = entry.contentRect;
+    const {height, width} = entry.contentRect;
+    ContainerWidth.value = width
     WaterFallHeight.value = height - 20
     console.log('当前容器高度', WaterFallHeight);
 
@@ -21,17 +22,19 @@ onUnmounted(() => {
         <normal-header/>
       </div>
 
-      <div ref="gridRef" class="mb-4 h-full">
+      <div class="mb-4 h-full">
         <n-grid class="h-full" :cols="14" item-responsive>
-          <n-gi class="ml-4" span="0 560:4 700:3 1000:2">
-            <div class="h-full">
+          <n-gi span="0 600:4 700:3 1000:2">
+            <div class="h-full ml-4">
               <normal-menu/>
             </div>
           </n-gi>
-          <n-gi class="mx-4" span="14 560:10 700:11 1000:12">
-            <client-only>
-              <slot/>
-            </client-only>
+          <n-gi ref="gridRef" class="mx-2" span="14 600:10 700:11 1000:12">
+<!--            <Suspense>-->
+              <client-only>
+                <slot />
+              </client-only>
+<!--            </Suspense>-->
           </n-gi>
         </n-grid>
       </div>

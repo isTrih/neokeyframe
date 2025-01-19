@@ -68,6 +68,7 @@ const load = async () => {
 
 onMounted(async () => {
   await doQuery(0, '');
+  console.log('mounted');
   resizeWaterFall(columns, card_columns, arrHeight, cards)
 });
 

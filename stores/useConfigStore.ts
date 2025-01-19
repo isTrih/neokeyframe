@@ -6,10 +6,12 @@ export const useConfigStore = defineStore(
         const ColorMode = ref(0);
         const CurrentMenu = ref('home');
         const WaterFallHeight = ref(0);
+        const ContainerWidth = ref(0);
         return {
             ColorMode,
             CurrentMenu,
-            WaterFallHeight
+            WaterFallHeight,
+            ContainerWidth
         };
     },
     {
