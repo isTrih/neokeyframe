@@ -29,7 +29,9 @@ onUnmounted(() => {
             </div>
           </n-gi>
           <n-gi class="mx-4" span="14 560:10 700:11 1000:12">
-            <slot/>
+            <client-only>
+              <slot/>
+            </client-only>
           </n-gi>
         </n-grid>
       </div>

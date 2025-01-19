@@ -21,12 +21,12 @@ const showLogin = function () {
     class: 'border-rd-xl w-40rem',
     preset: 'card',
     closable: false,
-    content: () => h(LoginModal, {class: 'flex items-center justify-center w-full',
-    onCloseLogin:()=>{
-      m.destroy()
-    }}, {
-
-    }),
+    content: () => h(LoginModal, {
+      class: 'flex items-center justify-center w-full',
+      onCloseLogin: () => {
+        m.destroy()
+      }
+    }, {}),
     transformOrigin: 'center'
   });
   // UserInfo.value = {
@@ -484,7 +484,32 @@ function renderCertification() {
                 {default: () => '网上有害信息举报专区'}
             )
           ]),
-          h('div', {style: 'font-size: 12px;color:var(--n-text-color)'}, [h(NText, null, {default: () => '© 2024-2025'})]),
+          h('div', {style: 'font-size: 12px;'}, [
+            h(
+                'a',
+                {
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+                },
+                {default: () => 'IP地址位置数据由'}
+            ),
+            h(
+                NuxtLink,
+                {
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+                  to: 'https://www.cz88.net',
+                  target: '_blank'
+                },
+                {default: () => '纯真CZ88'}
+            ),
+            h(
+                'a',
+                {
+                  style: 'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+                },
+                {default: () => '提供支持'}
+            )
+          ]),
+          h('div', {style: 'font-size: 12px;color:var(--n-text-color)'}, [h(NText, null, {default: () => 'Copyright © 2024-2025'})]),
           h('div', {style: 'font-size: 12px;color:var(--n-text-color)'}, [
             h(NText, null, {default: () => '芜湖超正经科技有限公司'})
           ]),
@@ -523,24 +548,25 @@ function handleSelect(key: string | number) {
 
 <template>
   <client-only>
-      <n-flex class="h-full" vertical align="stretch">
-        <div class="w-full h-auto flex-items-stretch">
-          <n-menu v-model:value="CurrentMenu" class="fw-600 !p--0" :icon-size="26" :options="menuOptions"/>
-          <n-button v-show="!IsLogin" block class="mt-1.5" type="primary" size="large" round @click="showLogin">
-            登录
+    <n-flex class="h-full" vertical align="stretch">
+      <div class="w-full h-auto flex-items-stretch">
+        <n-menu v-model:value="CurrentMenu" class="fw-600 !p--0" :icon-size="26" :options="menuOptions"/>
+        <n-button v-show="!IsLogin" block class="mt-1.5" type="primary" size="large" round @click="showLogin">
+          登录
+        </n-button>
+      </div>
+      <div class="h-full"/>
+      <div class="flex-items-end w-full h-6dvh mb-4">
+        <n-dropdown trigger="click" class="w-64 rounded-3xl" :options="currentMore" @select="handleSelect">
+          <n-button block quaternary size="large" round>
+            <template #icon>
+              <Menu/>
+            </template>
+            更多
           </n-button>
-        </div>
-        <div class="h-full"/>
-        <div class="flex-items-end w-full h-6dvh mb-4">
-          <n-dropdown trigger="click" class="w-64 rounded-3xl" :options="currentMore" @select="handleSelect">
-            <n-button block quaternary size="large" round>
-              <template #icon>
-                <Menu/>
-              </template>
-              更多</n-button>
-          </n-dropdown>
-        </div>
-      </n-flex>
+        </n-dropdown>
+      </div>
+    </n-flex>
   </client-only>
 </template>
 

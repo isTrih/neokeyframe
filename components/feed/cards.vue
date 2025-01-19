@@ -109,9 +109,9 @@ const heightCaculate = (len: number, height: number, width: number) => {
           </a>
           <div style="padding: 0.1rem">
             <div
-                id="title" style="margin-bottom: 6px;height: 20px;"
+                id="title" style="margin-bottom: 6px;"
                 @click="showDetails(card.id)">
-              {{ card.title }}
+              🥹{{ card.title }}
             </div>
             <div class="bottom" style="display:flex; justify-content: space-between; align-content: center;">
               <n-flex align="center" size="small">
@@ -120,7 +120,7 @@ const heightCaculate = (len: number, height: number, width: number) => {
                       round
                       :size="24"
                       :src="card.user.avatar"
-                      style="border: var(--gray-2) thin solid; border-radius: 100%"
+                      style="border: var(--gray-2) thin solid; border-radius: 100%;transition: all 0.4s ease;"
                       :alt="`${card.user.user_name}的头像`"
                   />
                 </nuxt-link>
@@ -146,25 +146,31 @@ const heightCaculate = (len: number, height: number, width: number) => {
             />
             <div style="padding: 10px">
               <div
-                  id="title" style="margin-bottom: 6px;height: 20px;"
+                  id="title" style="margin-bottom: 6px;"
                   @click="showDetails(card.id)">
                 {{ card.title }}
               </div>
               <div class="bottom" style="display:flex; justify-content: space-between;">
-                <n-flex align="center">
-                  <nuxt-link :to="{name: 'user-uid',params: {uid: card.user.id}}">
-                    <div class="avatar"/>
+                <n-flex align="center" size="small">
+                  <nuxt-link  class="flex align-center " :to="{name: 'user-uid',params: {uid: card.user.id}}">
+                    <n-avatar
+                        round
+                        :size="24"
+                        :src="card.user.avatar"
+                        style="border: var(--gray-2) thin solid; border-radius: 100%"
+                        :alt="`${card.user.user_name}的头像`"
+                    />
                   </nuxt-link>
-                  <nuxt-link :to="{name: 'user-uid',params: {uid: card.user.id}}">
+                  <nuxt-link class=" flex align-center decoration-none text-xs user_name" :to="{name: 'user-uid',params: {uid: card.user.id}}">
                     <div class="user_name">{{ card.user.user_name }}</div>
                   </nuxt-link>
                 </n-flex>
-                <n-flex align="center">
+                <n-flex align="center" justify="flex-end" :size="2" class="text-xs flex align-center">
                   <!--//TODO:未来来这里实现外部点赞功能-->
-                  <div class="user_name ml-2 text-sm float-right">
-                    <HeartCircleOutline/>
-                    {{ numFormat(card.like_num) }}
-                  </div>
+                  <n-icon>
+                    <IosHeartEmpty/>
+                  </n-icon>
+                  {{ numFormat(card.like_num) }}
                 </n-flex>
               </div>
             </div>
@@ -177,10 +183,14 @@ const heightCaculate = (len: number, height: number, width: number) => {
 
 <style scoped>
 #title {
-  white-space: nowrap;
+  transition: all 0.4s ease;
+  white-space: normal; /* 允许换行 */
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: start;
+  display: -webkit-box; /* 使用 WebKit 线框模型 */
+  -webkit-line-clamp: 2; /* 限制显示两行 */
+  -webkit-box-orient: vertical; /* 垂直排列内容 */
 
   margin-bottom: 0.2rem;
   color: var(--gray-10);
@@ -198,10 +208,10 @@ const heightCaculate = (len: number, height: number, width: number) => {
 
 .loading .image,
 .loading .avatar {
-  background: gainsboro linear-gradient(
+  background: var(--gray-3) linear-gradient(
       100deg,
       rgba(255, 255, 255, 0) 40%,
-      rgba(255, 255, 255, .5) 50%,
+      rgba(255, 255, 255, .4) 50%,
       rgba(255, 255, 255, 0) 60%
   );
   background-size: 200% 100%;
@@ -219,22 +229,29 @@ const heightCaculate = (len: number, height: number, width: number) => {
   border-radius: 50%;
   height: 24px;
   width: 24px;
+  transition: all 0.4s ease;
+
 }
 
 section {
   break-inside: avoid; /* 防止卡片被分割在两列中 */
-  margin: 1rem 1rem 1rem 1rem;
+  margin: 0.8rem 0.8rem 0.8rem 0.8rem;
+  transition: all 0.4s ease;
+
 }
 
 .card {
   border-radius: 0.8rem;
   background-color: transparent;
+  transition: all 0.4s ease;
+
 }
 
 .image {
   border-radius: 1rem;
   border: var(--gray-2) 1px solid;
   object-fit: cover;
+  transition: all 0.4s ease;
 }
 
 .image:hover {
@@ -243,9 +260,13 @@ section {
 
 .user_name {
   color: var(--gray-10);
+  transition: all 0.2s ease;
+
 }
 
 .user_name:hover {
-  color: var(--czjB-4);
+  color: var(--czjB-8);
+  transition: all 0.2s ease;
+
 }
 </style>

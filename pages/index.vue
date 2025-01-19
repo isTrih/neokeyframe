@@ -31,12 +31,14 @@ const doQuery = async (offset: number, query: string) => {
   console.log(res)
   cards.value = res.data.feeds;
   waterFallInit(columns, card_columns, arrHeight, cards)
+  isload.value = false;// 加载完成
   disabled.value = false; // 启用滚动加载
 };
 
 // 无限滚动
 const load = async () => {
-  if(disabled.value !== true) {
+  if (disabled.value !== true) {
+    isload.value = true;
     disabled.value = true;
     const offset = cards.value.length;
     let res
@@ -53,6 +55,7 @@ const load = async () => {
       cards.value = [...cards.value, ...more];
       waterFallMore(arrHeight, card_columns, more)
       disabled.value = false;
+      isload.value = false;
     }
   }
 };
@@ -74,30 +77,37 @@ const {WaterFallHeight} = storeToRefs(useConfigStore())
 
 <template>
   <div id="waterfall-container" ref="gridRef" class="h-full w-full">
-    <div v-if="cards.length===0" id="waterfall-container" class="h-full w-full flex flex-col justify-center">
-      <client-only>
-        <n-empty size="huge" description="暂时还没有帖子"/>
-      </client-only>
-    </div>
+    <div v-if="cards.length===0" id="waterfall-container" class="h-full w-full flex flex-col justify-center align-center">
+      <n-empty description="正在加载中...">
+        <template #icon>
+          <n-spin/>
+        </template>
+      </n-empty>
 
+    </div>
     <div v-else id="waterfall-container" class="h-full w-full flex flex-col justify-center">
-      <n-infinite-scroll :style="{height: WaterFallHeight+'px'}" :distance="100" @load="load">
-        <FeedCards ref="homeCardRef" :card-columns="card_columns" @show-detail="showDetail"/>
+      <n-spin :show="isload">
 
-        <!--      <div v-for="i in count" :key="i" class="item">-->
-        <!--        {{ i }}-->
-        <!--      </div>-->
-        <div v-if="isload" class="flex justify-center align-center">
-          加载中...
-        </div>
-        <div v-if="disabled" class="flex justify-center align-center">
+        <n-infinite-scroll :style="{height: WaterFallHeight+'px'}" :distance="100" @load="load">
+          <FeedCards ref="homeCardRef" :card-columns="card_columns" @show-detail="showDetail"/>
+
+          <!--      <div v-for="i in count" :key="i" class="item">-->
+          <!--        {{ i }}-->
+          <!--      </div>-->
+          <div v-if="isload" class="flex justify-center align-center">
+            加载中...
+          </div>
+          <div v-if="disabled" class="flex justify-center align-center">
             已经到底啦！ 🤪
-        </div>
-        <div v-if="disabled" class="text"/>
-      </n-infinite-scroll>
-    </div>
-  </div>
+          </div>
+          <div v-if="disabled" class="text"/>
+        </n-infinite-scroll>
+      </n-spin>
 
+    </div>
+
+
+  </div>
 </template>
 
 <style scoped></style>
