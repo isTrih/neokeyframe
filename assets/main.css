@@ -136,6 +136,23 @@ html.dark {
   --gray-2: #272e3b;
   --gray-1: #1d2129;
 }
+
 body::selection {
   background-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.full-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100dvw; /* 动态视口宽度 */
+  height: 100dvh; /* 动态视口高度 */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
