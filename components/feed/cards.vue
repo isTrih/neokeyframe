@@ -111,7 +111,7 @@ const heightCaculate = (len: number, height: number, width: number) => {
             <div
                 id="title" style="margin-bottom: 6px;"
                 @click="showDetails(card.id)">
-              🥹{{ card.title }}
+              {{ card.title }}
             </div>
             <div class="bottom" style="display:flex; justify-content: space-between; align-content: center;">
               <n-flex align="center" size="small">

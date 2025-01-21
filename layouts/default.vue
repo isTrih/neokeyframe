@@ -16,17 +16,17 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col h-screen">
+  <div class="flex flex-col h-100dvh">
     <n-modal-provider>
-      <div class="my-4 h-34px">
-        <normal-header/>
+      <div class="mt-4 mb-2 h-34px">
+        <layout-header/>
       </div>
 
-      <div class="mb-4 h-full">
+      <div class="h-full">
         <n-grid class="h-full" :cols="14" item-responsive>
           <n-gi span="0 600:4 700:3 1000:2">
             <div class="h-full ml-4">
-              <normal-menu/>
+              <layout-side-nav/>
             </div>
           </n-gi>
           <n-gi ref="gridRef" class="mx-2" span="14 600:10 700:11 1000:12">
@@ -35,6 +35,9 @@ onUnmounted(() => {
                 <slot />
               </client-only>
 <!--            </Suspense>-->
+          </n-gi>
+          <n-gi class="h-6dvh" span="14 600:0">
+            <div class="w-full h-full bg-blue"/>
           </n-gi>
         </n-grid>
       </div>

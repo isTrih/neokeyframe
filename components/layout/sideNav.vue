@@ -3,12 +3,13 @@ import {h, ref, type Component} from 'vue';
 import {NIcon, NText, NButton, useModal} from 'naive-ui';
 import home from '~/components/icons/home.vue';
 import avatar from '~/components/icons/avatar.vue';
-import moreMenuHead from '~/components/moreMenuHead.vue';
+import Head from '~/components/menu/head.vue';
 import {NuxtLink, LoginModal} from '#components';
-import moreMenuButton from '~/components/moreMenuButton.vue';
-import moreMenuTheme from '~/components/moreMenuTheme.vue';
-import {AddCircleOutline as CreateIcon, NotificationsOutline as NotifIcon, Menu} from '@vicons/ionicons5';
-
+import Button from '~/components/menu/button.vue';
+import Theme from '~/components/menu/theme.vue';
+import Link from '~/components/menu/link.vue';
+import {AddCircleOutline as CreateIcon, NotificationsOutline as NotifIcon} from '@vicons/ionicons5';
+import {MenuRound} from '@vicons/material';
 const useUser = useUserStore();
 
 // 模态框
@@ -105,55 +106,6 @@ function renderIcon(icon: Component, props: string | null = null) {
 //endregion
 
 // region 更多选项
-
-// 控制是否显示更多选项
-
-const aboutTitle = function () {
-  return h(moreMenuHead, {
-    title: '关于关键帧',
-    onBack() {
-      // currentMore.value = baseMore.value;
-      moreIndex.value = 0;
-    }
-  });
-};
-const docsTitle = function () {
-  return h(moreMenuHead, {
-    title: '隐私、协议',
-    onBack() {
-      // currentMore.value = baseMore.value;
-      moreIndex.value = 0;
-
-    }
-  });
-};
-const aboutButton = function () {
-  return h(moreMenuButton, {
-    title: '关于关键帧',
-    onClick: () => {
-      // currentMore.value = aboutMore.value;
-      moreIndex.value = 1;
-
-      // console.log(currentMore.value);
-    }
-  });
-};
-const docsButton = function () {
-  return h(moreMenuButton, {
-    title: '隐私、协议',
-    onClick: () => {
-      moreIndex.value = 2;
-
-      // currentMore.value = docsMore.value;
-    }
-
-  });
-};
-const themeSettings = function () {
-  return h(moreMenuTheme, {
-    title: '深色模式'
-  });
-};
 const moreIndex = ref(0)
 // // 默认更多选项
 // const baseMore = () => [
@@ -258,12 +210,41 @@ const currentMore = computed(() => {
     return [
       {
         type: 'render',
-        render: aboutButton,
+        render: ()=>{
+          return h(Button, {
+            title: '关于关键帧',
+            onClick: () => {
+              // currentMore.value = aboutMore.value;
+              moreIndex.value = 1;
+
+              // console.log(currentMore.value);
+            }
+          });
+        },
         show: true
       },
       {
         type: 'render',
-        render: docsButton,
+        render: ()=>{
+          return h(Button, {
+            title: '隐私、协议',
+            onClick: () => {
+              moreIndex.value = 2;
+            }
+          });
+        },
+        show: true
+      },
+      {
+        type: 'render',
+        render: ()=>{
+          return h(Button, {
+            title: '友情链接',
+            onClick: () => {
+              moreIndex.value = 3;
+            }
+          });
+        },
         show: true
       },
       {
@@ -273,12 +254,24 @@ const currentMore = computed(() => {
       },
       {
         type: 'render',
-        render: renderSetting,
+        render: ()=>{
+          return h(
+              'div',
+              {
+                style: 'display: flex; align-items: center; padding: 8px 12px;'
+              },
+              [h('div', null, [h('div', {style: 'font-size: 12px;margin-left:1rem'}, [h(NText, {depth: 3}, {default: () => '设置'})])])]
+          );
+        },
         show: true
       },
       {
         type: 'render',
-        render: themeSettings,
+        render: ()=>{
+          return h(Theme, {
+            title: '深色模式'
+          });
+        },
         show: true
       },
       {
@@ -289,7 +282,7 @@ const currentMore = computed(() => {
       {
         type: 'render',
         render: () => {
-          return h(moreMenuButton, {
+          return h(Button, {
             title: '退出登陆',
             icon: false,
             onClick: () => {
@@ -304,7 +297,15 @@ const currentMore = computed(() => {
     return [
       {
         type: 'render',
-        render: aboutTitle,
+        render: ()=>{
+          return h(Head, {
+            title: '关于关键帧',
+            onBack() {
+              // currentMore.value = baseMore.value;
+              moreIndex.value = 0;
+            }
+          });
+        },
         show: true
       },
       {
@@ -313,8 +314,14 @@ const currentMore = computed(() => {
         show: true
       },
       {
-        label: '关于我们',
-        key: 'about-1',
+        type: 'render',
+        render: ()=>{
+          return h(Link, {
+            title: '关于我们',
+            icon: false,
+            url: '/about'
+          })
+        },
         show: true
       },
       {
@@ -332,7 +339,16 @@ const currentMore = computed(() => {
     return [
       {
         type: 'render',
-        render: docsTitle,
+        render: ()=>{
+          return h(Head, {
+            title: '隐私、协议',
+            onBack() {
+              // currentMore.value = baseMore.value;
+              moreIndex.value = 0;
+
+            }
+          });
+        },
         show: true
       },
       {
@@ -341,30 +357,97 @@ const currentMore = computed(() => {
         show: true
       },
       {
-        label: '隐私协议',
-        key: 'about-1',
+        type: 'render',
+        render: ()=>{
+          return h(Link, {
+            title: '用户协议',
+            icon: false,
+            url: '/doc/agreement'
+          })
+        },
         show: true
       },
       {
-        label: '用户协议',
-        key: 'agreement',
+        type: 'render',
+        render: ()=>{
+          return h(Link, {
+            title: '隐私协议',
+            icon: false,
+            url: '/doc/privacy'
+          })
+        },
+        show: true
+      },
+      {
+        type: 'render',
+        render: ()=>{
+          return h(Link, {
+            title: '社区规范',
+            icon: false,
+            url: '/doc/socialrule'
+          })
+        },
+        show: true
+      }
+    ];
+  }else if (moreIndex.value === 3) {
+    return [
+      {
+        type: 'render',
+        render: ()=>{
+          return h(Head, {
+            title: '友情链接',
+            onBack() {
+              // currentMore.value = baseMore.value;
+              moreIndex.value = 0;
+
+            }
+          });
+        },
+        show: true
+      },
+      {
+        type: 'divider',
+        key: 'd1',
+        show: true
+      },
+      {
+        type: 'render',
+        render: ()=>{
+          return h(Link, {
+            title: 'MacWk - 精品mac软件下载',
+            icon: false,
+            url: 'https://macwk.com.cn/'
+          })
+        },
+        show: true
+      },
+      {
+        type: 'render',
+        render: ()=>{
+          return h(Link, {
+            title: 'Lo研社 - Lolita图书馆',
+            icon: false,
+            url: 'https://lolitalibrary.com/'
+          })
+        },
+        show: true
+      },
+      {
+        type: 'render',
+        render: ()=>{
+          return h(Link, {
+            title: '有礼贸 - 外贸教学实践平台',
+            icon: false,
+            url: '/doc/socialrule'
+          })
+        },
         show: true
       }
     ];
   }
   return []
 });  // 设置渲染
-console.log('currentMore', currentMore);
-
-function renderSetting() {
-  return h(
-      'div',
-      {
-        style: 'display: flex; align-items: center; padding: 8px 12px;'
-      },
-      [h('div', null, [h('div', {style: 'font-size: 12px;'}, [h(NText, {depth: 3}, {default: () => '设置'})])])]
-  );
-}
 
 /**
  * @description 关于页面的底栏
@@ -527,22 +610,6 @@ function renderCertification() {
       ]
   );
 }
-
-/**
- * @description 处理 更多选项 点击事件
- * @param key 选中的选项的key
- * @returns void
- */
-function handleSelect(key: string | number) {
-  switch (key) {
-    case 'about-1':
-      window.open('/about/');
-      moreIndex.value = 0;
-      // currentMore.value = baseMore.value;
-      break;
-  }
-}
-
 //endregion
 </script>
 
@@ -557,10 +624,12 @@ function handleSelect(key: string | number) {
       </div>
       <div class="h-full"/>
       <div class="flex-items-end w-full h-6dvh mb-4">
-        <n-dropdown trigger="click" class="w-64 rounded-3xl" :options="currentMore" @select="handleSelect">
-          <n-button block quaternary size="large" round>
+        <n-dropdown trigger="click" class="w-64 rounded-3xl" :options="currentMore">
+          <n-button block round quaternary size="large">
             <template #icon>
-              <Menu/>
+              <n-icon>
+                <MenuRound />
+              </n-icon>
             </template>
             更多
           </n-button>

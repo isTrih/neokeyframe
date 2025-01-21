@@ -2,8 +2,8 @@
 //获取查询参数
 import {GetFeeds} from '~/apis/feed.ts';
 import type {Card} from '~/types/feed.ts';
+import {throttle} from '~/composables/utils.ts';
 // import {useRequest} from 'pro-naive-ui'
-
 const query = useRoute().query.query
 onMounted(() => {
   console.log(query)
@@ -34,7 +34,7 @@ const doQuery = async (offset: number, query: string) => {
   isload.value = false;// 加载完成
   disabled.value = false; // 启用滚动加载
 };
-
+const debounceDoQuery = throttle(doQuery, 500);
 // 无限滚动
 const load = async () => {
   if (disabled.value !== true) {
@@ -67,7 +67,8 @@ const InitMenu = () => {
 }
 onMounted(async () => {
   InitMenu()
-  await doQuery(0, '');
+  debounceDoQuery(0,'')
+  // await doQuery(0, '');
   console.log('mounted');
   resizeWaterFall(columns, card_columns, arrHeight, cards)
 

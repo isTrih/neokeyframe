@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-function-type */
+/* eslint-disable @typescript-eslint/no-unsafe-function-type  */
 
-// src/utils/throttle.ts
+/* eslint-disable  @typescript-eslint/no-unused-expressions */
 
 /**
  * 节流函数，用于限制函数在指定时间内只能执行一次
@@ -9,11 +9,11 @@
  * @param wait - 节流的时间间隔（毫秒）
  * @returns 返回一个新的节流函数
  */
-export function throttle(func: Function, wait: number): Function {
+function throttle(func: Function, wait: number): Function {
     let timeoutId: number | null = null;
     let lastExecutedTime = 0;
 
-    return function(this: any, ...args: any[]) {
+    return function (this: any, ...args: any[]) {
         const now = Date.now();
         const timeSinceLastExecution = now - lastExecutedTime;
 
@@ -30,35 +30,49 @@ export function throttle(func: Function, wait: number): Function {
     };
 }
 
-// src/utils/debounce.ts
-
 /**
- * 防抖函数，用于限制异步函数在指定时间内只执行一次
- * @param asyncFunc - 要防抖的异步函数，返回 Promise<void>
- * @param wait - 防抖的时间间隔（毫秒）
- * @returns 返回一个新的防抖异步函数
+ * 防抖原理：一定时间内，只有最后一次操作，再过wait毫秒后才执行函数
+ *
+ * @param {Function} func 要执行的回调函数
+ * @param {number} wait 延时的时间
+ * @param {boolean} immediate 是否立即执行
+ * @return null
  */
-export function debounce<T extends any[]>(asyncFunc: (...args: T) => Promise<void>, wait: number): (...args: T) => Promise<void> {
-    let timeoutId: number | null = null;
-    let pendingPromise: Promise<void> | null = null;
+function debounce(func: Function, wait = 500, immediate = false) {
+    let timeout: number | null = null;
 
-    return function(this: any, ...args: T): Promise<void> {
-        clearTimeout(timeoutId!);
-
-        // 如果有正在执行的异步操作，取消它
-        if (pendingPromise) {
-            pendingPromise = null;
+    return (...args: any[]) => {
+        if (timeout !== null) {
+            clearTimeout(timeout);
         }
 
-        // 设置一个新的定时器
-        timeoutId = window.setTimeout(async () => {
-            // 执行异步操作
-            pendingPromise = asyncFunc.apply(this, args);
-            await pendingPromise;
-            pendingPromise = null;
-        }, wait) as unknown as number;
+        if (immediate) {
+            const callNow = !timeout;
+            timeout = setTimeout(() => {
+                timeout = null;
+            }, wait) as unknown as number;
 
-        // 返回一个立即解析的 Promise，确保返回类型正确
-        return Promise.resolve();
+            if (callNow) {
+                typeof func === 'function' && func(...args);
+            }
+        } else {
+            timeout = setTimeout(() => {
+                typeof func === 'function' && func(...args);
+            }, wait) as unknown as number;
+        }
     };
 }
+
+function isMobile(): boolean {
+    const userAgent = navigator.userAgent
+
+    // 检查常见的移动端设备标识符
+    const mobileRegex = /(Android |iPhone |iPad |iPod |BlackBerry |WindowsPhone |IEMobile |OperaMini)/i;
+    return mobileRegex.test(userAgent);
+}
+export {
+    throttle,
+    debounce,
+    isMobile,
+};
+

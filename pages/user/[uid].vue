@@ -16,11 +16,10 @@ const signatureFormat = (signature: string) => {
 };
 // 属地格式化
 const getProvince = (location: string): string => {
-  const parts = location.split('|');
+  const parts = location.split('–');
   if (parts.length >= 3) {
-    let province = parts[2];
+    const province = parts[1];
     // 去除省份名称中的 "省", "特别行政区", "自治区" 等字符
-    province = province.replace(/(省|特别行政区|自治区)$/, '');
     return province;
   }
   return '未知';

@@ -5,7 +5,6 @@
       :theme-overrides="theme === null ? lightThemeOverrides : darkThemeOverrides"
   >
     <n-message-provider>
-
       <div @contextmenu.prevent>
         <NuxtLayout>
           <NuxtLoadingIndicator/>
@@ -20,6 +19,7 @@
 import {NConfigProvider, type GlobalThemeOverrides} from 'naive-ui';
 import {useColorMode} from '@vueuse/core';
 import {darkTheme} from 'naive-ui';
+import {isMobile} from '~/composables/utils.ts';
 
 const theme = ref<null | typeof darkTheme>(null);
 
@@ -108,5 +108,7 @@ watch([ColorMode, colorMode], () => {
 
 onMounted(() => {
   InitTheme();
+  console.log(isMobile() ? '当前环境是移动端' : '当前环境不是移动端');
+
 });
 </script>
