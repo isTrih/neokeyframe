@@ -1,15 +1,20 @@
 <script setup lang="ts">
+
 const gridRef = ref(null);
+const isSmall = ref(false)
+
 const {WaterFallHeight, ContainerWidth} = storeToRefs(useConfigStore())
-const {stop} = useResizeObserver(gridRef, (entries) => {
+const {stop} = useResizeObserver(gridRef, debounce((entries: ResizeObserverEntry[]) => {
   for (const entry of entries) {
     const {height, width} = entry.contentRect;
     ContainerWidth.value = width
     WaterFallHeight.value = height - 20
-    console.log('当前容器高度', WaterFallHeight);
-
+    console.log('当前容器高度', WaterFallHeight.value, '容器宽度度', width);
+    isSmall.value = window.innerWidth < 600;
   }
-});
+},30));
+onMounted(() => {
+})
 onUnmounted(() => {
   stop()
 })
@@ -23,23 +28,25 @@ onUnmounted(() => {
       </div>
 
       <div class="h-full">
-        <n-grid class="h-full" :cols="14" item-responsive>
-          <n-gi span="0 600:4 700:3 1000:2">
-            <div class="h-full ml-4">
-              <layout-side-nav/>
-            </div>
-          </n-gi>
-          <n-gi ref="gridRef" class="mx-2" span="14 600:10 700:11 1000:12">
-<!--            <Suspense>-->
+        <n-flex vertical class="h-full" :size="0">
+          <n-grid class="h-full" :cols="14" item-responsive>
+            <n-gi span="0 600:4 700:3 1000:2">
+              <div class="h-full ml-4">
+                <layout-side-nav/>
+              </div>
+            </n-gi>
+            <n-gi ref="gridRef" class="mx-2" span="14 600:10 700:11 1000:12">
+              <!--            <Suspense>-->
               <client-only>
-                <slot />
+                <slot/>
               </client-only>
-<!--            </Suspense>-->
-          </n-gi>
-          <n-gi class="h-6dvh" span="14 600:0">
-            <div class="w-full h-full bg-blue"/>
-          </n-gi>
-        </n-grid>
+              <!--            </Suspense>-->
+            </n-gi>
+          </n-grid>
+          <div v-show="isSmall" class="h-7dvh bg-amber">
+            <layout-bottom/>
+          </div>
+        </n-flex>
       </div>
     </n-modal-provider>
   </div>

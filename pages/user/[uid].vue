@@ -18,9 +18,8 @@ const signatureFormat = (signature: string) => {
 const getProvince = (location: string): string => {
   const parts = location.split('–');
   if (parts.length >= 3) {
-    const province = parts[1];
     // 去除省份名称中的 "省", "特别行政区", "自治区" 等字符
-    return province;
+    return parts[1];
   }
   return '未知';
 }

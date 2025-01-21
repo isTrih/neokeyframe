@@ -51,21 +51,13 @@ const showDetails = (id: number) => {
 
 // 监听容器宽度
 const colRef = ref(null);
-const colWidth = ref(0);
-const {stop} = useResizeObserver(colRef, (entries) => {
-  for (const entry of entries) {
-    const {width} = entry.contentRect;
-    colWidth.value = width;
-    console.log(colWidth.value);
-  }
-});
+const {ContainerWidth} = storeToRefs(useConfigStore());
 
 onMounted(() => {
   console.log(props.cardColumns)
 })
 
 onUnmounted(() => {
-  stop()
 })
 
 // 处理加载状态
@@ -74,7 +66,7 @@ const handleLoad = (card: Card) => {
 }
 
 const heightCaculate = (len: number, height: number, width: number) => {
-  const cardWidth = (colWidth.value / len - 32)
+  const cardWidth = (ContainerWidth.value / len - 32)
   //   toFixed(3);
   // parseFloat(cardWidthStr);
   const cardHeight = (cardWidth * height / width)
