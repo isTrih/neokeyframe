@@ -135,7 +135,7 @@ onMounted(async () => {
               </n-text>
             </div>
             <n-flex style="gap: 0px 12px!important;">
-              <n-flex align="center" :size="0" >
+              <n-flex v-show="isVerti" align="center" :size="0" >
                 <icons-verti
                     v-if="isVerti&&!isDark"
                     :class="['rounded-full w-1rem h-1rem z-10 bg-[--bg-2]',VertiColor]"/>
