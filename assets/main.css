@@ -1,162 +1,240 @@
 html {
-  user-select: none;
+    user-select: none;
+    --czjY-1: #ffffe8;
+    --czjY-2: #fefbd0;
+    --czjY-3: #fcf6b7;
+    --czjY-4: #fbf09f;
+    --czjY-5: #f9e887;
+    --czjY-6: #f8df70;
+    --czjY-7: #cdb045;
+    --czjY-8: #a28325;
+    --czjY-9: #77590d;
+    --czjY-10: #4d3400;
 
-  --czjY-1: #ffffe8;
-  --czjY-2: #fefbd0;
-  --czjY-3: #fcf6b7;
-  --czjY-4: #fbf09f;
-  --czjY-5: #f9e887;
-  --czjY-6: #f8df70;
-  --czjY-7: #cdb045;
-  --czjY-8: #a28325;
-  --czjY-9: #77590d;
-  --czjY-10: #4d3400;
+    --czjP-1: #e8edff;
+    --czjP-2: #c8cfec;
+    --czjP-3: #abb2d9;
+    --czjP-4: #9096c5;
+    --czjP-5: #777cb2;
+    --czjP-6: #61649f;
+    --czjP-7: #3f418a;
+    --czjP-8: #252476;
+    --czjP-9: #130f61;
+    --czjP-10: #06004d;
 
-  --czjP-1: #e8edff;
-  --czjP-2: #c8cfec;
-  --czjP-3: #abb2d9;
-  --czjP-4: #9096c5;
-  --czjP-5: #777cb2;
-  --czjP-6: #61649f;
-  --czjP-7: #3f418a;
-  --czjP-8: #252476;
-  --czjP-9: #130f61;
-  --czjP-10: #06004d;
+    --czjO-1: #fff4e8;
+    --czjO-2: #fedcbd;
+    --czjO-3: #fec193;
+    --czjO-4: #fda469;
+    --czjO-5: #fd843f;
+    --czjO-6: #fc6315;
+    --czjO-7: #d0480d;
+    --czjO-8: #a43107;
+    --czjO-9: #781e03;
+    --czjO-10: #4d0f00;
 
-  --czjO-1: #fff4e8;
-  --czjO-2: #fedcbd;
-  --czjO-3: #fec193;
-  --czjO-4: #fda469;
-  --czjO-5: #fd843f;
-  --czjO-6: #fc6315;
-  --czjO-7: #d0480d;
-  --czjO-8: #a43107;
-  --czjO-9: #781e03;
-  --czjO-10: #4d0f00;
+    --czjB-1: #e8f6ff;
+    --czjB-2: #b8d8ef;
+    --czjB-3: #8dbade;
+    --czjB-4: #679cce;
+    --czjB-5: #457fbd;
+    --czjB-6: #2764ad;
+    --czjB-7: #194d95;
+    --czjB-8: #0e387d;
+    --czjB-9: #062765;
+    --czjB-10: #00184d;
 
-  --czjB-1: #e8f6ff;
-  --czjB-2: #b8d8ef;
-  --czjB-3: #8dbade;
-  --czjB-4: #679cce;
-  --czjB-5: #457fbd;
-  --czjB-6: #2764ad;
-  --czjB-7: #194d95;
-  --czjB-8: #0e387d;
-  --czjB-9: #062765;
-  --czjB-10: #00184d;
+    --czjR-1: #ffeae8;
+    --czjR-2: #fcc7c4;
+    --czjR-3: #f8a3a2;
+    --czjR-4: #f58082;
+    --czjR-5: #f15f66;
+    --czjR-6: #ee3f4d;
+    --czjR-7: #c6273a;
+    --czjR-8: #9d1529;
+    --czjR-9: #75081c;
+    --czjR-10: #4d0011;
 
-  --czjR-1: #ffeae8;
-  --czjR-2: #fcc7c4;
-  --czjR-3: #f8a3a2;
-  --czjR-4: #f58082;
-  --czjR-5: #f15f66;
-  --czjR-6: #ee3f4d;
-  --czjR-7: #c6273a;
-  --czjR-8: #9d1529;
-  --czjR-9: #75081c;
-  --czjR-10: #4d0011;
+    --gray-1: #f7f8fa;
+    --gray-2: #f2f3f5;
+    --gray-3: #e5e6eb;
+    --gray-4: #c9cdd4;
+    --gray-5: #a9aeb8;
+    --gray-6: #86909c;
+    --gray-7: #6b7785;
+    --gray-8: #4e5969;
+    --gray-9: #272e3b;
+    --gray-10: #1d2129;
 
-  --gray-1: #f7f8fa;
-  --gray-2: #f2f3f5;
-  --gray-3: #e5e6eb;
-  --gray-4: #c9cdd4;
-  --gray-5: #a9aeb8;
-  --gray-6: #86909c;
-  --gray-7: #6b7785;
-  --gray-8: #4e5969;
-  --gray-9: #272e3b;
-  --gray-10: #1d2129;
-  --czj-showLight:none;
+    --text-1: #1D2129; /*强调/正文标题*/
+    --text-2: #4E5969; /*次强调/正文标题*/
+    --text-3: #86909C; /*次要信息*/
+    --text-4: #C9CDD4; /*置灰信息*/
+    --text-white: #FFFFFF; /*白色*/
+
+
+    --bg-1: #ffffff; /*整体背景色*/
+
+    --bg-2: #ffffff; /*一级容器背景*/
+    --bg-3: #ffffff; /*二级容器背景*/
+    --bg-4: #ffffff; /*三级容器背景*/
+    --bg-5: #ffffff; /*下拉弹出框、Tooltip 背景颜色*/
+    --bg-white: #ffffff; /*白色背景*/
+
+    --fill-white: #ffffff; /*纯白填充*/
+    --fill-1: #F7F8FA; /*浅/禁用*/
+    --fill-2: #F2F3F5; /*常规/白底悬浮*/
+    --fill-3: #E5E6EB; /*深/灰底悬浮*/
+    --fill-4: #C9CDD4; /*重/特殊场景*/
+
+    --shadow-i-c: inset 0 0 5px rgba(0, 0, 0, 0.1);
+
+    --shadow-1-c: 0 0 5px rgba(0, 0, 0, 0.1);
+    --shadow-1-t: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    --shadow-1-b: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --shadow-1-l: -2px 0 5px rgba(0, 0, 0, 0.1);
+    --shadow-1-r: 2px 0 5px rgba(0, 0, 0, 0.1);
+    --shadow-1-lt: -2px -2px 5px rgba(0, 0, 0, 0.1);
+    --shadow-1-lb: -2px 2px 5px rgba(0, 0, 0, 0.1);
+    --shadow-1-rt: 2px -2px 5px rgba(0, 0, 0, 0.1);
+    --shadow-1-rb: 2px 2px 5px rgba(0, 0, 0, 0.1);
+
+    --shadow-2-c: 0 0 10px rgba(0, 0, 0, 0.1);
+    --shadow-2-t: 0 -4px 10px rgba(0, 0, 0, 0.1);
+    --shadow-2-b: 0 4px 10px rgba(0, 0, 0, 0.1);
+    --shadow-2-l: -4px 0 10px rgba(0, 0, 0, 0.1);
+    --shadow-2-r: 4px 0 10px rgba(0, 0, 0, 0.1);
+    --shadow-2-lt: -4px -4px 10px rgba(0, 0, 0, 0.1);
+    --shadow-2-lb: -4px 4px 10px rgba(0, 0, 0, 0.1);
+    --shadow-2-rt: 4px -4px 10px rgba(0, 0, 0, 0.1);
+    --shadow-2-rb: 4px 4px 10px rgba(0, 0, 0, 0.1);
+
+    --shadow-3-c: 0 0 20px rgba(0, 0, 0, 0.1);
+    --shadow-3-t: 0 -8px 20px rgba(0, 0, 0, 0.1);
+    --shadow-3-b: 0 8px 20px rgba(0, 0, 0, 0.1);
+    --shadow-3-l: -8px 0 20px rgba(0, 0, 0, 0.1);
+    --shadow-3-r: 8px 0 20px rgba(0, 0, 0, 0.1);
+    --shadow-3-lt: -8px -8px 20px rgba(0, 0, 0, 0.1);
+    --shadow-3-lb: -8px 8px 20px rgba(0, 0, 0, 0.1);
+    --shadow-3-rt: 8px -8px 20px rgba(0, 0, 0, 0.1);
+    --shadow-3-rb: 8px 8px 20px rgba(0, 0, 0, 0.1);
+    --czj-showLight: none;
 }
+
 html.dark {
-  --czj-showLight:hidden;
-  --czjY-1: #4d3400;
-  --czjY-2: #77580a;
-  --czjY-3: #a28222;
-  --czjY-4: #cdb046;
-  --czjY-5: #f8e075;
-  --czjY-6: #f9ea96;
-  --czjY-7: #fbf1ab;
-  --czjY-8: #fcf7c0;
-  --czjY-9: #fefbd6;
-  --czjY-10: #ffffeb;
+    --czj-showLight: hidden;
+    --czjY-1: #4d3400;
+    --czjY-2: #77580a;
+    --czjY-3: #a28222;
+    --czjY-4: #cdb046;
+    --czjY-5: #f8e075;
+    --czjY-6: #f9ea96;
+    --czjY-7: #fbf1ab;
+    --czjY-8: #fcf7c0;
+    --czjY-9: #fefbd6;
+    --czjY-10: #ffffeb;
 
-  --czjP-1: #06004d;
-  --czjP-2: #100c61;
-  --czjP-3: #222176;
-  --czjP-4: #3d3f8a;
-  --czjP-5: #5f629f;
-  --czjP-6: #878bb2;
-  --czjP-7: #9ea2c5;
-  --czjP-8: #b6bcd9;
-  --czjP-9: #d0d5ec;
-  --czjP-10: #ebefff;
+    --czjP-1: #06004d;
+    --czjP-2: #100c61;
+    --czjP-3: #222176;
+    --czjP-4: #3d3f8a;
+    --czjP-5: #5f629f;
+    --czjP-6: #878bb2;
+    --czjP-7: #9ea2c5;
+    --czjP-8: #b6bcd9;
+    --czjP-9: #d0d5ec;
+    --czjP-10: #ebefff;
 
-  --czjO-1: #4d0f00;
-  --czjO-2: #781f04;
-  --czjO-3: #a4360e;
-  --czjO-4: #d0521c;
-  --czjO-5: #fc742e;
-  --czjO-6: #fd813b;
-  --czjO-7: #fda266;
-  --czjO-8: #fec092;
-  --czjO-9: #fedcbd;
-  --czjO-10: #fff4e9;
+    --czjO-1: #4d0f00;
+    --czjO-2: #781f04;
+    --czjO-3: #a4360e;
+    --czjO-4: #d0521c;
+    --czjO-5: #fc742e;
+    --czjO-6: #fd813b;
+    --czjO-7: #fda266;
+    --czjO-8: #fec092;
+    --czjO-9: #fedcbd;
+    --czjO-10: #fff4e9;
 
-  --czjB-1: #00184d;
-  --czjB-2: #062765;
-  --czjB-3: #113a7d;
-  --czjB-4: #205195;
-  --czjB-5: #336bad;
-  --czjB-6: #4780bd;
-  --czjB-7: #6a9ece;
-  --czjB-8: #92bcde;
-  --czjB-9: #bedbef;
-  --czjB-10: #eff9ff;
+    --czjB-1: #00184d;
+    --czjB-2: #062765;
+    --czjB-3: #113a7d;
+    --czjB-4: #205195;
+    --czjB-5: #336bad;
+    --czjB-6: #4780bd;
+    --czjB-7: #6a9ece;
+    --czjB-8: #92bcde;
+    --czjB-9: #bedbef;
+    --czjB-10: #eff9ff;
 
-  --czjR-1: #4d0011;
-  --czjR-2: #75061b;
-  --czjR-3: #9d172a;
-  --czjR-4: #c62e41;
-  --czjR-5: #ee4d5a;
-  --czjR-6: #f1646b;
-  --czjR-7: #f58587;
-  --czjR-8: #f8a8a7;
-  --czjR-9: #fccdcb;
-  --czjR-10: #fff0ee;
+    --czjR-1: #4d0011;
+    --czjR-2: #75061b;
+    --czjR-3: #9d172a;
+    --czjR-4: #c62e41;
+    --czjR-5: #ee4d5a;
+    --czjR-6: #f1646b;
+    --czjR-7: #f58587;
+    --czjR-8: #f8a8a7;
+    --czjR-9: #fccdcb;
+    --czjR-10: #fff0ee;
 
-  --gray-10: #f7f8fa;
-  --gray-9: #f2f3f5;
-  --gray-8: #e5e6eb;
-  --gray-7: #c9cdd4;
-  --gray-6: #a9aeb8;
-  --gray-5: #86909c;
-  --gray-4: #6b7785;
-  --gray-3: #4e5969;
-  --gray-2: #272e3b;
-  --gray-1: #1d2129;
+    --gray-10: #f7f8fa;
+    --gray-9: #f2f3f5;
+    --gray-8: #e5e6eb;
+    --gray-7: #c9cdd4;
+    --gray-6: #a9aeb8;
+    --gray-5: #86909c;
+    --gray-4: #6b7785;
+    --gray-3: #4e5969;
+    --gray-2: #272e3b;
+    --gray-1: #1d2129;
+
+    --text-1: rgba(255, 255, 255, 0.9); /* 强调/正文标题 */
+    --text-2: rgba(255, 255, 255, 0.7); /* 次强调/正文标题 */
+    --text-3: rgba(255, 255, 255, 0.5); /* 次要信息 */
+    --text-4: rgba(255, 255, 255, 0.3); /* 置灰信息 */
+    --text-white: rgba(255, 255, 255, 0.9); /* 白色 */
+
+
+    --bg-1: #17171A; /*整体背景色*/
+    --bg-2: #232324; /*一级容器背景*/
+    --bg-3: #2A2A2B; /*二级容器背景*/
+    --bg-4: #313132; /*三级容器背景*/
+    --bg-5: #373739; /*下拉弹出框、Tooltip 背景颜色*/
+    --bg-white: #ffffff; /*白色背景*/
+
+    --fill-white: #F6F6F6; /*纯白填充*/
+    --fill-1: rgba(255, 255, 255, 0.04); /* 浅/禁用 */
+    --fill-2: rgba(255, 255, 255, 0.08); /* 常规/白底悬浮 */
+    --fill-3: rgba(255, 255, 255, 0.12); /* 深/灰底悬浮 */
+    --fill-4: rgba(255, 255, 255, 0.16); /* 重/特殊场景 */
+
+    --shadow-i-c: inset 0 0 5px rgba(255, 255, 255, 0.2); /* 浅色阴影 */
+
 }
 
 body::selection {
-  background-color: transparent;
+    background-color:  var(--bg-1);
 }
 
 html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100dvh;
-  overflow: hidden; /* 防止用户滚动 */
-  scrollbar-width: thin; /* 设置滚动条宽度为thin */
-  scrollbar-color: transparent transparent; /* 设置滚动条颜色为透明 */
+    background-color: var(--bg-1);
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden; /* 防止用户滚动 */
+    scrollbar-width: thin; /* 设置滚动条宽度为thin */
+    scrollbar-color: transparent transparent; /* 设置滚动条颜色为透明 */
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 /* 针对Webkit内核浏览器（Chrome、Safari）的滚动条样式设置 */
 ::-webkit-scrollbar {
-  width: 0.1em; /* 设置滚动条宽度为0.1em */
-  background-color: transparent; /* 设置滚动条背景颜色为透明 */
+    width: 0.1em; /* 设置滚动条宽度为0.1em */
+    background-color: transparent; /* 设置滚动条背景颜色为透明 */
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: transparent; /* 设置滚动条拖动块的颜色为透明 */
+    background-color: transparent; /* 设置滚动条拖动块的颜色为透明 */
 }

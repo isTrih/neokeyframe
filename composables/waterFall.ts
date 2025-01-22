@@ -4,8 +4,9 @@
  */
 function calculateWaterFallCols() {
     // 1.获取主容器的宽度
-    const content = document.getElementById('waterfall-container') as HTMLElement
-    const contentWidth = content.offsetWidth
+    const {ContainerWidth} = storeToRefs(useConfigStore())
+    // const content = document.getElementById('waterfall-container') as HTMLElement
+    const contentWidth = ContainerWidth.value
     if (Math.floor(contentWidth / (260)) < 2) {
         return 2
     } else return Math.floor(contentWidth / (260))

@@ -23,7 +23,7 @@ onUnmounted(() => {
 <template>
   <div class="flex flex-col h-100dvh">
     <n-modal-provider>
-      <div class="mt-4 mb-2 h-34px">
+      <div class="pt-4 pb-2 h-34px">
         <layout-header/>
       </div>
 
@@ -31,11 +31,11 @@ onUnmounted(() => {
         <n-flex vertical class="h-full" :size="0">
           <n-grid class="h-full" :cols="14" item-responsive>
             <n-gi span="0 600:4 700:3 1000:2">
-              <div class="h-full ml-4">
+              <div class="h-full pl-4 pr-2">
                 <layout-side-nav/>
               </div>
             </n-gi>
-            <n-gi ref="gridRef" class="mx-2" span="14 600:10 700:11 1000:12">
+            <n-gi ref="gridRef" class="mb-2 px-2 mx-2 bg-[--bg-2] shadow-[--shadow-i-c] rounded-2xl" span="14 600:10 700:11 1000:12">
               <!--            <Suspense>-->
               <client-only>
                 <slot/>
@@ -43,7 +43,7 @@ onUnmounted(() => {
               <!--            </Suspense>-->
             </n-gi>
           </n-grid>
-          <div v-show="isSmall" class="h-7dvh bg-amber">
+          <div v-show="isSmall" class="h-6dvh">
             <layout-bottom/>
           </div>
         </n-flex>

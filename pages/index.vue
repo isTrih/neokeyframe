@@ -79,7 +79,7 @@ const {WaterFallHeight} = storeToRefs(useConfigStore())
 </script>
 
 <template>
-  <div id="waterfall-container" ref="gridRef" class="h-full w-full">
+  <div id="waterfall-container" ref="gridRef" class="h-full w-full ">
     <div v-if="cards.length===0" id="waterfall-container" class="h-full w-full flex flex-col justify-center align-center">
       <n-empty description="正在加载中...">
         <template #icon>
@@ -91,8 +91,8 @@ const {WaterFallHeight} = storeToRefs(useConfigStore())
     <div v-else id="waterfall-container" class="h-full w-full flex flex-col justify-center">
       <n-spin :show="isload">
 
-        <n-infinite-scroll :style="{height: WaterFallHeight+'px'}" :distance="100" @load="load">
-          <FeedCards ref="homeCardRef" :card-columns="card_columns" @show-detail="showDetail"/>
+        <n-infinite-scroll class="rounded-2xl" :style="{height: WaterFallHeight+'px'}" :distance="100" @load="load">
+          <FeedCards ref="homeCardRef" class="rounded-2xl" :card-columns="card_columns" @show-detail="showDetail"/>
 
           <!--      <div v-for="i in count" :key="i" class="item">-->
           <!--        {{ i }}-->

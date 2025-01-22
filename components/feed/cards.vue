@@ -233,7 +233,7 @@ section {
 }
 
 .card {
-  border-radius: 0.8rem;
+  border-radius: 1rem;
   background-color: transparent;
   transition: all 0.4s ease;
 
