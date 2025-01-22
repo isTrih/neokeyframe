@@ -72,7 +72,7 @@ const darkThemeOverrides: GlobalThemeOverrides = {
     errorColorSuppl: '#EE4D5A'
   }
 };
-const {ColorMode} = storeToRefs(useConfigStore());
+const {ColorMode, CurrentColor} = storeToRefs(useConfigStore());
 const colorMode = useColorMode();
 
 function InitTheme() {
@@ -80,11 +80,13 @@ function InitTheme() {
     switch (colorMode.value) {
       case 'light':
         theme.value = null;
+        CurrentColor.value = 'light';
         document.documentElement.classList.remove('dark');
         document.documentElement.classList.add('light');
         break;
       case 'dark':
         theme.value = darkTheme;
+        CurrentColor.value = 'dark';
         document.documentElement.classList.add('dark');
         document.documentElement.classList.remove('light');
 
@@ -92,11 +94,12 @@ function InitTheme() {
     }
   } else if (ColorMode.value === 1) {
     theme.value = null;
+    CurrentColor.value = 'light';
     document.documentElement.classList.add('light');
-
     document.documentElement.classList.remove('dark');
   } else {
     theme.value = darkTheme;
+    CurrentColor.value = 'dark';
     document.documentElement.classList.add('dark');
     document.documentElement.classList.remove('light');
   }

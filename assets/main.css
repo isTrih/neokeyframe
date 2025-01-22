@@ -119,6 +119,8 @@ html {
     --shadow-3-rt: 8px -8px 20px rgba(0, 0, 0, 0.1);
     --shadow-3-rb: 8px 8px 20px rgba(0, 0, 0, 0.1);
     --czj-showLight: none;
+    --v-1: #232324; /*亮时黑色*/
+
 }
 
 html.dark {
@@ -210,7 +212,7 @@ html.dark {
     --fill-4: rgba(255, 255, 255, 0.16); /* 重/特殊场景 */
 
     --shadow-i-c: inset 0 0 5px rgba(255, 255, 255, 0.2); /* 浅色阴影 */
-
+    --v-1: #ffffff; /*深时白色*/
 }
 
 body::selection {
