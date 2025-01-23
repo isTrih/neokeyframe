@@ -13,12 +13,16 @@ const useUser = useUserStore();
 const {UserInfo, IsLogin} = storeToRefs(useUser);
 
 function handleClick(menu: string) {
+  console.log(menu);
   if (menu === 'home') {
     CurrentMenu.value = 'home';
     navigateTo('/');
     return;
   } else if (menu === 'user') {
-    if (!IsLogin) return;
+    if (!IsLogin.value) {
+      showLogin()
+      return;
+    }
     CurrentMenu.value = 'user';
     navigateTo({name: 'user-uid', params: {uid: UserInfo.value.user_id}});
     return;
@@ -33,8 +37,9 @@ const avatar = computed(() => {
   }
   return ''
 })
+
 // endregion
-const showLogin = function () {
+function showLogin() {
   const m = modal.create({
     class: 'border-rd-xl w-90dvw',
     preset: 'card',
@@ -89,7 +94,7 @@ onMounted(() => {
       <n-icon
           v-show="!IsLogin" size="3dvh"
           :class="['icon', CurrentMenu=='user'?'color-[--czjB-7]':'color-[--text-1]']"
-          @click="showLogin">
+      >
         <div class="w-3dvh h-3dvh font-600 font-sans font-not-italic text-1.4dvh">
           登录
         </div>

@@ -14,16 +14,12 @@ defineProps({
 </script>
 
 <template>
-  <n-flex vertical :size="0" align="center">
-    <div class="number">
-      <n-text class="text-3.5 font-400" depth="2">
-        {{ value }}
-      </n-text>
+  <n-flex vertical size="small" align="center">
+    <div class="number text-3.5 font-400 color-[--text-1] line-height-none">
+      {{ numFormat(value) }}
     </div>
-    <div class="label">
-      <n-text class="text-3.5 font-400" depth="3">
-        {{ name }}
-      </n-text>
+    <div class="label text-2.5 font-400 color-[--text-3] line-height-none">
+      {{ name }}
     </div>
   </n-flex>
 </template>
