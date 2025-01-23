@@ -8,7 +8,7 @@
 </script>
 
 <template>
-  <div class="w-full h-full">
+  <div class="w-full h-full z-9">
     <menu-bottom-menu/>
   </div>
 </template>

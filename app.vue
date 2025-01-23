@@ -24,6 +24,10 @@ import {isMobile} from '~/composables/utils.ts';
 const theme = ref<null | typeof darkTheme>(null);
 
 const lightThemeOverrides: GlobalThemeOverrides = {
+  Scrollbar: {
+    width: '0px',
+    borderRadius: 0,
+  },
   common: {
     baseColor: '#FFF',
     primaryColor: '#2764AD',
@@ -49,6 +53,10 @@ const lightThemeOverrides: GlobalThemeOverrides = {
   }
 };
 const darkThemeOverrides: GlobalThemeOverrides = {
+  Scrollbar: {
+    width: '0px',
+    borderRadius: 0,
+  },
   common: {
     primaryColor: '#4780BD',
     primaryColorHover: '#336BAD',

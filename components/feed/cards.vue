@@ -36,7 +36,6 @@ function numFormat(num: number) {
   } else {
     return num;
   }
-
 }
 
 const emit = defineEmits(['show-detail'])

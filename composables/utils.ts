@@ -63,6 +63,11 @@ function debounce(func: Function, wait = 500, immediate = false) {
     };
 }
 
+
+/**
+ * 移动端判断
+ * @return {boolean} 判断是否为移动端
+ */
 function isMobile(): boolean {
     const userAgent = navigator.userAgent
 
@@ -70,8 +75,25 @@ function isMobile(): boolean {
     const mobileRegex = /(Android |iPhone |iPad |iPod |BlackBerry |WindowsPhone |IEMobile |OperaMini)/i;
     return mobileRegex.test(userAgent);
 }
+
+/**
+ * 关注、粉丝数量格式化
+ *
+ * @param {number} num 原始数据
+ * @return {string} 格式化数据
+ */
+const numFormat = (num: number): string => {
+    if (num > 10000) {
+        // 将 num 除以 10000 并保留一位小数
+        const formattedNum = (num / 10000).toFixed(1);
+        return `${formattedNum}万`;
+    }
+    return num.toString();
+};
+
 export {
     throttle,
+    numFormat,
     debounce,
     isMobile,
 };
