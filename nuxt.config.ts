@@ -53,7 +53,6 @@ export default defineNuxtConfig({
 	modules: [
 		"@unocss/nuxt",
 		"nuxtjs-naive-ui",
-		"@nuxt/eslint",
 		"@pinia/nuxt",
 		"pinia-plugin-persistedstate",
 		"@vueuse/nuxt",
