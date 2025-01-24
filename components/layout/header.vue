@@ -431,7 +431,7 @@ function renderCertification() {
             </template>
           </n-input>
           <n-flex size="large">
-            <n-dropdown trigger="hover" class="w-64 rounded-3xl" :options="singleFriend">
+            <n-dropdown id="flink" trigger="hover" class="w-64 rounded-3xl" :options="singleFriend">
               <n-button class="color-[--text-3]" size="large" text quaternary>
                 友情链接
               </n-button>
@@ -465,7 +465,7 @@ function renderCertification() {
                 </n-icon>
               </template>
             </n-button>
-            <n-dropdown trigger="click" class="w-58 rounded-3xl" :options="currentMore">
+            <n-dropdown id="menu" trigger="click" class="w-58 rounded-3xl" :options="currentMore">
               <n-button circle quaternary>
                 <template #icon>
                   <n-icon>
