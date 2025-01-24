@@ -6,9 +6,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <feed-detail :fid="Number(fid)" :single="true"/>
-
+  <div class="h-full">
+      <feed-detail :fid="Number(fid)" :single="true"/>
   </div>
 </template>
 

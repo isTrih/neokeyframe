@@ -24,7 +24,7 @@ const richTextConfig = ref({
 // 定义组件方法
 const emit = defineEmits(['closeDetail']);
 //
-const {IsSmall} = storeToRefs(useConfigStore())
+const {IsSmall,WaterFallHeight} = storeToRefs(useConfigStore())
 
 function singleClick() {
   if (props.single) {
@@ -66,32 +66,33 @@ function singleClick() {
         这是文字
       </n-gi>
     </n-grid>
-
-    <n-flex v-if="IsSmall" vertical>
-      <n-flex class="w-full" align="center" justify="space-between">
-        <n-button class="op-80 hover-op-100" height="30" @click="singleClick">
-          <n-icon>
-            <Close/>
-          </n-icon>
-        </n-button>
-      </n-flex>
-      <div>
-        详情部分
-        <div v-rich-text-render="richTextConfig">
-          这是一个使用变量的，当前id为{{ fid }}
-          [!bp aid="{{ fid }}"!]
-          <br>
-          这是使用av号的
-          [!bp aid=1155780864!]
-          <br>
-          这是使用bv号的
-          [!bp bvid=BV1Bz421Y7Zc!]
+    <n-scrollbar :style="{maxHeight: WaterFallHeight+'px'}">
+      <n-flex v-if="IsSmall" vertical>
+        <n-flex class="w-full" align="center" justify="space-between">
+          <n-button class="op-80 hover-op-100" height="30" @click="singleClick">
+            <n-icon>
+              <Close/>
+            </n-icon>
+          </n-button>
+        </n-flex>
+        <div>
+          详情部分
+          <div v-rich-text-render="richTextConfig">
+            这是一个使用变量的，当前id为{{ fid }}
+            [!bp aid="{{ fid }}"!]
+            <br>
+            这是使用av号的
+            [!bp aid=1155780864!]
+            <br>
+            这是使用bv号的
+            [!bp bvid=BV1Bz421Y7Zc!]
+          </div>
         </div>
-      </div>
-      <div>
-        评论部分
-      </div>
-    </n-flex>
+        <div>
+          评论部分
+        </div>
+      </n-flex>
+    </n-scrollbar>
   </div>
 </template>
 
