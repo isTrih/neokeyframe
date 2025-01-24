@@ -432,11 +432,11 @@ function renderCertification() {
           </n-input>
           <n-flex size="large">
             <n-dropdown id="flink" trigger="hover" class="w-64 rounded-3xl" :options="singleFriend">
-              <n-button class="color-[--text-3]" size="large" text quaternary>
+              <n-button class="color-[--text-3]" size="large" text>
                 友情链接
               </n-button>
             </n-dropdown>
-            <n-button class="color-[--text-3]" size="large" text quaternary>
+            <n-button class="color-[--text-3]" size="large" text>
               商务合作
             </n-button>
           </n-flex>
