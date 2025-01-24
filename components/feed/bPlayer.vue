@@ -1,30 +1,30 @@
 <script setup lang="ts">
 defineProps({
-  bvid: {
-    type: String,
-    default: '',
-  },
-  aid: {
-    type: String,
-    default: '',
-  },
-  page: {
-    type: String,
-    default: "1",
-  },
-  as_wide: {
-    type: String,
-    default: "1",
-  },
-  high_quality: {
-    type: String,
-    default: "1",
-  },
-  danmaku: {
-    type: String,
-    default: "1",
-  },
-})
+	bvid: {
+		type: String,
+		default: "",
+	},
+	aid: {
+		type: String,
+		default: "",
+	},
+	page: {
+		type: String,
+		default: "1",
+	},
+	as_wide: {
+		type: String,
+		default: "1",
+	},
+	high_quality: {
+		type: String,
+		default: "1",
+	},
+	danmaku: {
+		type: String,
+		default: "1",
+	},
+});
 </script>
 
 <template>
