@@ -7,6 +7,7 @@
     <n-message-provider>
       <div @contextmenu.prevent>
         <NuxtLayout>
+
           <NuxtLoadingIndicator/>
           <NuxtPage/>
         </NuxtLayout>

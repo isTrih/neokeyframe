@@ -21,6 +21,18 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col h-100dvh">
+    <n-watermark
+        content="开发版本，注册无效"
+        cross
+        fullscreen
+        :font-size="16"
+        :line-height="16"
+        :width="384"
+        :height="384"
+        :x-offset="12"
+        :y-offset="60"
+        :rotate="-15"
+    />
     <n-modal-provider>
       <div class="pt-4 pb-2 h-34px">
         <layout-header/>
