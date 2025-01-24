@@ -30,7 +30,7 @@ const checkUser = () => {
 }
 
 // {
-//   "user_id": 10,
+//     "user_id": 10,
 //     "user_name": "三氢超正经",
 //     "avatar": "https://coss.chaozj.com/avatar/test_1.jpg&#34;,
 //     "type": 3,
@@ -43,7 +43,7 @@ const checkUser = () => {
 //     "ip_location": "中国|0|江苏省|0|移动"
 // }
 
-const isSmall = computed(() => {
+const containerIsSmall = computed(() => {
   return ContainerWidth.value < 760;
 })
 const isVerti = computed(() => {
@@ -130,16 +130,16 @@ onMounted(async () => {
             <n-avatar
                 round
                 :src="CurrentUser.avatar"
-                :class="['relative z-0', isSmall ? 'w-16 h-16' : 'w-28 h-28']"
+                :class="['relative z-0', containerIsSmall ? 'w-16 h-16' : 'w-28 h-28']"
             />
-            <!--            <div :class="['rounded-full border-2 z-10 bg-[&#45;&#45;bg-2]', isSmall ? 'ml-[-1.2rem] mb-[-0.0rem] w-6 h-6' : 'ml-[-1.4rem] mb-[-0.2rem]']"/>-->
+            <!--            <div :class="['rounded-full border-2 z-10 bg-[&#45;&#45;bg-2]', containerIsSmall ? 'ml-[-1.2rem] mb-[-0.0rem] w-6 h-6' : 'ml-[-1.4rem] mb-[-0.2rem]']"/>-->
             <!-- 认证图标 -->
             <icons-verti
                 v-if="isVerti&&!isDark"
-                :class="['rounded-full border-2 z-10 bg-[--bg-2]',VertiColor, isSmall ? 'ml-[-1.2rem] mb-[-0.2rem] w-6 h-6' : 'ml-[-2.2rem] mb-[-0.2rem] w-12 h-12']"/>
+                :class="['rounded-full border-2 z-10 bg-[--bg-2]',VertiColor, containerIsSmall ? 'ml-[-1.2rem] mb-[-0.2rem] w-6 h-6' : 'ml-[-2.2rem] mb-[-0.2rem] w-12 h-12']"/>
             <icons-verti-d
                 v-if="isVerti&&isDark"
-                :class="['rounded-full border-2 z-10 bg-[--bg-2]',VertiColor, isSmall ? 'ml-[-1.2rem] mb-[-0.2rem] w-6 h-6' : 'ml-[-2.2rem] mb-[-0.2rem] w-12 h-12']"/>
+                :class="['rounded-full border-2 z-10 bg-[--bg-2]',VertiColor, containerIsSmall ? 'ml-[-1.2rem] mb-[-0.2rem] w-6 h-6' : 'ml-[-2.2rem] mb-[-0.2rem] w-12 h-12']"/>
           </div>
         </n-gi>
         <n-gi offset="1" span="12">
@@ -163,12 +163,12 @@ onMounted(async () => {
                 关键帧号：{{ CurrentUser.user_id }}丨IP属地：{{ ipLocationFormat(CurrentUser.ip_location) }}
               </n-text>
             </n-flex>
-            <div v-show="!isSmall" class="mt-1">
+            <div v-show="!containerIsSmall" class="mt-1">
               <n-text class="text-4 font-400 whitespace-normal" style="white-space: pre-wrap;" depth="2">
                 {{ signatureFormat(CurrentUser.signature) }}
               </n-text>
             </div>
-            <div v-show="!isSmall" class="mt-1 content-center">
+            <div v-show="!containerIsSmall" class="mt-1 content-center">
               <n-text class="text-4 mr-0.5" depth="3" code>
                 {{ numFormat(CurrentUser.follow_count) }}
               </n-text>
@@ -193,11 +193,11 @@ onMounted(async () => {
           </div>
         </n-gi>
         <n-gi offset="0 760:1" class="content-center" span="20 760:4">
-          <n-flex vertical class="mt-2 mx-6" :size="0">
-            <div v-show="isSmall" class="rounded-1.8 w-full bg-[--fill-1] px-2">
+          <n-flex vertical class="mt-2 px-6" :size="0">
+            <div v-show="containerIsSmall" class="rounded-1.8 w-full bg-[--fill-1] px-2">
 
               <n-ellipsis
-                  class="rounded-1.8 pt-1 pb-0.5 w-full" :line-clamp="showSig"
+                  class="rounded-1.8 pt-1 pb-0.5 mb-0 w-full" :line-clamp="showSig"
                   :tooltip="false" style="white-space: pre-wrap;">
                 <n-text class=" text-3.5 font-400 sig" depth="2">
                   {{ signatureFormat(CurrentUser.signature) }}
@@ -205,13 +205,13 @@ onMounted(async () => {
               </n-ellipsis>
 
               <div
-                  class="mr-3 bt-1rem pt-0 mt-0 float-right w-1.5rem text-2.8 cursor-pointer color-[--czjB-5] hover-color[--czjB-7]"
+                  class="mr-3 bt-1rem pt-0 mt-0 float-left w-1.5rem text-2.8 cursor-pointer color-[--czjB-5] hover-color[--czjB-7]"
                   @click="changeSig">{{isFullSignature===true? '收起':'详情'}}
               </div>
 
             </div>
             <n-flex class="w-full mt-2" justify="space-between" align="center">
-              <n-flex v-if="isSmall" align="center" :size="0">
+              <n-flex v-if="containerIsSmall" align="center" :size="0">
                 <my-user-count name="关注" :value="CurrentUser.follow_count"/>
                 <n-divider vertical/>
                 <my-user-count name="粉丝" :value="CurrentUser.fans_count"/>

@@ -35,10 +35,24 @@
         >
 
           <n-spin class="w-full content-center" :show="isload">
+            <div v-if="showLogic" :style="{height: userContainerHeight+'px'}"
+                 class="w-full flex flex-col justify-center">
+              <client-only>
+                <n-empty size="huge" description="只能看自己的哦">
+                  <template #icon>
+                    <n-icon>
+                      <IosEyeOff/>
+                    </n-icon>
+                  </template>
+                </n-empty>
+              </client-only>
+            </div>
             <n-infinite-scroll
+                v-else
                 class="rounded-2xl w-full content-center" :style="{height: userContainerHeight+'px'}"
-                :distance="0" @load="load">
-              <FeedCards ref="homeCardRef" class="rounded-2xl" :card-columns="card_columns" @show-detail="showDetail"/>
+                :distance="100" @load="load">
+              <LazyFeedCards ref="homeCardRef" class="rounded-2xl" :card-columns="card_columns"
+                             @show-detail="showDetail"/>
 
               <!--      <div v-for="i in count" :key="i" class="item">-->
               <!--        {{ i }}-->
@@ -47,10 +61,10 @@
                 加载中...
               </div>
               <div v-if="disabled" class="flex justify-center align-center">
-                已经到底啦！ 🤪
+                没有更多喽！
               </div>
-              <div v-if="disabled" class="text"/>
             </n-infinite-scroll>
+
           </n-spin>
 
         </div>
@@ -60,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, computed, onMounted, onUnmounted, watch} from 'vue';
+import {IosEyeOff} from '@vicons/ionicons4';
 import {GetUserFeeds} from '~/apis/feed.ts';
 import type {Card} from '~/types/feed.ts';
 import {throttle} from '~/composables/utils.ts';
@@ -130,29 +144,34 @@ const debounceDoQuery = throttle(doQuery, 500);
 // 无限滚动
 const load = async () => {
   if (disabled.value !== true) {
-    isload.value = true;
-    disabled.value = true;
     switch (activeIndex.value) {
       case 0: {
+        isload.value = true;
+        disabled.value = true;
         const offset = cards0.value.length;
         const res = await GetUserFeeds(offset, props.currentId, activeType.value);
         const more = res.data.feeds;
-        if (more == null) {
+        if (more.length === 0) {
           disabled.value = true;
           isload.value = false;
+          console.log('没有更多了')
         } else {
+          console.log('继续获取')
           cards0.value = [...cards0.value, ...more];
           waterFallMore(arrHeight, card0_columns, more)
           disabled.value = false;
           isload.value = false;
         }
         break;
+
       }
       case 1: {
+        isload.value = true;
+        disabled.value = true;
         const offset = cards1.value.length;
         const res = await GetUserFeeds(offset, props.currentId, activeType.value);
         const more = res.data.feeds;
-        if (more == null) {
+        if (more.length === 0) {
           disabled.value = true;
           isload.value = false;
         } else {
@@ -164,10 +183,12 @@ const load = async () => {
         break;
       }
       case 2: {
+        isload.value = true;
+        disabled.value = true;
         const offset = cards2.value.length;
         const res = await GetUserFeeds(offset, props.currentId, activeType.value);
         const more = res.data.feeds;
-        if (more == null) {
+        if (more.length === 0) {
           disabled.value = true;
           isload.value = false;
         } else {
@@ -188,9 +209,9 @@ const load = async () => {
 // 主页卡片结束////////////////////////////////////////////////////////////////
 
 // 检查是否是自己
-const checkUser = () => {
-  return props.currentId === Number(props.userId);
-}
+const showLogic = computed(() => {
+  return props.currentId !== Number(props.userId) && activeIndex.value !== 0;
+})
 
 const showDetail = () => {
   console.log('点击了详情按钮')
@@ -227,18 +248,20 @@ const handleButtonClick = (index: number) => {
   activeType.value = menuItems[index];
   switch (index) {
     case 0:
-      if(cards0.value.length === 0) {
+      if (cards0.value.length === 0) {
         debounceDoQuery(0, '')
       }
       break;
     case 1:
-      if(cards1.value.length === 0) {
+      if (cards1.value.length === 0 && !showLogic.value) {
         debounceDoQuery(0, '')
-      }      break;
+      }
+      break;
     case 2:
-      if(cards2.value.length === 0) {
+      if (cards2.value.length === 0 && !showLogic.value) {
         debounceDoQuery(0, '')
-      }      break;
+      }
+      break;
     default:
       break;
   }
@@ -262,7 +285,6 @@ onMounted(() => {
   // 获取详情
   console.log(props.currentId);
   debounceDoQuery(0, '')
-  checkUser()
 });
 
 onUnmounted(() => {
@@ -286,9 +308,10 @@ watch(() => activeIndex.value, () => {
 .button-group {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 1.2rem;
   position: relative;
-  padding: 20px;
+  padding-top: 1.2rem;
+  padding-bottom: 0.4rem;
 }
 
 .button-group button {
@@ -303,7 +326,7 @@ watch(() => activeIndex.value, () => {
 
 .hover-rectangle {
   position: absolute;
-  bottom: 20px;
+  bottom: 0.6rem;
   left: 0;
   height: 48%;
   background-color: var(--fill-1);

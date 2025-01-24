@@ -26,8 +26,8 @@ const click = function (index: number) {
               height: '1rem'
             },
             { width: '2.6rem' },
-            { background: ColorMode === 1 ? '#FFF' : '#252525' },
-            { color: ColorMode === 1 ? '#252525' : '#FFF' }
+            { background: `var(--bg-2)`},
+            { color: `var(--text-1)` }
           ]"
         >
           <template #trigger>
@@ -51,8 +51,8 @@ const click = function (index: number) {
               height: '1rem'
             },
             { width: '2.6rem' },
-            { background: ColorMode === 1 ? '#FFF' : '#252525' },
-            { color: ColorMode === 1 ? '#252525' : '#FFF' }
+            { background: `var(--bg-2)`},
+            { color: `var(--text-1)` }
           ]"
         >
           <template #trigger>
@@ -77,8 +77,8 @@ const click = function (index: number) {
               height: '1rem'
             },
             { width: '2.6rem' },
-            { background: ColorMode === 1 ? '#FFF' : '#252525' },
-            { color: ColorMode === 1 ? '#252525' : '#FFF' }
+            { background: `var(--bg-2)`},
+            { color: `var(--text-1)` }
           ]"
         >
           <template #trigger>

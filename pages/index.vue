@@ -67,11 +67,10 @@ const InitMenu = () => {
 }
 onMounted(async () => {
   InitMenu()
-  debounceDoQuery(0,'')
+  debounceDoQuery(0, '')
   // await doQuery(0, '');
   console.log('mounted');
   resizeWaterFall(columns, card_columns, arrHeight, cards)
-
 });
 
 const {WaterFallHeight} = storeToRefs(useConfigStore())
@@ -80,7 +79,9 @@ const {WaterFallHeight} = storeToRefs(useConfigStore())
 
 <template>
   <div id="waterfall-container" ref="gridRef" class="h-full w-full ">
-    <div v-if="cards.length===0" id="waterfall-container" class="h-full w-full flex flex-col justify-center align-center">
+    <div
+        v-if="cards.length===0" id="waterfall-container"
+        class="h-full w-full flex flex-col justify-center align-center">
       <n-empty description="正在加载中...">
         <template #icon>
           <n-spin/>

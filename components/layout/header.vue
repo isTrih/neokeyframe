@@ -7,6 +7,7 @@ import {NuxtLink} from '#components';
 import Button from '~/components/menu/button.vue';
 import Theme from '~/components/menu/theme.vue';
 import Link from '~/components/menu/link.vue';
+import {fLinkThin, fLink} from '~/types/fLink.ts'
 
 // region 用户登陆态
 const useUser = useUserStore();
@@ -209,7 +210,7 @@ const currentMore = computed(() => {
       }
     ];
   } else if (moreIndex.value === 3) {
-    return [
+    const base = [
       {
         type: 'render',
         render: () => {
@@ -228,47 +229,30 @@ const currentMore = computed(() => {
         type: 'divider',
         key: 'd1',
         show: true
-      },
-      {
-        type: 'render',
-        render: () => {
-          return h(Link, {
-            title: 'MacWk-精品mac软件',
-            icon: false,
-            thin: true,
-            url: 'https://macwk.com.cn/'
-          })
-        },
-        show: true
-      },
-      {
-        type: 'render',
-        render: () => {
-          return h(Link, {
-            title: 'Lo研社-Lolita图书馆',
-            icon: false,
-            thin: true,
-            url: 'https://lolitalibrary.com/'
-          })
-        },
-        show: true
-      },
-      {
-        type: 'render',
-        render: () => {
-          return h(Link, {
-            title: '有礼贸-外贸实践平台',
-            icon: false,
-            thin: true,
-            url: '/doc/socialrule'
-          })
-        },
-        show: true
-      }
-    ];
+      },]
+    base.push(...fLinkThin)
+    return base
   }
   return []
 });  // 设置渲染
+const singleFriend = computed(() => {
+  const base = [
+    {
+      type: 'render',
+      render: () => {
+        return h(
+            'div',
+            {
+              style: 'display: flex; align-items: center; padding: 8px 12px;'
+            },
+            [h('div', null, [h('div', {style: 'font-size: 12px;margin-left:1rem'}, [h(NText, {depth: 3}, {default: () => '友情链接'})])])]
+        );
+      },
+      show: true
+    }]
+  base.push(...fLink)
+  return base
+})
 
 /**
  * @description 关于页面的底栏
@@ -437,17 +421,39 @@ function renderCertification() {
 <template>
   <client-only>
     <n-grid :cols="24" item-responsive>
-      <n-gi offset="1" span="0 600:5 780:3" class="flex justify-center">
-        <icons-keyframe class="icon"/>
+      <n-gi span="0 600:24">
+        <n-flex :size="[0,0]" class="px-4" align="center" justify="space-between">
+          <icons-keyframe class="icon"/>
+          <n-input id="search" class="min-w-[40%]" autosize round placeholder="搜索更多内容">
+            <!--          TODO:实现搜索逻辑-->
+            <template #suffix>
+              <n-icon :component="Search"/>
+            </template>
+          </n-input>
+          <n-flex size="large">
+            <n-dropdown trigger="hover" class="w-64 rounded-3xl" :options="singleFriend">
+              <n-button class="color-[--text-3]" size="large" text quaternary>
+                友情链接
+              </n-button>
+            </n-dropdown>
+            <n-button class="color-[--text-3]" size="large" text quaternary>
+              商务合作
+            </n-button>
+          </n-flex>
+        </n-flex>
       </n-gi>
-      <n-gi offset="1 320:1 450:2 " span="0 600:12">
-        <n-input id="search" round placeholder="搜索更多内容">
-          <!--          TODO:实现搜索逻辑-->
-          <template #suffix>
-            <n-icon :component="Search"/>
-          </template>
-        </n-input>
-      </n-gi>
+      <!--      <n-gi offset="1" span="0 600:5 780:3" class="flex justify-center">-->
+      <!--        <icons-keyframe class="icon"/>-->
+      <!--      </n-gi>-->
+      <!--      <n-gi offset="1 320:1 450:2 " span="0 600:12">-->
+      <!--        <n-input id="search" round placeholder="搜索更多内容">-->
+      <!--          &lt;!&ndash;          TODO:实现搜索逻辑&ndash;&gt;-->
+      <!--          <template #suffix>-->
+      <!--            <n-icon :component="Search"/>-->
+      <!--          </template>-->
+      <!--        </n-input>-->
+      <!--      </n-gi>-->
+      <!--      <n-gi offset="1" span="4 "/>-->
       <n-gi span="24 600:0">
         <n-flex class="w-full" justify="space-between">
           <icons-keyframe class="icon ml-4"/>
