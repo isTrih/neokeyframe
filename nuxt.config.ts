@@ -12,11 +12,18 @@ export default defineNuxtConfig({
             baseUrl: 'https://api.checkpoint321.com/v1'
         }
     },
+    //定义插件
+    plugins: [
+        {src: '~/plugins/rich-text.ts', mode: 'client'},
+    ]
+    ,
     build: {
         transpile: ['vueuc'],
         analyze: false
     },
     nitro: {
+        routeRules: {
+        },
         compressPublicAssets: true // 启动压缩
     },
     // ssr: true,

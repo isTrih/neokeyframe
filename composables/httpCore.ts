@@ -60,11 +60,11 @@ function createDollarFetchRequest(method: HttpMethod) {
         const baseURL = useRuntimeConfig().public.baseUrl as string
         const fullPath = `${baseURL}${url}`;
 
-        const requestUrl = new URL(fullPath).toString();
+        // const requestUrl = new URL(fullPath).toString();
 
         try {
             handleRequest(options);
-            const response = await $fetch(requestUrl, {
+            const response = await $fetch(fullPath, {
                 method,
                 body: data,
                 ...options,

@@ -1,16 +1,15 @@
 <script setup lang="ts">
 
 const gridRef = ref(null);
-const isSmall = ref(false)
 
-const {WaterFallHeight, ContainerWidth} = storeToRefs(useConfigStore())
+const {WaterFallHeight, ContainerWidth,IsSmall} = storeToRefs(useConfigStore())
 const {stop} = useResizeObserver(gridRef, debounce((entries: ResizeObserverEntry[]) => {
   for (const entry of entries) {
     const {height, width} = entry.contentRect;
     ContainerWidth.value = width
     WaterFallHeight.value = height - 20
     console.log('当前容器高度', WaterFallHeight.value, '容器宽度度', width);
-    isSmall.value = window.innerWidth < 600;
+    IsSmall.value = window.innerWidth < 600;
   }
 },30));
 onMounted(() => {
@@ -43,7 +42,7 @@ onUnmounted(() => {
               <!--            </Suspense>-->
             </n-gi>
           </n-grid>
-          <div v-show="isSmall" class="h-6dvh">
+          <div v-show="IsSmall" class="h-6dvh">
             <layout-bottom/>
           </div>
         </n-flex>
