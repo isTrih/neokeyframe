@@ -1,83 +1,82 @@
 <script setup lang="ts">
 //获取查询参数
-import {GetFeeds} from '~/apis/feed.ts';
-import type {Card} from '~/types/feed.ts';
-import {throttle} from '~/composables/utils.ts';
-// import {useRequest} from 'pro-naive-ui'
-const query = useRoute().query.query
-onMounted(() => {
-  console.log(query)
-  console.log(GetFeeds(0, ''))
+import {GetFeeds} from '~/apis/feed.ts'
+import type {Card} from '~/types/feed.ts'
+
+const query = computed(() => {
+	const { query } = useRoute()
+	return query.q ? query.q : ''
 })
 
-const showDetail = () => {
-  console.log('点击了卡片')
-}
+const cards = ref<Card[]>([])
+const disabled = ref(true) // 初始禁用滚动加载
 
-// 主页卡片 //////////////////////////////////////////////////////////////////
-// const cards = ref([]);
-const cards = ref<Card[]>([]);
-const disabled = ref(true); // 初始禁用滚动加载
-
-const isload = ref(true);// 初始加载中
+const isload = ref(true) // 初始加载中
 
 const columns = ref(0)
 const card_columns = ref({})
 const arrHeight = ref([])
 
-// 主页获取帖子
-const doQuery = async (offset: number, query: string) => {
-  const res = await GetFeeds(offset, query);
-  console.log(res)
-  cards.value = res.data.feeds;
-  waterFallInit(columns, card_columns, arrHeight, cards)
-  isload.value = false;// 加载完成
-  disabled.value = false; // 启用滚动加载
-};
-const debounceDoQuery = throttle(doQuery, 500);
+onMounted(async () => {
+	InitMenu()
+
+
+  GetFeeds(0, query.value as string).then(res=>{
+    console.log('data', res)
+    cards.value = res.feeds
+    waterFallInit(columns, card_columns, arrHeight, cards)
+
+    isload.value = false // 加载完成
+    disabled.value = false // 启用滚动加载
+    resizeWaterFall(columns, card_columns, arrHeight, cards)
+  })
+})
+
+const showDetail = () => {
+	console.log('点击了卡片')
+}
+
+// 主页卡片 //////////////////////////////////////////////////////////////////
+// const cards = ref([]);
+
 // 无限滚动
 const load = async () => {
-  if (disabled.value !== true) {
-    isload.value = true;
-    disabled.value = true;
-    const offset = cards.value.length;
-    let res
-    if (query == null) {
-      res = await GetFeeds(offset, '');
-    } else {
-      res = await GetFeeds(offset, query as string);
-    }
-    const more = res.data.feeds;
-    if (more == null) {
-      disabled.value = true;
-      isload.value = false;
-    } else {
-      cards.value = [...cards.value, ...more];
-      waterFallMore(arrHeight, card_columns, more)
-      disabled.value = false;
-      isload.value = false;
-    }
-  }
-};
+	if (disabled.value !== true) {
+		isload.value = true
+		disabled.value = true
+		const offset = cards.value.length
+		const res = await GetFeeds(
+			offset,
+			query.value as string
+		)
+    console.log('load:res', res)
+		const more = res.feeds
+		if (more == null) {
+			disabled.value = true
+			isload.value = false
+		} else {
+			cards.value = [...cards.value, ...more]
+			waterFallMore(arrHeight, card_columns, more)
+			disabled.value = false
+			isload.value = false
+		}
+	}
+}
 
 // 主页卡片结束////////////////////////////////////////////////////////////////
 const InitMenu = () => {
-  const {CurrentMenu} = storeToRefs(useConfigStore());
-  CurrentMenu.value = 'home';
+	//store客户端
+	const { CurrentMenu } = storeToRefs(useConfigStore())
+	CurrentMenu.value = 'home'
 }
-onMounted(async () => {
-  InitMenu()
-  debounceDoQuery(0, '')
-  // await doQuery(0, '');
-  console.log('mounted');
-  resizeWaterFall(columns, card_columns, arrHeight, cards)
-});
 
-const {WaterFallHeight} = storeToRefs(useConfigStore())
-
+const { WaterFallHeight } = storeToRefs(useConfigStore())
 </script>
 
 <template>
+  <div>
+  </div>
+  <client-only>
   <div id="waterfall-container" ref="gridRef" class="h-full w-full ">
     <div
         v-if="cards.length===0" id="waterfall-container"
@@ -87,17 +86,11 @@ const {WaterFallHeight} = storeToRefs(useConfigStore())
           <n-spin/>
         </template>
       </n-empty>
-
     </div>
     <div v-else id="waterfall-container" class="h-full w-full flex flex-col justify-center">
       <n-spin :show="isload">
-
         <n-infinite-scroll class="rounded-2xl" :style="{height: WaterFallHeight+'px'}" :distance="100" @load="load">
           <FeedCards ref="homeCardRef" class="rounded-2xl" :card-columns="card_columns" @show-detail="showDetail"/>
-
-          <!--      <div v-for="i in count" :key="i" class="item">-->
-          <!--        {{ i }}-->
-          <!--      </div>-->
           <div v-if="isload" class="flex justify-center align-center">
             加载中...
           </div>
@@ -109,9 +102,8 @@ const {WaterFallHeight} = storeToRefs(useConfigStore())
       </n-spin>
 
     </div>
-
-
   </div>
+  </client-only>
 </template>
 
 <style scoped></style>

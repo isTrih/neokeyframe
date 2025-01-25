@@ -1,99 +1,91 @@
 <script setup lang="ts">
-import {IosHeartEmpty} from '@vicons/ionicons4';
-import type {Card} from "~/types/feed";
-import {h} from 'vue';
-import {FeedDetail} from '#components';
-import {useModal} from 'naive-ui';
+import {IosHeartEmpty} from '@vicons/ionicons4'
+import type {Card} from '~/types/feed'
+import {h} from 'vue'
+import {FeedDetail} from '#components'
+import {useModal} from 'naive-ui'
 // 监听容器宽度
-const {ContainerWidth, IsSmall} = storeToRefs(useConfigStore());
+const { ContainerWidth, IsSmall } = storeToRefs(
+	useConfigStore()
+)
 // 设置组件传参
 const props = defineProps({
-  cardColumns: {
-    type: Object,
-    default: () => {
-    }
-  }
-});
+	cardColumns: {
+		type: Object,
+		default: () => {}
+	}
+})
 
 // 获取瀑布流列数
 const len = computed(() => {
-  return Object.keys(props.cardColumns).length;
-});
+	return Object.keys(props.cardColumns).length
+})
 
 // 数字模糊转换
 function numFormat(num: number) {
-  if (10 < num && num <= 100) {
-    return '10+';
-  } else if (1000 >= num && num > 100) {
-    return '100+';
-  } else if (10000 >= num && num > 1000) {
-    return '1千+';
-  } else if (50000 >= num && num > 10000) {
-    return '1万+';
-  } else if (100000 >= num && num > 50000) {
-    return '5万+';
-  } else if (num > 100000) {
-    return '10万+';
-  } else if (num <= 10) {
-    return num.toString();
-  } else {
-    return num;
-  }
+	if (50000 >= num && num > 10000) {
+		return '1万+'
+	}
+	if (100000 >= num && num > 50000) {
+		return '5万+'
+	}
+	if (num > 100000) {
+		return '10万+'
+	}
+	return num.toString()
 }
 
-const modal = useModal();
+const modal = useModal()
 
 const showDetails = (id: number) => {
-  console.log(id);
-  const m = modal.create({
-    class: IsSmall.value ? 'w-100dvw h-100dvh' : 'rounded-xl w-80dvw h-80dvh',
-    preset: 'card',
-    closable: false,
-    content: () => h(FeedDetail, {
-      class: 'flex items-center justify-center',
-      fid: id,
-      onCloseDetail: () => {
-        m.destroy()
-      }
-    }, {}),
-  });
+	console.log(id)
+	const m = modal.create({
+		class: IsSmall.value
+			? 'w-100dvw h-100dvh'
+			: 'rounded-xl w-80dvw h-80dvh',
+		preset: 'card',
+		closable: false,
+		content: () =>
+			h(
+				FeedDetail,
+				{
+					class: 'flex items-center justify-center',
+					fid: id,
+					onCloseDetail: () => {
+						m.destroy()
+					}
+				},
+				{}
+			)
+	})
 
-  console.log('点击显示详情按钮');
-};
-
+	console.log('点击显示详情按钮')
+}
 
 onMounted(() => {
-  // 检查图片是否已加载并添加 'loaded' 类
-  Object.values(props.cardColumns).forEach((col: Card[]) => {
-    col.forEach((card: Card) => {
-      if (card.loaded) {
-        const imgElement = document.getElementById(`img-${card.id}`);
-        if (imgElement) {
-          imgElement.classList.add('loaded');
-        }
-      }
-    });
-  });
-});
+	// 检查图片是否已加载并添加 'loaded' 类
+})
 
-onUnmounted(() => {
-});
+onUnmounted(() => {})
 
 // 处理加载状态
 const handleLoad = (card: Card) => {
-  card.loaded = true;
-};
+	card.loaded = true
+}
 
-const heightCaculate = (len: number, height: number, width: number) => {
-  const cardWidth = (ContainerWidth.value / len - 32);
-  const cardHeight = (cardWidth * height / width);
-  const formalH = cardWidth * 148 / 105;
-  if (cardHeight > formalH) {
-    return formalH;
-  } else {
-    return cardHeight;
-  }
-};
+const heightCaculate = (
+	len: number,
+	height: number,
+	width: number
+) => {
+	const cardWidth = ContainerWidth.value / len - 32
+	const cardHeight = (cardWidth * height) / width
+	const formalH = (cardWidth * 148) / 105
+	if (cardHeight > formalH) {
+		return formalH
+	}
+	return cardHeight
+}
 </script>
 
 <template>
@@ -212,7 +204,7 @@ section {
   width: 100%;
   object-fit: cover;
   border: var(--gray-2) 1px solid;
-  transition: all 0.3s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  transition: all 0.4s cubic-bezier(0.19, 0.055, 0.675, 0.55);
   opacity: 1;
 }
 

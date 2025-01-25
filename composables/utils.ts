@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-function-type  */
-
-/* eslint-disable  @typescript-eslint/no-unused-expressions */
 
 /**
  * 节流函数，用于限制函数在指定时间内只能执行一次
@@ -9,7 +5,8 @@
  * @param wait - 节流的时间间隔（毫秒）
  * @returns 返回一个新的节流函数
  */
-function throttle(func: Function, wait: number): Function {
+
+function  throttle(func: Function, wait: number): Function {
     let timeoutId: number | null = null;
     let lastExecutedTime = 0;
 

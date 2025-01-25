@@ -1,37 +1,37 @@
 <script setup lang="ts">
-import {Close} from '@vicons/ionicons5';
-import {FeedBPlayer} from '#components'
+import { Close } from "@vicons/ionicons5";
+import { FeedBPlayer } from "#components";
 // 组件属性
 const props = defineProps({
-  fid: {
-    type: Number,
-    required: true
-  },
-  single: {
-    type: Boolean,
-    default: false
-  }
-})
+	fid: {
+		type: Number,
+		required: true,
+	},
+	single: {
+		type: Boolean,
+		default: false,
+	},
+});
 const richTextConfig = ref({
-  markers: ['bp'],
-  //使用方式是先在markers中添加标记文本
-  //[!xxx param=??!]
-  //再在components中添加文本对应的组件
-  components: {
-    'bp': FeedBPlayer,
-  }
+	markers: ["bp"],
+	//使用方式是先在markers中添加标记文本
+	//[!xxx param=??!]
+	//再在components中添加文本对应的组件
+	components: {
+		bp: FeedBPlayer,
+	},
 });
 // 定义组件方法
-const emit = defineEmits(['closeDetail']);
+const emit = defineEmits(["closeDetail"]);
 //
-const {IsSmall,WaterFallHeight} = storeToRefs(useConfigStore())
+const { IsSmall, WaterFallHeight } = storeToRefs(useConfigStore());
 
 function singleClick() {
-  if (props.single) {
-    navigateTo('/');
-  } else {
-    emit('closeDetail')
-  }
+	if (props.single) {
+		navigateTo("/");
+	} else {
+		emit("closeDetail");
+	}
 }
 </script>
 
