@@ -1,32 +1,33 @@
 <script setup lang="ts">
-import {GetUserInfo} from "~/apis/user";
-import type {User} from "~/types/user";
-import {IosArrowBack} from "@vicons/ionicons4"
-import {numFormat} from '~/composables/utils.ts';
+import {GetUserInfo} from '~/apis/user'
+import type {User} from '~/types/user'
+import {IosArrowBack} from '@vicons/ionicons4'
+import {numFormat} from '~/composables/utils.ts'
 
-const {ContainerWidth, CurrentColor} = storeToRefs(useConfigStore())
-const {UserInfo} = storeToRefs(useUserStore())
+const { ContainerWidth, CurrentColor } = storeToRefs(
+	useConfigStore()
+)
+const { UserInfo } = storeToRefs(useUserStore())
 const userId = useRoute().params.uid
 // 签名格式化
 const signatureFormat = (signature: string) => {
-  if (signature === 'CHAOZJ' || signature === '') {
-    return "这是一只懒惰的小帧，还未设置简介。"
-  } else {
-    return signature;
-  }
-};
+	if (signature === 'CHAOZJ' || signature === '') {
+		return '这是一只懒惰的小帧，还未设置简介。'
+	}
+	return signature
+}
 // 属地格式化
 const ipLocationFormat = (location: string): string => {
-  const parts = location.split('–');
-  if (parts.length >= 3) {
-    // 去除省份名称中的 "省", "特别行政区", "自治区" 等字符
-    return parts[1];
-  }
-  return '未知';
-};
+	const parts = location.split('–')
+	if (parts.length >= 3) {
+		// 去除省份名称中的 "省", "特别行政区", "自治区" 等字符
+		return parts[1]
+	}
+	return '未知'
+}
 // 检查是否是自己
 const checkUser = () => {
-  return UserInfo.value.user_id === Number(userId);
+	return UserInfo.value.user_id === Number(userId)
 }
 
 // {
@@ -44,65 +45,65 @@ const checkUser = () => {
 // }
 
 const containerIsSmall = computed(() => {
-  return ContainerWidth.value < 760;
+	return ContainerWidth.value < 760
 })
 const isVerti = computed(() => {
-  return CurrentUser.value.type > 1
-});
+	return CurrentUser.value.type > 1
+})
 const VertiColor = computed(() => {
-  if (CurrentUser.value.type === 2) {
-    // 个人认证
-    return 'color-[--czjB-6]'
-  }
-  if (CurrentUser.value.type === 3) {
-    return 'color-[--czjY-6]'
-  }
-  if (CurrentUser.value.type > 3) {
-    return 'color-[--v-1]'
-  }
-  return ''
+	if (CurrentUser.value.type === 2) {
+		// 个人认证
+		return 'color-[--czjB-6]'
+	}
+	if (CurrentUser.value.type === 3) {
+		return 'color-[--czjY-6]'
+	}
+	if (CurrentUser.value.type > 3) {
+		return 'color-[--v-1]'
+	}
+	return ''
 })
 const isDark = computed(() => {
-  return CurrentColor.value === 'dark'
+	return CurrentColor.value === 'dark'
 })
 
 const CurrentUser = ref<User>({
-  user_id: 0,
-  user_name: '',
-  avatar: '',
-  type: 0,
-  status: 0,
-  v_note: '',
-  signature: '',
-  feed_count: 0,
-  fans_count: 0,
-  follow_count: 0,
-  ip_location: '',
+	user_id: 0,
+	user_name: '',
+	avatar: '',
+	type: 0,
+	status: 0,
+	v_note: '',
+	signature: '',
+	feed_count: 0,
+	fans_count: 0,
+	follow_count: 0,
+	ip_location: ''
 })
 const router = useRouter()
 // 初始化菜单
 const InitMenu = () => {
-  const {CurrentMenu} = storeToRefs(useConfigStore());
-  CurrentMenu.value = 'user';
+	const { CurrentMenu } = storeToRefs(useConfigStore())
+	CurrentMenu.value = 'user'
 }
 
 const isFullSignature = ref(false)
 
 // 显示签名详情
 const showSig = computed(() => {
-  return isFullSignature.value === true ? 999 : 1
+	return isFullSignature.value === true ? 999 : 1
 })
 const changeSig = () => {
-  isFullSignature.value = !isFullSignature.value
+	isFullSignature.value = !isFullSignature.value
 }
 onMounted(async () => {
-  const res = await GetUserInfo(Number(userId))
+	const res = await GetUserInfo(Number(userId))
 
-  if (checkUser()) {
-    InitMenu()
-  }
+	if (checkUser()) {
+		InitMenu()
+	}
 
-  CurrentUser.value = res.data
+	CurrentUser.value = res
 })
 </script>
 
@@ -132,7 +133,6 @@ onMounted(async () => {
                 :src="CurrentUser.avatar"
                 :class="['relative z-0', containerIsSmall ? 'w-16 h-16' : 'w-28 h-28']"
             />
-            <!--            <div :class="['rounded-full border-2 z-10 bg-[&#45;&#45;bg-2]', containerIsSmall ? 'ml-[-1.2rem] mb-[-0.0rem] w-6 h-6' : 'ml-[-1.4rem] mb-[-0.2rem]']"/>-->
             <!-- 认证图标 -->
             <icons-verti
                 v-if="isVerti&&!isDark"
@@ -193,11 +193,11 @@ onMounted(async () => {
           </div>
         </n-gi>
         <n-gi offset="0 760:1" class="content-center" span="20 760:4">
-          <n-flex vertical class="mt-2 px-6" :size="0">
+          <n-flex vertical class="mt-2 px-4 pr-4" justify="center" align="center" :size="0">
             <div v-show="containerIsSmall" class="rounded-1.8 w-full bg-[--fill-1] px-2">
 
               <n-ellipsis
-                  class="rounded-1.8 pt-1 pb-0.5 mb-0 w-full" :line-clamp="showSig"
+                  class="rounded-1.8 pt-1 pb-0.5 mb-0 w-full mr-8" :line-clamp="showSig"
                   :tooltip="false" style="white-space: pre-wrap;">
                 <n-text class=" text-3.5 font-400 sig" depth="2">
                   {{ signatureFormat(CurrentUser.signature) }}

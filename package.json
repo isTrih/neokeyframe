@@ -11,6 +11,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@css-render/vue3-ssr": "^0.15.14",
     "@nuxtjs/markdownit": "^2.0.0",
     "@pinia/nuxt": "0.9.0",
     "@vueuse/nuxt": "12.3.0",

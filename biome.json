@@ -7,12 +7,12 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"ignore": []
+		"ignore": ["./composables/**"]
 	},
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",
-		"lineWidth": 80,
+		"lineWidth": 58,
 		"lineEnding": "lf"
 	},
 	"organizeImports": {
@@ -28,7 +28,7 @@
 		"formatter": {
 			"enabled": true,
 			"quoteStyle": "single",
-			"jsxQuoteStyle": "double",
+			"jsxQuoteStyle": "single",
 			"quoteProperties": "asNeeded",
 			"trailingCommas": "none",
 			"semicolons": "asNeeded",

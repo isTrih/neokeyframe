@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@css-render/vue3-ssr':
+        specifier: ^0.15.14
+        version: 0.15.14(vue@3.5.13(typescript@5.7.3))
       '@nuxtjs/markdownit':
         specifier: ^2.0.0
         version: 2.0.0(webpack@5.97.1(esbuild@0.24.2))

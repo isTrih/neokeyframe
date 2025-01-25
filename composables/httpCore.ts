@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import {$fetch} from 'ofetch';
-import {useRuntimeConfig} from '#app';
-
+import {$fetch} from 'ofetch'
+import {useRuntimeConfig} from '#app'
+import {useUserStore} from '~/stores/useUserStore.ts'
 // // region 提示
 // import type {ConfigProviderProps} from 'naive-ui'
 // import {createDiscreteApi, darkTheme, lightTheme} from 'naive-ui'
 // import {computed, ref} from 'vue'
 
 interface RequestOptions {
-    [key: string]: any;
+	[key: string]: any
 }
 
 // region 提示
@@ -25,25 +24,24 @@ interface RequestOptions {
 // )
 // endregion
 
-
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
 // 请求拦截器
 function handleRequest(options: RequestOptions) {
-    const {UserInfo} = storeToRefs(useUserStore())
-    options.headers = {
-        ...options.headers,
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${UserInfo.value.token}`,
-    };
+	const { UserInfo } = storeToRefs(useUserStore())
+	options.headers = {
+		...options.headers,
+		'Content-Type': 'application/json',
+		Authorization: `Bearer ${UserInfo.value.token}`
+	}
 }
 
 // 响应拦截器
 function handleResponse(response: any) {
-    if (response.error) {
-        throw new Error(response.error.message || '响应错误');
-    }
-    return response;
+	if (response.error) {
+		throw new Error(response.error.message || '响应错误')
+	}
+	return response.data
 }
 
 /**
@@ -51,34 +49,34 @@ function handleResponse(response: any) {
  * @param method
  */
 function createDollarFetchRequest(method: HttpMethod) {
-    return async function (
-        url: string,
-        data?: any,
-        options: RequestOptions = {}
-    ) {
+	return async (
+		url: string,
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		data?: any,
+		options: RequestOptions = {}
+	) => {
+		const baseURL = useRuntimeConfig().public.baseUrl as string
+		const fullPath = `${baseURL}${url}`
 
-        const baseURL = useRuntimeConfig().public.baseUrl as string
-        const fullPath = `${baseURL}${url}`;
+		// const requestUrl = new URL(fullPath).toString();
 
-        // const requestUrl = new URL(fullPath).toString();
-
-        try {
-            handleRequest(options);
-            const response = await $fetch(fullPath, {
-                method,
-                body: data,
-                ...options,
-            });
-            return handleResponse(response);
-        } catch (error) {
-            console.error('请求错误:', error);
-            throw error;
-        }
-    };
+		try {
+			handleRequest(options)
+			const response = await $fetch(fullPath, {
+				method,
+				body: data,
+				...options
+			})
+			return handleResponse(response)
+		} catch (error) {
+			console.error('请求错误:', error)
+			throw error
+		}
+	}
 }
 
 // 提供 $fetch & HTTP 方法 - 统一管理请求 - 再到组件中使用
-export const use$Get = createDollarFetchRequest('GET');
-export const use$Post = createDollarFetchRequest('POST');
-export const use$Put = createDollarFetchRequest('PUT');
-export const use$Delete = createDollarFetchRequest('DELETE');
+export const use$Get = createDollarFetchRequest('GET')
+export const use$Post = createDollarFetchRequest('POST')
+export const use$Put = createDollarFetchRequest('PUT')
+export const use$Delete = createDollarFetchRequest('DELETE')
