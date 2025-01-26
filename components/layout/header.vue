@@ -38,13 +38,25 @@ const currentMore = computed(() => {
 					return h(
 						'div',
 						{
-							style: 'display: flex; align-items: center; padding: 8px 12px;'
+							style:
+								'display: flex; align-items: center; padding: 8px 12px;'
 						},
 						[
 							h('div', null, [
-								h('div', { style: 'font-size: 12px;margin-left:1rem' }, [
-									h(NText, { depth: 3 }, { default: () => '设置' })
-								])
+								h(
+									'div',
+									{
+										style:
+											'font-size: 12px;margin-left:1rem'
+									},
+									[
+										h(
+											NText,
+											{ depth: 3 },
+											{ default: () => '设置' }
+										)
+									]
+								)
 							])
 						]
 					)
@@ -251,13 +263,25 @@ const singleFriend = computed(() => {
 				return h(
 					'div',
 					{
-						style: 'display: flex; align-items: center; padding: 8px 12px;'
+						style:
+							'display: flex; align-items: center; padding: 8px 12px;'
 					},
 					[
 						h('div', null, [
-							h('div', { style: 'font-size: 12px;margin-left:1rem' }, [
-								h(NText, { depth: 3 }, { default: () => '友情链接' })
-							])
+							h(
+								'div',
+								{
+									style:
+										'font-size: 12px;margin-left:1rem'
+								},
+								[
+									h(
+										NText,
+										{ depth: 3 },
+										{ default: () => '友情链接' }
+									)
+								]
+							)
 						])
 					]
 				)
@@ -276,7 +300,8 @@ function renderCertification() {
 	return h(
 		'div',
 		{
-			style: 'display: flex; align-items: center; padding: 8px 12px;'
+			style:
+				'display: flex; align-items: center; padding: 8px 12px;'
 		},
 		[
 			h('div', null, [
@@ -322,10 +347,12 @@ function renderCertification() {
 						{
 							style:
 								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-							to: 'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000696',
+							to: 'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000716',
 							target: '_blank'
 						},
-						{ default: () => '皖公网安备34020202000696号' }
+						{
+							default: () => '皖公网安备34020202000716号'
+						}
 					),
 					h(
 						'a',
@@ -361,7 +388,9 @@ function renderCertification() {
 							to: 'https://12377.qinglangwuhu.cn/',
 							target: '_blank'
 						},
-						{ default: () => '违法不良信息举报电话：12377' }
+						{
+							default: () => '违法不良信息举报电话：12377'
+						}
 					),
 					h(
 						'a',
@@ -428,20 +457,55 @@ function renderCertification() {
 						{ default: () => '提供支持' }
 					)
 				]),
-				h('div', { style: 'font-size: 12px;color:var(--n-text-color)' }, [
-					h(NText, null, { default: () => 'Copyright © 2024-2025' })
-				]),
-				h('div', { style: 'font-size: 12px;color:var(--n-text-color)' }, [
-					h(NText, null, { default: () => '芜湖超正经科技有限公司' })
-				]),
-				h('div', { style: 'font-size: 12px;color:var(--n-text-color)' }, [
-					h(NText, null, {
-						default: () => '地址：安徽省芜湖市镜湖区范罗山街道蜂牛产业园D423室'
-					})
-				]),
-				h('div', { style: 'font-size: 12px;color:var(--n-text-color)' }, [
-					h(NText, null, { default: () => '邮箱：help@chaozj.com' })
-				])
+				h(
+					'div',
+					{
+						style:
+							'font-size: 12px;color:var(--n-text-color)'
+					},
+					[
+						h(NText, null, {
+							default: () => 'Copyright © 2024-2025'
+						})
+					]
+				),
+				h(
+					'div',
+					{
+						style:
+							'font-size: 12px;color:var(--n-text-color)'
+					},
+					[
+						h(NText, null, {
+							default: () => '芜湖超正经科技有限公司'
+						})
+					]
+				),
+				h(
+					'div',
+					{
+						style:
+							'font-size: 12px;color:var(--n-text-color)'
+					},
+					[
+						h(NText, null, {
+							default: () =>
+								'地址：安徽省芜湖市镜湖区范罗山街道蜂牛产业园D423室'
+						})
+					]
+				),
+				h(
+					'div',
+					{
+						style:
+							'font-size: 12px;color:var(--n-text-color)'
+					},
+					[
+						h(NText, null, {
+							default: () => '邮箱：help@chaozj.com'
+						})
+					]
+				)
 			])
 		]
 	)

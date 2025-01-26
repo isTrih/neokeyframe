@@ -65,13 +65,13 @@ function debounce(func: Function, wait = 500, immediate = false) {
  * 移动端判断
  * @return {boolean} 判断是否为移动端
  */
-function isMobile(): boolean {
-    const userAgent = navigator.userAgent
-
-    // 检查常见的移动端设备标识符
-    const mobileRegex = /(Android |iPhone |iPad |iPod |BlackBerry |WindowsPhone |IEMobile |OperaMini)/i;
-    return mobileRegex.test(userAgent);
-}
+// function isMobile(): boolean {
+//     const userAgent = navigator.userAgent
+//
+//     // 检查常见的移动端设备标识符
+//     const mobileRegex = /(Android |iPhone |iPad |iPod |BlackBerry |WindowsPhone |IEMobile |OperaMini)/i;
+//     return mobileRegex.test(userAgent);
+// }
 
 /**
  * 关注、粉丝数量格式化

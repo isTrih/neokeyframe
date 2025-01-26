@@ -97,13 +97,13 @@ const changeSig = () => {
 	isFullSignature.value = !isFullSignature.value
 }
 onMounted(async () => {
-	const res = await GetUserInfo(Number(userId))
+	const {data} = await GetUserInfo(Number(userId))
 
 	if (checkUser()) {
 		InitMenu()
 	}
 
-	CurrentUser.value = res
+	CurrentUser.value = data
 })
 </script>
 

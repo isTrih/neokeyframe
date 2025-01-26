@@ -23,7 +23,7 @@ onMounted(async () => {
 
   GetFeeds(0, query.value as string).then(res=>{
     console.log('data', res)
-    cards.value = res.feeds
+    cards.value = res.data.feeds
     waterFallInit(columns, card_columns, arrHeight, cards)
 
     isload.value = false // 加载完成
@@ -50,7 +50,7 @@ const load = async () => {
 			query.value as string
 		)
     console.log('load:res', res)
-		const more = res.feeds
+		const more = res.data.feeds
 		if (more == null) {
 			disabled.value = true
 			isload.value = false

@@ -26,21 +26,21 @@ export const useUserStore = defineStore(
 			mobile,
 			password,
 		}: { mobile: string; password: string }) => {
-			const res = await Login(mobile, password);
-
+			const {code, msg, data} = await Login(mobile, password);
+			console.log(data, msg, data)
 			//TODO：还要获取其他用户信息
-			if (res.code === 0) {
-				console.log("success", res.data);
+			if (code === 0) {
+				console.log("success", data);
 				UserInfo.value = {
-					avatar: res.data.avatar,
-					signature: res.data.signature,
-					token: res.data.token,
-					user_id: res.data.user_id,
-					user_name: res.data.user_name,
-					type: res.data.type,
+					avatar: data.avatar,
+					signature: data.signature,
+					token: data.token,
+					user_id: data.user_id,
+					user_name: data.user_name,
+					type: data.type,
 				};
 			}
-			return res;
+			return {code, msg, data};
 		};
 		// 用户退出
 		const UserLogout = () => {

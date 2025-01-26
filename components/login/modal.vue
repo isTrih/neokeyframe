@@ -1,163 +1,163 @@
 <script setup lang="ts">
-import type {FormInst, FormItemRule} from 'naive-ui';
-import {SendCode} from '~/apis/user.ts';
+import type { FormInst, FormItemRule } from 'naive-ui'
+import { SendCode } from '~/apis/user.ts'
 
 // 关闭弹窗事件
-const emit = defineEmits(['closeLogin']);
+const emit = defineEmits(['closeLogin'])
 // 发送消息
 const message = useMessage()
 
 // 当前表单
-const currentLogin = ref('login');
+const currentLogin = ref('login')
 //切换表单
 const loginTitle = computed(() => [
-  {label: '登录', key: 'login'},
-  {label: '注册', key: 'register'}
-]);
+	{ label: '登录', key: 'login' },
+	{ label: '注册', key: 'register' }
+])
 
 function regCheck(checked: boolean) {
-  regFormValue.value.agreement = checked;
+	regFormValue.value.agreement = checked
 }
 
 function logCheck(checked: boolean) {
-  logFormValue.value.agreement = checked;
+	logFormValue.value.agreement = checked
 }
 
 // region 注册
 function sendSms() {
-  SendCode('18655311015')
+	SendCode('18655311015')
 }
 
 // 表单对象
-const regFormRef = ref<FormInst | null>(null);
+const regFormRef = ref<FormInst | null>(null)
 // 表单内容
 const regFormValue = ref({
-  name: '',
-  sms: '',
-  phone: '',
-  password: '',
-  rePassword: '',
-  agreement: false
-});
+	name: '',
+	sms: '',
+	phone: '',
+	password: '',
+	rePassword: '',
+	agreement: false
+})
 // 表单验证
 const regRules = {
-  name: {
-    required: true,
-    message: '用户名不超过12个字',
-    trigger: 'blur',
-    validator: (rule: FormItemRule, value: string) => {
-      console.log(rule);
-      return !(value.length > 12 || value.length <= 0);
-    },
-  },
-  sms: {
-    required: true,
-    message: '请输入6位验证码',
-    trigger: 'blur',
-    validator: (rule: FormItemRule, value: string) => {
-      console.log(rule);
-      return value.length === 6;
-    },
-  },
-  rePassword: {
-    required: true,
-    trigger: 'blur',
-    message:'两次密码输入不一致',
-    validator: (rule: FormItemRule, value: string) => {
-      console.log(rule);
-      return value === regFormValue.value.password
-    }
-  },
-  password: {
-    required: true,
-    message: '请输入密码'
-  },
-  phone: {
-    required: true,
-    trigger: 'blur',
-    message: '请输入正确的手机号',
-    validator: (rule: FormItemRule, value: string) => {
-      console.log(rule, value);
-      return /^1[3456789]\d{9}$/.test(value);
-    }
-  },
-  agreement: {
-    required: true,
-    trigger: 'change',
-    message: '请阅读并同意协议',
-    validator: (rule: FormItemRule, value: boolean) => {
-      console.log(rule, value);
-      return value;
-    }
-  }
-};
+	name: {
+		required: true,
+		message: '用户名不超过12个字',
+		trigger: 'blur',
+		validator: (rule: FormItemRule, value: string) => {
+			console.log(rule)
+			return !(value.length > 12 || value.length <= 0)
+		}
+	},
+	sms: {
+		required: true,
+		message: '请输入6位验证码',
+		trigger: 'blur',
+		validator: (rule: FormItemRule, value: string) => {
+			console.log(rule)
+			return value.length === 6
+		}
+	},
+	rePassword: {
+		required: true,
+		trigger: 'blur',
+		message: '两次密码输入不一致',
+		validator: (rule: FormItemRule, value: string) => {
+			console.log(rule)
+			return value === regFormValue.value.password
+		}
+	},
+	password: {
+		required: true,
+		message: '请输入密码'
+	},
+	phone: {
+		required: true,
+		trigger: 'blur',
+		message: '请输入正确的手机号',
+		validator: (rule: FormItemRule, value: string) => {
+			console.log(rule, value)
+			return /^1[3456789]\d{9}$/.test(value)
+		}
+	},
+	agreement: {
+		required: true,
+		trigger: 'change',
+		message: '请阅读并同意协议',
+		validator: (rule: FormItemRule, value: boolean) => {
+			console.log(rule, value)
+			return value
+		}
+	}
+}
 // endregion
 // region 登录
 // 登录表单
-const logFormRef = ref<FormInst | null>(null);
+const logFormRef = ref<FormInst | null>(null)
 // 登录表单内容
 const logFormValue = ref({
-  phone: '',
-  password: '',
-  agreement: false
-});
+	phone: '',
+	password: '',
+	agreement: false
+})
 // 登录表单验证
 const logRules = {
-  password: {
-    required: true,
-    trigger: 'blur',
-    message: '请输入6-20位密码',
-    validator: (rule: FormItemRule, value: string) => {
-      console.log(rule, value);
-      return !(value.length < 6 || value.length > 20);
-    }
-  },
-  phone: {
-    required: true,
-    trigger: 'blur',
-    message: '请输入账号',
-    validator: (rule: FormItemRule, value: string) => {
-      console.log(rule, value);
-      return /^1[3456789]\d{9}$/.test(value);
-    }
-  },
-  agreement: {
-    required: true,
-    trigger: 'change',
-    message: '请阅读并同意协议',
-    validator: (rule: FormItemRule, value: boolean) => {
-      console.log(rule, value);
-      return value;
-    }
-  }
-};
+	password: {
+		required: true,
+		trigger: 'blur',
+		message: '请输入6-20位密码',
+		validator: (rule: FormItemRule, value: string) => {
+			console.log(rule, value)
+			return !(value.length < 6 || value.length > 20)
+		}
+	},
+	phone: {
+		required: true,
+		trigger: 'blur',
+		message: '请输入账号',
+		validator: (rule: FormItemRule, value: string) => {
+			console.log(rule, value)
+			return /^1[3456789]\d{9}$/.test(value)
+		}
+	},
+	agreement: {
+		required: true,
+		trigger: 'change',
+		message: '请阅读并同意协议',
+		validator: (rule: FormItemRule, value: boolean) => {
+			console.log(rule, value)
+			return value
+		}
+	}
+}
 
-const login = function (e: MouseEvent) {
-  e.preventDefault()
-  logFormRef.value?.validate((errors,) => {
-    if (errors) {
-      message.error('请检查填写要求', {duration: 1800})
-    } else {
-
-      message.loading('登录中',)
-      const useUser = useUserStore()
-      useUser.UserLogin({
-        mobile: logFormValue.value.phone,
-        password: logFormValue.value.password,
-      }).then((res) => {
-        if (res.code === 0) {
-          message.destroyAll()
-          message.success('登录成功')
-          emit('closeLogin')
-        } else {
-          message.destroyAll()
-          message.error(res.msg)
-        }
-
-      })
-
-    }
-  })
+const login = (e: MouseEvent) => {
+	e.preventDefault()
+	logFormRef.value?.validate(errors => {
+		if (errors) {
+			message.error('请检查填写要求', { duration: 1800 })
+		} else {
+			message.loading('登录中')
+			const useUser = useUserStore()
+			useUser
+				.UserLogin({
+					mobile: logFormValue.value.phone,
+					password: logFormValue.value.password
+				})
+				.then(res => {
+          console.log('res', res)
+					if (res.code === 0) {
+						message.destroyAll()
+						message.success('登录成功')
+						emit('closeLogin')
+					} else {
+						message.destroyAll()
+						message.error(res.msg)
+					}
+				})
+		}
+	})
 }
 // endregion
 </script>

@@ -2,22 +2,22 @@
 // 引入unplugin-auto-import插件，用于naive-ui组件自动导入
 import AutoImport from 'unplugin-auto-import/vite'
 // 引入unplugin-vue-components插件，用于naive-ui组件自动导入
-import {NaiveUiResolver} from 'unplugin-vue-components/resolvers'
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 
 // 运行或构建项目时，能够自动执行 ESLint 代码检查和修复的插件
 export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
-			baseUrl: 'https://api.checkpoint321.com/v1'
+			baseUrl: 'https://apix.checkpoint321.com:8888/v1'
 		}
 	},
 	//定义插件
 	plugins: [
 		// 富文本渲染插件
-		{ src: '~/plugins/rich-text.ts', mode: 'client' },
+		{ src: '~/plugins/rich-text.ts', mode: 'all' },
 		// 用来解决没有样式的问题
-		{ src: '~/plugins/solve-style.ts', mode: 'server' }
+		{ src: '~/plugins/solve-style.ts', mode: 'all' }
 	],
 	build: {
 		transpile: ['vueuc'],
@@ -53,7 +53,7 @@ export default defineNuxtConfig({
 		// 启用项目启动运行或构建时自动类型检查
 		typeCheck: true,
 		// 开启严格模式
-		strict: true
+		strict: false
 	},
 	modules: [
 		'nuxtjs-naive-ui',
@@ -63,7 +63,10 @@ export default defineNuxtConfig({
 		'@unocss/nuxt'
 	],
 	pinia: {
-		storesDirs: ['./stores/**', './custom-folder/stores/**']
+		storesDirs: [
+			'./stores/**',
+			'./custom-folder/stores/**'
+		]
 	},
 	// vite 构建工具配置
 	vite: {
@@ -85,6 +88,10 @@ export default defineNuxtConfig({
 			Components({
 				resolvers: [NaiveUiResolver()]
 			})
-		]
+		],
+		ssr: {
+			noExternal: ["naive-ui"],
+		},
+		// https://github.com/tusen-ai/naive-ui/issues/4641
 	}
 })

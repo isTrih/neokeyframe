@@ -122,15 +122,15 @@ const doQuery = async (offset: number) => {
   console.log(res)
   switch (activeIndex.value) {
     case 0:
-      cards0.value = res.feeds;
+      cards0.value = res.data.feeds;
       waterFallInit(columns, card0_columns, arrHeight, cards0)
       break;
     case 1:
-      cards1.value = res.feeds;
+      cards1.value = res.data.feeds;
       waterFallInit(columns, card1_columns, arrHeight, cards1)
       break;
     case 2:
-      cards2.value = res.feeds;
+      cards2.value = res.data.feeds;
       waterFallInit(columns, card2_columns, arrHeight, cards2)
       break;
     default:
@@ -150,7 +150,7 @@ const load = async () => {
         disabled.value = true;
         const offset = cards0.value.length;
         const res = await GetUserFeeds(offset, props.currentId, activeType.value);
-        const more = res.feeds;
+        const more = res.data.feeds;
         if (more.length === 0) {
           disabled.value = true;
           isload.value = false;
@@ -170,7 +170,7 @@ const load = async () => {
         disabled.value = true;
         const offset = cards1.value.length;
         const res = await GetUserFeeds(offset, props.currentId, activeType.value);
-        const more = res.feeds;
+        const more = res.data.feeds;
         if (more.length === 0) {
           disabled.value = true;
           isload.value = false;
@@ -187,7 +187,7 @@ const load = async () => {
         disabled.value = true;
         const offset = cards2.value.length;
         const res = await GetUserFeeds(offset, props.currentId, activeType.value);
-        const more = res.feeds;
+        const more = res.data.feeds;
         if (more.length === 0) {
           disabled.value = true;
           isload.value = false;

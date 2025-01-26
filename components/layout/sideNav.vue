@@ -444,11 +444,11 @@ function renderCertification() {
 						{
 							style:
 								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-							to: 'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000696',
+							to: 'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000716',
 							target: '_blank'
 						},
 						{
-							default: () => '皖公网安备34020202000696号'
+							default: () => '皖公网安备34020202000716号'
 						}
 					),
 					h(
