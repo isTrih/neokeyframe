@@ -38,7 +38,7 @@ export default defineNuxtConfig({
 		ssrHandlers: true
 	},
 	build: {
-		transpile: ['vueuc'],
+		transpile: ['vueuc','naive-ui'],
 		analyze: true
 	},
 	nitro: {
