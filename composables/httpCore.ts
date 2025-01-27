@@ -1,6 +1,6 @@
 import {$fetch} from 'ofetch'
 import {useRuntimeConfig} from '#app'
-import {useUserStore} from '~/stores/useUserStore.ts'
+import {useUserStore} from '~/stores/useUserStore'
 
 interface RequestOptions {
 	[key: string]: any

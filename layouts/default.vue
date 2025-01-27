@@ -34,7 +34,7 @@ onUnmounted(() => {
     <n-modal-provider>
         <client-only>
           <n-watermark
-        content="开发版本，注册无效"
+        :content="t('ui.devRegStatus')"
         cross
         fullscreen
         :font-size="16"

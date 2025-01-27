@@ -4,30 +4,51 @@ import AutoImport from 'unplugin-auto-import/vite'
 // 引入unplugin-vue-components插件，用于naive-ui组件自动导入
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
-
-// 运行或构建项目时，能够自动执行 ESLint 代码检查和修复的插件
+import { currentLocales } from './i18n/config'
 export default defineNuxtConfig({
+	plugins: [
+		{
+			src: '~/plugins/rich-text.ts',
+			mode: 'client'
+		},
+		{ src: '~/plugins/solve-style.ts', mode: 'server' }
+	],
 	runtimeConfig: {
 		public: {
-			baseUrl: 'https://apix.checkpoint321.com:8888/v1'
+			baseUrl: '/apikeyframe'
 		}
 	},
-	//定义插件
-	plugins: [
-		// 富文本渲染插件
-		{ src: '~/plugins/rich-text.ts', mode: 'all' },
-		// 用来解决没有样式的问题
-		{ src: '~/plugins/solve-style.ts', mode: 'all' }
-	],
+	i18n: {
+		locales: currentLocales,
+		defaultLocale: 'zh-cn',
+		strategy: 'no_prefix',
+		// 启用浏览器语言检测，以便在访问者第一次访问您的站点时自动将其重定向到首选语言环境。
+		detectBrowserLanguage: {
+			// 启动 cookie
+			useCookie: true,
+			// 用于存储当前语言环境的变量名
+			cookieKey: 'i18n_redirected',
+			// (建议用于改进SEO) -仅检测站点根路径(/)上的浏览器区域设置。只有当使用策略而不是“no_prefix”时才有效。
+			redirectOn: 'root'
+		},
+		vueI18n: './i18n.config.ts' // if you are using custom path, default
+	},
+	// vueuse
+	vueuse: {
+		ssrHandlers: true
+	},
 	build: {
 		transpile: ['vueuc'],
-		analyze: false
+		analyze: true
 	},
 	nitro: {
-		routeRules: {},
+		routeRules: {
+			'/apikeyframe/**': {
+				proxy: 'http://apix.checkpoint321.com:8888/v1/**'
+			}
+		},
 		compressPublicAssets: true // 启动压缩
 	},
-	// ssr: true,
 	router: {},
 	app: {
 		head: {
@@ -45,7 +66,6 @@ export default defineNuxtConfig({
 		}
 	},
 	css: ['~/assets/main.css'],
-	// srcDir: 'src/',
 	compatibilityDate: '2024-11-01',
 	devtools: { enabled: true },
 	// typescript 配置
@@ -56,11 +76,13 @@ export default defineNuxtConfig({
 		strict: false
 	},
 	modules: [
+		'@unocss/nuxt',
 		'nuxtjs-naive-ui',
 		'@pinia/nuxt',
 		'pinia-plugin-persistedstate',
 		'@vueuse/nuxt',
-		'@unocss/nuxt'
+		'@nuxtjs/i18n',
+		'@nuxtjs/seo'
 	],
 	pinia: {
 		storesDirs: [
@@ -88,10 +110,6 @@ export default defineNuxtConfig({
 			Components({
 				resolvers: [NaiveUiResolver()]
 			})
-		],
-		ssr: {
-			noExternal: ["naive-ui"],
-		},
-		// https://github.com/tusen-ai/naive-ui/issues/4641
+		]
 	}
 })

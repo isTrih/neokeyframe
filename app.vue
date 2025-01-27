@@ -20,7 +20,7 @@ const theme = ref<null | typeof darkTheme>(null)
 const lightThemeOverrides: GlobalThemeOverrides = {
 	Scrollbar: {
 		width: '0px',
-		borderRadius: 0
+		borderRadius: '0px'
 	},
 	common: {
 		baseColor: '#FFF',
@@ -49,7 +49,7 @@ const lightThemeOverrides: GlobalThemeOverrides = {
 const darkThemeOverrides: GlobalThemeOverrides = {
 	Scrollbar: {
 		width: '0px',
-		borderRadius: 0
+		borderRadius: '0px'
 	},
 	common: {
 		primaryColor: '#4780BD',

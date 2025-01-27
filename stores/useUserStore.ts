@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { Login } from "~/apis/user.ts";
+import { Login } from "~/apis/user";
 
 export interface UserInfo {
 	avatar?: string;

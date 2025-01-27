@@ -83,7 +83,7 @@ const numFormat = (num: number): string => {
     if (num > 10000) {
         // 将 num 除以 10000 并保留一位小数
         const formattedNum = (num / 10000).toFixed(1);
-        return `${formattedNum}万`;
+        return `${formattedNum}${t('ui.w')}`;
     }
     return num.toString();
 };

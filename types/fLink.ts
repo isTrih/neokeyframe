@@ -1,12 +1,12 @@
 import Link from '~/components/menu/link.vue'
-
+import {t} from '~/composables/i18n'
 // 抽离 title 和 url 到一个数组中，方便添加内容
 const linkData = [
-	{ title: '铅元素动画', url: 'http://www.pbanimation.club/' },
-	{ title: '大火鸟文化', url: 'http://www.kjjcg.com/' },
-	{ title: 'MacWk-精品mac软件', url: 'https://macwk.com.cn/' },
-	{ title: 'Lo研社-Lolita图书馆', url: 'https://lolitalibrary.com/' },
-	{ title: '有礼贸-外贸实践平台', url: '/doc/socialrule' }
+	{ title: t('flink.qys'), url: 'http://www.pbanimation.club/' },
+	{ title: t('flink.dhn'), url: 'http://www.kjjcg.com/' },
+	{ title: t('flink.Macwk'), url: 'https://macwk.com.cn/' },
+	{ title: t('flink.lys'), url: 'https://lolitalibrary.com/' },
+	{ title: t('flink.ylm'), url: '/doc/socialrule' }
 ]
 
 // 组装成 fLink

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 //获取查询参数
-import {GetFeeds} from '~/apis/feed.ts'
-import type {Card} from '~/types/feed.ts'
+import {GetFeeds} from '~/apis/feed'
+import type {Card} from '~/types/feed'
 
 const query = computed(() => {
 	const { query } = useRoute()

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FormInst, FormItemRule } from 'naive-ui'
-import { SendCode } from '~/apis/user.ts'
+import { SendCode } from '~/apis/user'
 
 // 关闭弹窗事件
 const emit = defineEmits(['closeLogin'])
@@ -11,8 +11,8 @@ const message = useMessage()
 const currentLogin = ref('login')
 //切换表单
 const loginTitle = computed(() => [
-	{ label: '登录', key: 'login' },
-	{ label: '注册', key: 'register' }
+	{ label: t('ui.login'), key: 'login' },
+	{ label: t('ui.register'), key: 'register' }
 ])
 
 function regCheck(checked: boolean) {
@@ -262,7 +262,7 @@ const login = (e: MouseEvent) => {
               </n-checkbox>
             </n-form-item>
             <n-form-item>
-              <n-button class="mt-2" type="primary" round block>注册</n-button>
+              <n-button class="mt-2" type="primary" round block>{{$t('ui.register')}}</n-button>
             </n-form-item>
           </n-form>
         </div>
