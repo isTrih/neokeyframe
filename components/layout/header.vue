@@ -22,7 +22,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Button, {
-						title: '退出登陆',
+						title: $t('ui.logout'),
 						icon: false,
 						thin: true,
 						onClick: () => {
@@ -53,7 +53,7 @@ const currentMore = computed(() => {
 										h(
 											NText,
 											{ depth: 3 },
-											{ default: () => '设置' }
+											{ default: () => $t('ui.set') }
 										)
 									]
 								)
@@ -67,7 +67,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Theme, {
-						title: '深色模式'
+						title: $t('ui.darkMode')
 					})
 				},
 				show: true
@@ -87,7 +87,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Button, {
-						title: '关于关键帧',
+						title: $t('ui.aboutKeyframe'),
 						thin: true,
 						onClick: () => {
 							// currentMore.value = aboutMore.value;
@@ -103,7 +103,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Button, {
-						title: '隐私、协议',
+						title: $t('ui.terms'),
 						thin: true,
 						onClick: () => {
 							moreIndex.value = 2
@@ -116,7 +116,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Button, {
-						title: '友情链接',
+						title: $t('ui.friendsLink'),
 						thin: true,
 						onClick: () => {
 							moreIndex.value = 3
@@ -133,7 +133,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Head, {
-						title: '关于关键帧',
+						title: $t('ui.aboutKeyframe'),
 						onBack() {
 							// currentMore.value = baseMore.value;
 							moreIndex.value = 0
@@ -151,7 +151,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Link, {
-						title: '关于我们',
+						title: $t('ui.about'),
 						icon: false,
 						thin: true,
 						url: '/about'
@@ -177,7 +177,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Head, {
-						title: '隐私、协议',
+						title: $t('ui.terms'),
 						onBack() {
 							// currentMore.value = baseMore.value;
 							moreIndex.value = 0
@@ -195,7 +195,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Link, {
-						title: '用户协议',
+						title: $t('ui.userAgreement'),
 						icon: false,
 						thin: true,
 						url: '/doc/agreement'
@@ -207,7 +207,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Link, {
-						title: '隐私协议',
+						title: $t('ui.privacy'),
 						icon: false,
 						thin: true,
 						url: '/doc/privacy'
@@ -219,7 +219,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Link, {
-						title: '社区规范',
+						title: $t('ui.socialRules'),
 						icon: false,
 						thin: true,
 						url: '/doc/socialrule'
@@ -235,7 +235,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Head, {
-						title: '友情链接',
+						title: $t('ui.friendsLink'),
 						onBack() {
 							// currentMore.value = baseMore.value;
 							moreIndex.value = 0
@@ -398,7 +398,7 @@ function renderCertification() {
 							to: 'https://beian.miit.gov.cn/',
 							target: '_blank'
 						},
-						{ default: () => '皖ICP备2024039162号-6' }
+						{ default: () => $t('ui.icpRecord') }
 					),
 					h(
 						'a',
@@ -416,7 +416,7 @@ function renderCertification() {
 							to: 'https://www.helloimg.com/i/2025/01/06/677b702d6bd5a.jpg',
 							target: '_blank'
 						},
-						{ default: () => '营业执照' }
+						{ default: () => $t('ui.businessLicense') }
 					),
 					h(
 						'a',
@@ -435,7 +435,7 @@ function renderCertification() {
 							target: '_blank'
 						},
 						{
-							default: () => '皖公网安备34020202000716号'
+							default: () => $t('ui.publicSecurityRecord')
 						}
 					),
 					h(
@@ -454,7 +454,7 @@ function renderCertification() {
 							to: 'https://www.helloimg.com/i/2025/01/06/677b702ddaae5.jpg',
 							target: '_blank'
 						},
-						{ default: () => '字体授权证书' }
+						{ default: () => $t('ui.fontLicense') }
 					),
 					h(
 						'a',
@@ -473,7 +473,7 @@ function renderCertification() {
 							target: '_blank'
 						},
 						{
-							default: () => '违法不良信息举报电话：12377'
+							default: () => $t('ui.reportPhone')
 						}
 					),
 					h(
@@ -492,7 +492,7 @@ function renderCertification() {
 							to: 'https://12377.qinglangwuhu.cn/',
 							target: '_blank'
 						},
-						{ default: () => '芜湖市互联网举报中心' }
+						{ default: () =>  $t('ui.wuhuReportCenter')}
 					),
 					h(
 						'a',
@@ -510,18 +510,10 @@ function renderCertification() {
 							to: 'https://www.12377.cn/',
 							target: '_blank'
 						},
-						{ default: () => '网上有害信息举报专区' }
+						{ default: () => $t('ui.onlineReportArea') }
 					)
 				]),
 				h('div', { style: 'font-size: 12px;' }, [
-					h(
-						'a',
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-						},
-						{ default: () => 'IP地址位置数据由' }
-					),
 					h(
 						NuxtLink,
 						{
@@ -530,16 +522,8 @@ function renderCertification() {
 							to: 'https://www.cz88.net',
 							target: '_blank'
 						},
-						{ default: () => '纯真CZ88' }
+						{ default: () => $t('ui.ipDataSupport') }
 					),
-					h(
-						'a',
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-						},
-						{ default: () => '提供支持' }
-					)
 				]),
 				h(
 					'div',
@@ -561,7 +545,7 @@ function renderCertification() {
 					},
 					[
 						h(NText, null, {
-							default: () => '芜湖超正经科技有限公司'
+							default: () => $t('ui.company')
 						})
 					]
 				),
@@ -574,7 +558,7 @@ function renderCertification() {
 					[
 						h(NText, null, {
 							default: () =>
-								'地址：安徽省芜湖市镜湖区范罗山街道蜂牛产业园D423室'
+								$t('ui.address')
 						})
 					]
 				),
@@ -586,7 +570,7 @@ function renderCertification() {
 					},
 					[
 						h(NText, null, {
-							default: () => '邮箱：help@chaozj.com'
+							default: () => `${$t('ui.email')}help@chaozj.com`
 						})
 					]
 				)

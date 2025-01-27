@@ -40,10 +40,6 @@ export default defineNuxtConfig({
 	build: {
 		transpile: ['vueuc','naive-ui'],
 		analyze: true,
-		sourcemap: {
-			server: true,
-			client: true
-		}
 	},
 	nitro: {
 		routeRules: {

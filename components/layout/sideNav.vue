@@ -358,219 +358,204 @@ const currentMore = computed(() => {
  * @description 关于页面的底栏
  */
 function renderCertification() {
-	return h(
-		'div',
-		{
-			style:
-				'display: flex; align-items: center; padding: 8px 12px;'
-		},
-		[
-			h('div', null, [
-				h('div', { style: 'font-size: 12px;' }, [
-					h(
-						NuxtLink,
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-							to: 'https://beian.miit.gov.cn/',
-							target: '_blank'
-						},
-						{ default: () => '皖ICP备2024039162号-6' }
-					),
-					h(
-						'a',
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-						},
-						{ default: () => '丨' }
-					),
-					h(
-						NuxtLink,
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-							to: 'https://www.helloimg.com/i/2025/01/06/677b702d6bd5a.jpg',
-							target: '_blank'
-						},
-						{ default: () => '营业执照' }
-					),
-					h(
-						'a',
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-						},
-						{ default: () => '丨' }
-					),
-					h(
-						NuxtLink,
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-							to: 'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000716',
-							target: '_blank'
-						},
-						{
-							default: () => '皖公网安备34020202000716号'
-						}
-					),
-					h(
-						'a',
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-						},
-						{ default: () => '丨' }
-					),
-					h(
-						NuxtLink,
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-							to: 'https://www.helloimg.com/i/2025/01/06/677b702ddaae5.jpg',
-							target: '_blank'
-						},
-						{ default: () => '字体授权证书' }
-					),
-					h(
-						'a',
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-						},
-						{ default: () => '丨' }
-					),
-					h(
-						NuxtLink,
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-							to: 'https://12377.qinglangwuhu.cn/',
-							target: '_blank'
-						},
-						{
-							default: () => '违法不良信息举报电话：12377'
-						}
-					),
-					h(
-						'a',
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-						},
-						{ default: () => '丨' }
-					),
-					h(
-						NuxtLink,
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-							to: 'https://12377.qinglangwuhu.cn/',
-							target: '_blank'
-						},
-						{ default: () => '芜湖市互联网举报中心' }
-					),
-					h(
-						'a',
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-						},
-						{ default: () => '丨' }
-					),
-					h(
-						NuxtLink,
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-							to: 'https://www.12377.cn/',
-							target: '_blank'
-						},
-						{ default: () => '网上有害信息举报专区' }
-					)
-				]),
-				h('div', { style: 'font-size: 12px;' }, [
-					h(
-						'a',
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-						},
-						{ default: () => 'IP地址位置数据由' }
-					),
-					h(
-						NuxtLink,
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-							to: 'https://www.cz88.net',
-							target: '_blank'
-						},
-						{ default: () => '纯真CZ88' }
-					),
-					h(
-						'a',
-						{
-							style:
-								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-						},
-						{ default: () => '提供支持' }
-					)
-				]),
-				h(
-					'div',
-					{
-						style:
-							'font-size: 12px;color:var(--n-text-color)'
-					},
-					[
-						h(NText, null, {
-							default: () => 'Copyright © 2024-2025'
-						})
-					]
-				),
-				h(
-					'div',
-					{
-						style:
-							'font-size: 12px;color:var(--n-text-color)'
-					},
-					[
-						h(NText, null, {
-							default: () => '芜湖超正经科技有限公司'
-						})
-					]
-				),
-				h(
-					'div',
-					{
-						style:
-							'font-size: 12px;color:var(--n-text-color)'
-					},
-					[
-						h(NText, null, {
-							default: () =>
-								'地址：安徽省芜湖市镜湖区范罗山街道蜂牛产业园D423室'
-						})
-					]
-				),
-				h(
-					'div',
-					{
-						style:
-							'font-size: 12px;color:var(--n-text-color)'
-					},
-					[
-						h(NText, null, {
-							default: () => '邮箱：help@chaozj.com'
-						})
-					]
-				)
-			])
-		]
-	)
+  return h(
+      'div',
+      {
+        style:
+            'display: flex; align-items: center; padding: 8px 12px;'
+      },
+      [
+        h('div', null, [
+          h('div', { style: 'font-size: 12px;' }, [
+            h(
+                NuxtLink,
+                {
+                  style:
+                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+                  to: 'https://beian.miit.gov.cn/',
+                  target: '_blank'
+                },
+                { default: () => $t('ui.icpRecord') }
+            ),
+            h(
+                'a',
+                {
+                  style:
+                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
+                },
+                { default: () => '丨' }
+            ),
+            h(
+                NuxtLink,
+                {
+                  style:
+                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+                  to: 'https://www.helloimg.com/i/2025/01/06/677b702d6bd5a.jpg',
+                  target: '_blank'
+                },
+                { default: () => $t('ui.businessLicense') }
+            ),
+            h(
+                'a',
+                {
+                  style:
+                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
+                },
+                { default: () => '丨' }
+            ),
+            h(
+                NuxtLink,
+                {
+                  style:
+                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+                  to: 'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000716',
+                  target: '_blank'
+                },
+                {
+                  default: () => $t('ui.publicSecurityRecord')
+                }
+            ),
+            h(
+                'a',
+                {
+                  style:
+                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
+                },
+                { default: () => '丨' }
+            ),
+            h(
+                NuxtLink,
+                {
+                  style:
+                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+                  to: 'https://www.helloimg.com/i/2025/01/06/677b702ddaae5.jpg',
+                  target: '_blank'
+                },
+                { default: () => $t('ui.fontLicense') }
+            ),
+            h(
+                'a',
+                {
+                  style:
+                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
+                },
+                { default: () => '丨' }
+            ),
+            h(
+                NuxtLink,
+                {
+                  style:
+                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+                  to: 'https://12377.qinglangwuhu.cn/',
+                  target: '_blank'
+                },
+                {
+                  default: () => $t('ui.reportPhone')
+                }
+            ),
+            h(
+                'a',
+                {
+                  style:
+                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
+                },
+                { default: () => '丨' }
+            ),
+            h(
+                NuxtLink,
+                {
+                  style:
+                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+                  to: 'https://12377.qinglangwuhu.cn/',
+                  target: '_blank'
+                },
+                { default: () =>  $t('ui.wuhuReportCenter')}
+            ),
+            h(
+                'a',
+                {
+                  style:
+                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
+                },
+                { default: () => '丨' }
+            ),
+            h(
+                NuxtLink,
+                {
+                  style:
+                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+                  to: 'https://www.12377.cn/',
+                  target: '_blank'
+                },
+                { default: () => $t('ui.onlineReportArea') }
+            )
+          ]),
+          h('div', { style: 'font-size: 12px;' }, [
+            h(
+                NuxtLink,
+                {
+                  style:
+                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+                  to: 'https://www.cz88.net',
+                  target: '_blank'
+                },
+                { default: () => $t('ui.ipDataSupport') }
+            ),
+          ]),
+          h(
+              'div',
+              {
+                style:
+                    'font-size: 12px;color:var(--n-text-color)'
+              },
+              [
+                h(NText, null, {
+                  default: () => 'Copyright © 2024-2025'
+                })
+              ]
+          ),
+          h(
+              'div',
+              {
+                style:
+                    'font-size: 12px;color:var(--n-text-color)'
+              },
+              [
+                h(NText, null, {
+                  default: () => $t('ui.company')
+                })
+              ]
+          ),
+          h(
+              'div',
+              {
+                style:
+                    'font-size: 12px;color:var(--n-text-color)'
+              },
+              [
+                h(NText, null, {
+                  default: () =>
+                      $t('ui.address')
+                })
+              ]
+          ),
+          h(
+              'div',
+              {
+                style:
+                    'font-size: 12px;color:var(--n-text-color)'
+              },
+              [
+                h(NText, null, {
+                  default: () => `${$t('ui.email')}help@chaozj.com`
+                })
+              ]
+          )
+        ])
+      ]
+  )
 }
+
 //endregion
 </script>
 
