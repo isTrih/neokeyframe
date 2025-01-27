@@ -612,9 +612,9 @@ function renderCertification() {
             <n-dropdown id="lang" trigger="hover" class="w-58 rounded-3xl" :options="i18n">
               <n-button class="color-[--text-2]" size="large" text>
                 <template #icon>
-                  <n-icn>
+                  <n-icon>
                     <Language/>
-                  </n-icn>
+                  </n-icon>
                 </template>
               </n-button>
             </n-dropdown>
@@ -645,9 +645,9 @@ function renderCertification() {
             <n-dropdown id="lang" trigger="hover" class="w-58 rounded-3xl" :options="i18n">
               <n-button circle quaternary class="color-[--text-2]">
                 <template #icon>
-                  <n-icn>
+                  <n-icon>
                   <Language/>
-                  </n-icn>
+                  </n-icon>
                 </template>
               </n-button>
             </n-dropdown>

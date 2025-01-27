@@ -39,7 +39,11 @@ export default defineNuxtConfig({
 	},
 	build: {
 		transpile: ['vueuc','naive-ui'],
-		analyze: true
+		analyze: true,
+		sourcemap: {
+			server: true,
+			client: true
+		}
 	},
 	nitro: {
 		routeRules: {
@@ -92,6 +96,9 @@ export default defineNuxtConfig({
 	},
 	// vite 构建工具配置
 	vite: {
+		build: {
+			sourcemap: true
+		},
 		// vite 插件配置
 		plugins: [
 			// 引入unplugin-auto-import插件，用于naive-ui组件自动导入
