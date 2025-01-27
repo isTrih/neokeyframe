@@ -375,7 +375,7 @@ function renderCertification() {
                   to: 'https://beian.miit.gov.cn/',
                   target: '_blank'
                 },
-                { default: () => $t('ui.icpRecord') }
+                { default: () => t('ui.icpRecord') }
             ),
             h(
                 'a',
@@ -393,7 +393,7 @@ function renderCertification() {
                   to: 'https://www.helloimg.com/i/2025/01/06/677b702d6bd5a.jpg',
                   target: '_blank'
                 },
-                { default: () => $t('ui.businessLicense') }
+                { default: () => t('ui.businessLicense') }
             ),
             h(
                 'a',
@@ -412,7 +412,7 @@ function renderCertification() {
                   target: '_blank'
                 },
                 {
-                  default: () => $t('ui.publicSecurityRecord')
+                  default: () => t('ui.publicSecurityRecord')
                 }
             ),
             h(
@@ -431,7 +431,7 @@ function renderCertification() {
                   to: 'https://www.helloimg.com/i/2025/01/06/677b702ddaae5.jpg',
                   target: '_blank'
                 },
-                { default: () => $t('ui.fontLicense') }
+                { default: () => t('ui.fontLicense') }
             ),
             h(
                 'a',
@@ -450,7 +450,7 @@ function renderCertification() {
                   target: '_blank'
                 },
                 {
-                  default: () => $t('ui.reportPhone')
+                  default: () => t('ui.reportPhone')
                 }
             ),
             h(
@@ -469,7 +469,7 @@ function renderCertification() {
                   to: 'https://12377.qinglangwuhu.cn/',
                   target: '_blank'
                 },
-                { default: () =>  $t('ui.wuhuReportCenter')}
+                { default: () =>  t('ui.wuhuReportCenter')}
             ),
             h(
                 'a',
@@ -487,7 +487,7 @@ function renderCertification() {
                   to: 'https://www.12377.cn/',
                   target: '_blank'
                 },
-                { default: () => $t('ui.onlineReportArea') }
+                { default: () => t('ui.onlineReportArea') }
             )
           ]),
           h('div', { style: 'font-size: 12px;' }, [
@@ -499,7 +499,7 @@ function renderCertification() {
                   to: 'https://www.cz88.net',
                   target: '_blank'
                 },
-                { default: () => $t('ui.ipDataSupport') }
+                { default: () => t('ui.ipDataSupport') }
             ),
           ]),
           h(
@@ -522,7 +522,7 @@ function renderCertification() {
               },
               [
                 h(NText, null, {
-                  default: () => $t('ui.company')
+                  default: () => t('ui.company')
                 })
               ]
           ),
@@ -535,7 +535,7 @@ function renderCertification() {
               [
                 h(NText, null, {
                   default: () =>
-                      $t('ui.address')
+                      t('ui.address')
                 })
               ]
           ),
@@ -547,7 +547,7 @@ function renderCertification() {
               },
               [
                 h(NText, null, {
-                  default: () => `${$t('ui.email')}help@chaozj.com`
+                  default: () => `${t('ui.email')}help@chaozj.com`
                 })
               ]
           )
@@ -564,7 +564,7 @@ function renderCertification() {
       <div class="w-full h-auto flex-items-stretch">
         <n-menu v-model:value="CurrentMenu" class="fw-600 !p--0" :icon-size="26" :options="menuOptions"/>
         <n-button v-show="!IsLogin" block class="mt-1.5" type="primary" size="large" round @click="showLogin">
-          {{$t('ui.login')}}
+          {{t('ui.login')}}
         </n-button>
       </div>
       <div class="h-full"/>
@@ -576,7 +576,7 @@ function renderCertification() {
                 <MenuRound />
               </n-icon>
             </template>
-            {{$t('ui.menu')}}
+            {{t('ui.menu')}}
           </n-button>
         </n-dropdown>
       </div>

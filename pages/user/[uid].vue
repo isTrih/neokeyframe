@@ -152,7 +152,7 @@ const userMore = computed(() => {
             <IosArrowBack/>
           </n-icon>
         </template>
-        {{ $t('ui.back') }}
+        {{ t('ui.back') }}
       </n-button>
       <n-dropdown trigger="hover" class="w-58 rounded-3xl" :options="userMore">
         <n-button class="mr-2" text circle size="small">
@@ -199,7 +199,7 @@ const userMore = computed(() => {
                 <my-user-verti-note :user-note="CurrentUser.v_note" :user-type="CurrentUser.type"/>
               </n-flex>
               <n-text class="text-3 font-320 ml-0.1rem" depth="3">
-                {{ $t('ui.kid') }}：{{ CurrentUser.user_id }}丨{{ $t('ui.ipLocation') }}：{{ ipLocationFormat(CurrentUser.ip_location) }}
+                {{ t('ui.kid') }}：{{ CurrentUser.user_id }}丨{{ t('ui.ipLocation') }}：{{ ipLocationFormat(CurrentUser.ip_location) }}
               </n-text>
             </n-flex>
             <div v-show="!containerIsSmall" class="mt-1">
@@ -212,21 +212,21 @@ const userMore = computed(() => {
                 {{ numFormat(CurrentUser.follow_count) }}
               </n-text>
               <n-text class="text-4" depth="2">
-                {{ $t('ui.follow') }}
+                {{ t('ui.follow') }}
               </n-text>
               <n-divider vertical/>
               <n-text class="text-4 ml-2 mr-0.5" depth="3" code>
                 {{ numFormat(CurrentUser.fans_count) }}
               </n-text>
               <n-text class="text-4" depth="2">
-                {{ $t('ui.fans') }}
+                {{ t('ui.fans') }}
               </n-text>
               <n-divider vertical/>
               <n-text class="text-4 ml-2 mr-0.5" depth="3" code>
                 {{ numFormat(CurrentUser.feed_count) }}
               </n-text>
               <n-text class="text-4" depth="2">
-                {{ $t('ui.posts') }}
+                {{ t('ui.posts') }}
               </n-text>
             </div>
           </div>
@@ -245,21 +245,21 @@ const userMore = computed(() => {
 
               <div
                   class="mr-3 bt-1rem pt-0 mt-0 float-left w-3.8rem text-2.8 cursor-pointer color-[--czjB-5] hover-color[--czjB-7]"
-                  @click="changeSig">{{isFullSignature===true? $t('ui.collapse'):$t('ui.details')}}
+                  @click="changeSig">{{isFullSignature===true? t('ui.collapse'):t('ui.details')}}
               </div>
 
             </div>
             <n-flex class="w-full mt-2" justify="space-between" align="center">
               <n-flex v-if="containerIsSmall" align="center" :size="0">
-                <my-user-count :name="$t('ui.follow')" :value="CurrentUser.follow_count"/>
+                <my-user-count :name="t('ui.follow')" :value="CurrentUser.follow_count"/>
                 <n-divider vertical/>
-                <my-user-count :name="$t('ui.fans')" :value="CurrentUser.fans_count"/>
+                <my-user-count :name="t('ui.fans')" :value="CurrentUser.fans_count"/>
                 <n-divider vertical/>
-                <my-user-count :name="$t('ui.posts')" :value="CurrentUser.feed_count"/>
+                <my-user-count :name="t('ui.posts')" :value="CurrentUser.feed_count"/>
               </n-flex>
               <n-flex size="small">
                 <n-button class="w-6rem" strong round type="primary">
-                  {{ $t('ui.follow') }}
+                  {{ t('ui.follow') }}
                 </n-button>
               </n-flex>
             </n-flex>

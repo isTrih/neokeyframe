@@ -14,7 +14,7 @@ const click = (index: number) => {
 <template>
   <div class="w-full h-full">
     <n-flex class="m-2" justify="space-between" align="center">
-      <div class="ml-5 text-sm color-[--text-1]">{{ $t('ui.darkMode') }}</div>
+      <div class="ml-5 text-sm color-[--text-1]">{{ t('ui.darkMode') }}</div>
       <div
           id="container"
           class="mr-2 w-21 h-7 rounded-full flex flex-row"
@@ -42,7 +42,7 @@ const click = (index: number) => {
             </div>
           </template>
           <template #default>
-            {{ $t('ui.followSystem') }}
+            {{ t('ui.followSystem') }}
           </template>
         </n-tooltip>
         <n-tooltip
@@ -67,7 +67,7 @@ const click = (index: number) => {
             </div>
           </template>
           <template #default>
-            {{ $t('ui.light') }}
+            {{ t('ui.light') }}
           </template>
 
         </n-tooltip>
@@ -90,7 +90,7 @@ const click = (index: number) => {
             </div>
           </template>
           <template #default>
-            {{ $t('ui.dark') }}
+            {{ t('ui.dark') }}
           </template>
         </n-tooltip>
       </div>

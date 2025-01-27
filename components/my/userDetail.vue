@@ -8,7 +8,7 @@
           :class="[{ active: activeIndex === index },'color-[--text-1]']"
           @click="handleButtonClick(index)"
       >
-        {{ $t('ui.'+item) }}
+        {{ t('ui.'+item) }}
       </button>
       <!-- 动画元素，半透明灰色圆角矩形 -->
       <div
@@ -37,7 +37,7 @@
             <div v-if="showLogic" :style="{height: userContainerHeight+'px'}"
                  class="w-full flex flex-col justify-center">
               <client-only>
-                <n-empty size="huge" :description="$t('ui.own')">
+                <n-empty size="huge" :description="t('ui.own')">
                   <template #icon>
                     <n-icon>
                       <IosEyeOff/>
@@ -57,10 +57,10 @@
               <!--        {{ i }}-->
               <!--      </div>-->
               <div v-if="isload" class="flex justify-center align-center">
-                {{ $t('ui.loading') }}
+                {{ t('ui.loading') }}
               </div>
               <div v-if="disabled" class="flex justify-center align-center">
-                {{ $t('ui.noMore') }}
+                {{ t('ui.noMore') }}
               </div>
             </n-infinite-scroll>
 

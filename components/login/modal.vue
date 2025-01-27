@@ -262,7 +262,7 @@ const login = (e: MouseEvent) => {
               </n-checkbox>
             </n-form-item>
             <n-form-item>
-              <n-button class="mt-2" type="primary" round block>{{$t('ui.register')}}</n-button>
+              <n-button class="mt-2" type="primary" round block>{{t('ui.register')}}</n-button>
             </n-form-item>
           </n-form>
         </div>

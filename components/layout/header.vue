@@ -22,7 +22,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Button, {
-						title: $t('ui.logout'),
+						title: t('ui.logout'),
 						icon: false,
 						thin: true,
 						onClick: () => {
@@ -53,7 +53,7 @@ const currentMore = computed(() => {
 										h(
 											NText,
 											{ depth: 3 },
-											{ default: () => $t('ui.set') }
+											{ default: () => t('ui.set') }
 										)
 									]
 								)
@@ -67,7 +67,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Theme, {
-						title: $t('ui.darkMode')
+						title: t('ui.darkMode')
 					})
 				},
 				show: true
@@ -87,7 +87,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Button, {
-						title: $t('ui.aboutKeyframe'),
+						title: t('ui.aboutKeyframe'),
 						thin: true,
 						onClick: () => {
 							// currentMore.value = aboutMore.value;
@@ -103,7 +103,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Button, {
-						title: $t('ui.terms'),
+						title: t('ui.terms'),
 						thin: true,
 						onClick: () => {
 							moreIndex.value = 2
@@ -116,7 +116,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Button, {
-						title: $t('ui.friendsLink'),
+						title: t('ui.friendsLink'),
 						thin: true,
 						onClick: () => {
 							moreIndex.value = 3
@@ -133,7 +133,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Head, {
-						title: $t('ui.aboutKeyframe'),
+						title: t('ui.aboutKeyframe'),
 						onBack() {
 							// currentMore.value = baseMore.value;
 							moreIndex.value = 0
@@ -151,7 +151,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Link, {
-						title: $t('ui.about'),
+						title: t('ui.about'),
 						icon: false,
 						thin: true,
 						url: '/about'
@@ -177,7 +177,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Head, {
-						title: $t('ui.terms'),
+						title: t('ui.terms'),
 						onBack() {
 							// currentMore.value = baseMore.value;
 							moreIndex.value = 0
@@ -195,7 +195,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Link, {
-						title: $t('ui.userAgreement'),
+						title: t('ui.userAgreement'),
 						icon: false,
 						thin: true,
 						url: '/doc/agreement'
@@ -207,7 +207,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Link, {
-						title: $t('ui.privacy'),
+						title: t('ui.privacy'),
 						icon: false,
 						thin: true,
 						url: '/doc/privacy'
@@ -219,7 +219,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Link, {
-						title: $t('ui.socialRules'),
+						title: t('ui.socialRules'),
 						icon: false,
 						thin: true,
 						url: '/doc/socialrule'
@@ -235,7 +235,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Head, {
-						title: $t('ui.friendsLink'),
+						title: t('ui.friendsLink'),
 						onBack() {
 							// currentMore.value = baseMore.value;
 							moreIndex.value = 0
@@ -398,7 +398,7 @@ function renderCertification() {
 							to: 'https://beian.miit.gov.cn/',
 							target: '_blank'
 						},
-						{ default: () => $t('ui.icpRecord') }
+						{ default: () => t('ui.icpRecord') }
 					),
 					h(
 						'a',
@@ -416,7 +416,7 @@ function renderCertification() {
 							to: 'https://www.helloimg.com/i/2025/01/06/677b702d6bd5a.jpg',
 							target: '_blank'
 						},
-						{ default: () => $t('ui.businessLicense') }
+						{ default: () => t('ui.businessLicense') }
 					),
 					h(
 						'a',
@@ -435,7 +435,7 @@ function renderCertification() {
 							target: '_blank'
 						},
 						{
-							default: () => $t('ui.publicSecurityRecord')
+							default: () => t('ui.publicSecurityRecord')
 						}
 					),
 					h(
@@ -454,7 +454,7 @@ function renderCertification() {
 							to: 'https://www.helloimg.com/i/2025/01/06/677b702ddaae5.jpg',
 							target: '_blank'
 						},
-						{ default: () => $t('ui.fontLicense') }
+						{ default: () => t('ui.fontLicense') }
 					),
 					h(
 						'a',
@@ -473,7 +473,7 @@ function renderCertification() {
 							target: '_blank'
 						},
 						{
-							default: () => $t('ui.reportPhone')
+							default: () => t('ui.reportPhone')
 						}
 					),
 					h(
@@ -492,7 +492,7 @@ function renderCertification() {
 							to: 'https://12377.qinglangwuhu.cn/',
 							target: '_blank'
 						},
-						{ default: () =>  $t('ui.wuhuReportCenter')}
+						{ default: () =>  t('ui.wuhuReportCenter')}
 					),
 					h(
 						'a',
@@ -510,7 +510,7 @@ function renderCertification() {
 							to: 'https://www.12377.cn/',
 							target: '_blank'
 						},
-						{ default: () => $t('ui.onlineReportArea') }
+						{ default: () => t('ui.onlineReportArea') }
 					)
 				]),
 				h('div', { style: 'font-size: 12px;' }, [
@@ -522,7 +522,7 @@ function renderCertification() {
 							to: 'https://www.cz88.net',
 							target: '_blank'
 						},
-						{ default: () => $t('ui.ipDataSupport') }
+						{ default: () => t('ui.ipDataSupport') }
 					),
 				]),
 				h(
@@ -545,7 +545,7 @@ function renderCertification() {
 					},
 					[
 						h(NText, null, {
-							default: () => $t('ui.company')
+							default: () => t('ui.company')
 						})
 					]
 				),
@@ -558,7 +558,7 @@ function renderCertification() {
 					[
 						h(NText, null, {
 							default: () =>
-								$t('ui.address')
+								t('ui.address')
 						})
 					]
 				),
@@ -570,7 +570,7 @@ function renderCertification() {
 					},
 					[
 						h(NText, null, {
-							default: () => `${$t('ui.email')}help@chaozj.com`
+							default: () => `${t('ui.email')}help@chaozj.com`
 						})
 					]
 				)
@@ -586,7 +586,7 @@ function renderCertification() {
       <n-gi span="24 1:0 600:24">
         <n-flex :size="[0,0]" class="px-4" align="center" justify="space-between">
           <icons-keyframe class="icon"/>
-          <n-input id="search" class="min-w-[40%]" autosize round :placeholder="$t('ui.searchMoreContent')">
+          <n-input id="search" class="min-w-[40%]" autosize round :placeholder="t('ui.searchMoreContent')">
             <!--          TODO:实现搜索逻辑-->
             <template #suffix>
               <n-icon :component="Search"/>
@@ -605,11 +605,11 @@ function renderCertification() {
 
             <n-dropdown id="flink" trigger="hover" class="w-64 rounded-3xl" :options="singleFriend">
               <n-button class="color-[--text-3]" size="large" text>
-                {{$t('ui.friendsLink') }}
+                {{t('ui.friendsLink') }}
               </n-button>
             </n-dropdown>
             <n-button class="color-[--text-3]" size="large" text>
-              {{$t('ui.contact') }}
+              {{t('ui.contact') }}
             </n-button>
           </n-flex>
         </n-flex>
