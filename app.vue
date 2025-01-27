@@ -1,20 +1,10 @@
 <template>
-  <n-config-provider
-      inline-theme-disabled
-      :theme="theme"
-      :theme-overrides="theme === null ? lightThemeOverrides : darkThemeOverrides"
-  >
-    <n-modal-provider>
-
+  <n-config-provider inline-theme-disabled :theme="theme" :theme-overrides="theme === null ? lightThemeOverrides : darkThemeOverrides">
     <n-message-provider>
-      <div @contextmenu.prevent>
-        <NuxtLayout>
-          <NuxtPage/>
-        </NuxtLayout>
-      </div>
-      <n-global-style/>
+    <NuxtLayout>
+      <NuxtPage/>
+    </NuxtLayout>
     </n-message-provider>
-      </n-modal-provider>
   </n-config-provider>
 </template>
 <script setup lang="ts">
@@ -24,13 +14,13 @@ import {
 } from 'naive-ui'
 import { useColorMode } from '@vueuse/core'
 import { darkTheme } from 'naive-ui'
-import { isMobile } from '~/composables/utils.ts'
+// import { isMobile } from '~/composables/utils.ts'
 
 const theme = ref<null | typeof darkTheme>(null)
 const lightThemeOverrides: GlobalThemeOverrides = {
 	Scrollbar: {
 		width: '0px',
-		borderRadius: 0
+		borderRadius: '0px'
 	},
 	common: {
 		baseColor: '#FFF',
@@ -59,7 +49,7 @@ const lightThemeOverrides: GlobalThemeOverrides = {
 const darkThemeOverrides: GlobalThemeOverrides = {
 	Scrollbar: {
 		width: '0px',
-		borderRadius: 0
+		borderRadius: '0px'
 	},
 	common: {
 		primaryColor: '#4780BD',
@@ -126,7 +116,7 @@ watch([ColorMode, colorMode], () => {
 onMounted(() => {
 	InitTheme()
 	console.log(
-		isMobile() ? '当前环境是移动端' : '当前环境不是移动端'
+		// isMobile() ? '当前环境是移动端' : '当前环境不是移动端'
 	)
 })
 </script>

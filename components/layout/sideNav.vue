@@ -13,6 +13,7 @@ import {
 	NotificationsOutline as NotifIcon
 } from '@vicons/ionicons5'
 import { MenuRound } from '@vicons/material'
+import {fLink} from '~/types/fLink';
 const useUser = useUserStore()
 
 // 模态框
@@ -39,12 +40,6 @@ const showLogin = () => {
 			),
 		transformOrigin: 'center'
 	})
-	// UserInfo.value = {
-	//   user_id: 88,
-	//   user_name: '一二三四五六七八九十',
-	//   avatar: 'https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg'
-	// };
-	// console.log(UserInfo);
 }
 // region 菜单
 //菜单选中值
@@ -58,7 +53,7 @@ const menuOptions = computed(() => [
 				{
 					to: '/'
 				},
-				{ default: () => '首页' }
+				{ default: () => t('ui.home') }
 			),
 		key: 'home',
 		icon: renderIcon(home)
@@ -70,7 +65,7 @@ const menuOptions = computed(() => [
 				{
 					to: '/upload'
 				},
-				{ default: () => '创作' }
+				{ default: () => t('ui.upload') }
 			),
 		key: 'upload',
 		icon: renderIcon(CreateIcon)
@@ -82,7 +77,7 @@ const menuOptions = computed(() => [
 				{
 					to: '/notification'
 				},
-				{ default: () => '通知' }
+				{ default: () => t('ui.notifications') }
 			),
 		key: 'notification',
 		icon: renderIcon(NotifIcon)
@@ -134,7 +129,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Button, {
-						title: '关于关键帧',
+						title: t('ui.aboutKeyframe'),
 						onClick: () => {
 							// currentMore.value = aboutMore.value;
 							moreIndex.value = 1
@@ -149,7 +144,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Button, {
-						title: '隐私、协议',
+						title: t('ui.terms'),
 						onClick: () => {
 							moreIndex.value = 2
 						}
@@ -161,7 +156,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Button, {
-						title: '友情链接',
+						title: t('ui.friendsLink'),
 						onClick: () => {
 							moreIndex.value = 3
 						}
@@ -209,7 +204,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Theme, {
-						title: '深色模式'
+						title: t('ui.darkMode')
 					})
 				},
 				show: true
@@ -223,7 +218,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Button, {
-						title: '退出登陆',
+						title: t('ui.logout'),
 						icon: false,
 						onClick: () => {
 							useUser.UserLogout()
@@ -240,7 +235,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Head, {
-						title: '关于关键帧',
+						title: t('ui.aboutKeyframe'),
 						onBack() {
 							// currentMore.value = baseMore.value;
 							moreIndex.value = 0
@@ -258,7 +253,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Link, {
-						title: '关于我们',
+						title: t('ui.about'),
 						icon: false,
 						url: '/about'
 					})
@@ -283,7 +278,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Head, {
-						title: '隐私、协议',
+						title: t('ui.terms'),
 						onBack() {
 							// currentMore.value = baseMore.value;
 							moreIndex.value = 0
@@ -301,7 +296,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Link, {
-						title: '用户协议',
+						title: t('ui.userAgreement'),
 						icon: false,
 						url: '/doc/agreement'
 					})
@@ -312,7 +307,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Link, {
-						title: '隐私协议',
+						title: t('ui.privacy'),
 						icon: false,
 						url: '/doc/privacy'
 					})
@@ -323,7 +318,7 @@ const currentMore = computed(() => {
 				type: 'render',
 				render: () => {
 					return h(Link, {
-						title: '社区规范',
+						title: t('ui.socialRules'),
 						icon: false,
 						url: '/doc/socialrule'
 					})
@@ -333,59 +328,28 @@ const currentMore = computed(() => {
 		]
 	}
 	if (moreIndex.value === 3) {
-		return [
-			{
-				type: 'render',
-				render: () => {
-					return h(Head, {
-						title: '友情链接',
-						onBack() {
-							// currentMore.value = baseMore.value;
-							moreIndex.value = 0
-						}
-					})
-				},
-				show: true
-			},
-			{
-				type: 'divider',
-				key: 'd1',
-				show: true
-			},
-			{
-				type: 'render',
-				render: () => {
-					return h(Link, {
-						title: 'MacWk - 精品mac软件下载',
-						icon: false,
-						url: 'https://macwk.com.cn/'
-					})
-				},
-				show: true
-			},
-			{
-				type: 'render',
-				render: () => {
-					return h(Link, {
-						title: 'Lo研社 - Lolita图书馆',
-						icon: false,
-						url: 'https://lolitalibrary.com/'
-					})
-				},
-				show: true
-			},
-			{
-				type: 'render',
-				render: () => {
-					return h(Link, {
-						title: '有礼贸 - 外贸教学实践平台',
-						icon: false,
-						url: '/doc/socialrule'
-					})
-				},
-				show: true
-			}
-		]
+    const base = [
+      {
+        type: 'render',
+        render: () => {
+          return h(Head, {
+            title: t('ui.friendsLink'),
+            onBack() {
+              // currentMore.value = baseMore.value;
+              moreIndex.value = 0
+            }
+          })
+        },
+        show: true
+      },
+      {
+        type: 'divider',
+        key: 'd1',
+        show: true
+      }
+    ]
+    base.push(...fLink)
+		return base
 	}
 	return []
 }) // 设置渲染
@@ -444,11 +408,11 @@ function renderCertification() {
 						{
 							style:
 								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-							to: 'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000696',
+							to: 'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000716',
 							target: '_blank'
 						},
 						{
-							default: () => '皖公网安备34020202000696号'
+							default: () => '皖公网安备34020202000716号'
 						}
 					),
 					h(
@@ -615,7 +579,7 @@ function renderCertification() {
       <div class="w-full h-auto flex-items-stretch">
         <n-menu v-model:value="CurrentMenu" class="fw-600 !p--0" :icon-size="26" :options="menuOptions"/>
         <n-button v-show="!IsLogin" block class="mt-1.5" type="primary" size="large" round @click="showLogin">
-          登录
+          {{$t('ui.login')}}
         </n-button>
       </div>
       <div class="h-full"/>
@@ -627,7 +591,7 @@ function renderCertification() {
                 <MenuRound />
               </n-icon>
             </template>
-            更多
+            {{$t('ui.menu')}}
           </n-button>
         </n-dropdown>
       </div>

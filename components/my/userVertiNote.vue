@@ -1,26 +1,28 @@
 <script setup lang="ts">
 const props = defineProps({
-  userType: {
-    type: Number,
-    default: 0,
-    required: true
-  },
-  userNote:{
-    type: String,
-    default: '',
-    required: true
-  }
+	userType: {
+		type: Number,
+		default: 0,
+		required: true
+	},
+	userNote: {
+		type: String,
+		default: '',
+		required: true
+	}
 })
 
 const suffix = computed(() => {
-  if (props.userType === 2) {
-    return '关键帧 创作者认证：'
-  } else if (props.userType === 3) {
-    return '关键帧 机构认证：'
-  }else if (props.userType >= 4) {
-    return '关键帧 员工认证：'
-  }
-  return ''
+	if (props.userType === 2) {
+		return `${t('ui.keyframe')} ${t('ui.creatorCertification')}` //创作者认证
+	}
+	if (props.userType === 3) {
+		return `${t('ui.keyframe')} ${t('ui.organizationCertification')}`// '关键帧 机构认证：'
+	}
+	if (props.userType >= 4) {
+		return `${t('ui.keyframe')} ${t('ui.employeeCertification')}` // '关键帧 员工认证：'
+	}
+	return ''
 })
 </script>
 

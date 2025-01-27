@@ -19,7 +19,7 @@ defineProps({
       {{ numFormat(value) }}
     </div>
     <div class="label text-2.5 font-400 color-[--text-3] line-height-none">
-      {{ name }}
+      {{ $t(name) }}
     </div>
   </n-flex>
 </template>

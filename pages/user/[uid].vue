@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {GetUserInfo} from '~/apis/user'
-import type {User} from '~/types/user'
-import {IosArrowBack} from '@vicons/ionicons4'
-import {numFormat} from '~/composables/utils.ts'
-
+import { GetUserInfo } from '~/apis/user'
+import type { User } from '~/types/user'
+import { IosArrowBack } from '@vicons/ionicons4'
+import { NText } from 'naive-ui'
+import Link from '~/components/menu/link.vue'
 const { ContainerWidth, CurrentColor } = storeToRefs(
 	useConfigStore()
 )
@@ -12,7 +12,7 @@ const userId = useRoute().params.uid
 // 签名格式化
 const signatureFormat = (signature: string) => {
 	if (signature === 'CHAOZJ' || signature === '') {
-		return '这是一只懒惰的小帧，还未设置简介。'
+		return t('ui.lazyUserMsg')
 	}
 	return signature
 }
@@ -23,26 +23,12 @@ const ipLocationFormat = (location: string): string => {
 		// 去除省份名称中的 "省", "特别行政区", "自治区" 等字符
 		return parts[1]
 	}
-	return '未知'
+	return t('ui.unknown')
 }
 // 检查是否是自己
 const checkUser = () => {
 	return UserInfo.value.user_id === Number(userId)
 }
-
-// {
-//     "user_id": 10,
-//     "user_name": "三氢超正经",
-//     "avatar": "https://coss.chaozj.com/avatar/test_1.jpg&#34;,
-//     "type": 3,
-//     "status": 0,
-//     "v_note": "纯正劳模",
-//     "signature": "CHAOZJ",
-//     "feed_count": 6,
-//     "fans_count": 0,
-//     "follow_count": 0,
-//     "ip_location": "中国|0|江苏省|0|移动"
-// }
 
 const containerIsSmall = computed(() => {
 	return ContainerWidth.value < 760
@@ -97,13 +83,63 @@ const changeSig = () => {
 	isFullSignature.value = !isFullSignature.value
 }
 onMounted(async () => {
-	const res = await GetUserInfo(Number(userId))
+	const { data } = await GetUserInfo(Number(userId))
 
 	if (checkUser()) {
 		InitMenu()
 	}
 
-	CurrentUser.value = res
+	CurrentUser.value = data
+})
+import Button from '~/components/menu/button.vue'
+const userMore = computed(() => {
+  return [
+		{
+			type: 'render',
+			render: () => {
+				return h(
+					'div',
+					{
+						style:
+							'display: flex; align-items: center; padding: 8px 12px;'
+					},
+					[
+						h('div', null, [
+							h(
+								'div',
+								{
+									style:
+										'font-size: 12px;margin-left:1rem'
+								},
+								[
+									h(
+										NText,
+										{ depth: 3 },
+										{ default: () => t('ui.menu') }
+									)
+								]
+							)
+						])
+					]
+				)
+			},
+			show: true
+		},
+		{
+			type: 'render',
+			render: () => {
+				return h(Button, {
+					title: t('ui.report'),
+					thin: true,
+          icon: false,
+					onClick: () => {
+            //TODO:举报逻辑
+						console.log('举报逻辑')
+					}
+				})
+			}
+		}
+	]
 })
 </script>
 
@@ -116,11 +152,14 @@ onMounted(async () => {
             <IosArrowBack/>
           </n-icon>
         </template>
-        返回
+        {{ $t('ui.back') }}
       </n-button>
-      <n-button class="mr-2" text circle size="small">
-        •••
-      </n-button>
+      <n-dropdown trigger="hover" class="w-58 rounded-3xl" :options="userMore">
+        <n-button class="mr-2" text circle size="small">
+          •••
+        </n-button>
+      </n-dropdown>
+
 
     </n-flex>
     <div class="w-full">
@@ -160,7 +199,7 @@ onMounted(async () => {
                 <my-user-verti-note :user-note="CurrentUser.v_note" :user-type="CurrentUser.type"/>
               </n-flex>
               <n-text class="text-3 font-320 ml-0.1rem" depth="3">
-                关键帧号：{{ CurrentUser.user_id }}丨IP属地：{{ ipLocationFormat(CurrentUser.ip_location) }}
+                {{ $t('ui.kid') }}：{{ CurrentUser.user_id }}丨{{ $t('ui.ipLocation') }}：{{ ipLocationFormat(CurrentUser.ip_location) }}
               </n-text>
             </n-flex>
             <div v-show="!containerIsSmall" class="mt-1">
@@ -173,21 +212,21 @@ onMounted(async () => {
                 {{ numFormat(CurrentUser.follow_count) }}
               </n-text>
               <n-text class="text-4" depth="2">
-                关注
+                {{ $t('ui.follow') }}
               </n-text>
               <n-divider vertical/>
               <n-text class="text-4 ml-2 mr-0.5" depth="3" code>
                 {{ numFormat(CurrentUser.fans_count) }}
               </n-text>
               <n-text class="text-4" depth="2">
-                粉丝
+                {{ $t('ui.fans') }}
               </n-text>
               <n-divider vertical/>
               <n-text class="text-4 ml-2 mr-0.5" depth="3" code>
                 {{ numFormat(CurrentUser.feed_count) }}
               </n-text>
               <n-text class="text-4" depth="2">
-                帧数
+                {{ $t('ui.posts') }}
               </n-text>
             </div>
           </div>
@@ -205,22 +244,22 @@ onMounted(async () => {
               </n-ellipsis>
 
               <div
-                  class="mr-3 bt-1rem pt-0 mt-0 float-left w-1.5rem text-2.8 cursor-pointer color-[--czjB-5] hover-color[--czjB-7]"
-                  @click="changeSig">{{isFullSignature===true? '收起':'详情'}}
+                  class="mr-3 bt-1rem pt-0 mt-0 float-left w-3.8rem text-2.8 cursor-pointer color-[--czjB-5] hover-color[--czjB-7]"
+                  @click="changeSig">{{isFullSignature===true? $t('ui.collapse'):$t('ui.details')}}
               </div>
 
             </div>
             <n-flex class="w-full mt-2" justify="space-between" align="center">
               <n-flex v-if="containerIsSmall" align="center" :size="0">
-                <my-user-count name="关注" :value="CurrentUser.follow_count"/>
+                <my-user-count :name="$t('ui.follow')" :value="CurrentUser.follow_count"/>
                 <n-divider vertical/>
-                <my-user-count name="粉丝" :value="CurrentUser.fans_count"/>
+                <my-user-count :name="$t('ui.fans')" :value="CurrentUser.fans_count"/>
                 <n-divider vertical/>
-                <my-user-count name="帧数" :value="CurrentUser.feed_count"/>
+                <my-user-count :name="$t('ui.posts')" :value="CurrentUser.feed_count"/>
               </n-flex>
               <n-flex size="small">
                 <n-button class="w-6rem" strong round type="primary">
-                  关注
+                  {{ $t('ui.follow') }}
                 </n-button>
               </n-flex>
             </n-flex>

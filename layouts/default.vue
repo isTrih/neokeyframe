@@ -31,9 +31,10 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col h-100dvh">
-    <client-only>
-      <n-watermark
-        content="开发版本，注册无效"
+    <n-modal-provider>
+        <client-only>
+          <n-watermark
+        :content="t('ui.devRegStatus')"
         cross
         fullscreen
         :font-size="16"
@@ -44,12 +45,10 @@ onUnmounted(() => {
         :y-offset="60"
         :rotate="-15"
     /></client-only>
-
-      <div class="pt-4 pb-2 h-34px">
+        <div class="pt-4 pb-2 h-34px">
         <layout-header/>
       </div>
-
-      <div class="h-full">
+        <div class="h-full">
         <n-flex vertical class="h-full" :size="0">
 
           <n-grid class="h-full" :cols="14" item-responsive>
@@ -78,6 +77,7 @@ onUnmounted(() => {
 
         </n-flex>
       </div>
+    </n-modal-provider>
   </div>
 </template>
 

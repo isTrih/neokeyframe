@@ -11,7 +11,7 @@
         </n-button>
       </n-gi>
       <n-gi span="8">
-        <div class="fw-700 text-base text-align-center">
+        <div class="fw-700 text-base text-align-center color-[--text-1]">
           {{ title }}
         </div>
       </n-gi>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Search } from '@vicons/ionicons5'
+import { Search,Language } from '@vicons/ionicons5'
 import { MenuRound } from '@vicons/material'
 import { NButton, NIcon, NText } from 'naive-ui'
 import Button from '~/components/menu/button.vue'
 import Head from '~/components/menu/head.vue'
 import Link from '~/components/menu/link.vue'
 import Theme from '~/components/menu/theme.vue'
-import { fLink, fLinkThin } from '~/types/fLink.ts'
+import { fLink, fLinkThin } from '~/types/fLink'
 import { NuxtLink } from '#components'
 
 // region 用户登陆态
@@ -38,13 +38,25 @@ const currentMore = computed(() => {
 					return h(
 						'div',
 						{
-							style: 'display: flex; align-items: center; padding: 8px 12px;'
+							style:
+								'display: flex; align-items: center; padding: 8px 12px;'
 						},
 						[
 							h('div', null, [
-								h('div', { style: 'font-size: 12px;margin-left:1rem' }, [
-									h(NText, { depth: 3 }, { default: () => '设置' })
-								])
+								h(
+									'div',
+									{
+										style:
+											'font-size: 12px;margin-left:1rem'
+									},
+									[
+										h(
+											NText,
+											{ depth: 3 },
+											{ default: () => '设置' }
+										)
+									]
+								)
 							])
 						]
 					)
@@ -251,13 +263,25 @@ const singleFriend = computed(() => {
 				return h(
 					'div',
 					{
-						style: 'display: flex; align-items: center; padding: 8px 12px;'
+						style:
+							'display: flex; align-items: center; padding: 8px 12px;'
 					},
 					[
 						h('div', null, [
-							h('div', { style: 'font-size: 12px;margin-left:1rem' }, [
-								h(NText, { depth: 3 }, { default: () => '友情链接' })
-							])
+							h(
+								'div',
+								{
+									style:
+										'font-size: 12px;margin-left:1rem'
+								},
+								[
+									h(
+										NText,
+										{ depth: 3 },
+										{ default: () => t('ui.friendsLink') }
+									)
+								]
+							)
 						])
 					]
 				)
@@ -269,6 +293,90 @@ const singleFriend = computed(() => {
 	return base
 })
 
+const { setLocale } = useI18n() //i18n
+/*
+   locale 当前i18n的语言 en
+   locales i18n中配置的所有语言  {0: 'en', 1: 'zh', 2: 'ja'}
+   setLocale 设置i18n语言
+*/
+const i18n = computed(() => {
+  return [
+    {
+      type: 'render',
+      render: () => {
+        return h(
+            'div',
+            {
+              style:
+                  'display: flex; align-items: center; padding: 8px 12px;'
+            },
+            [
+              h('div', null, [
+                h(
+                    'div',
+                    {
+                      style:
+                          'font-size: 12px;margin-left:1rem'
+                    },
+                    [
+                      h(
+                          NText,
+                          { depth: 3 },
+                          { default: () => t('ui.language') }
+                      )
+                    ]
+                )
+              ])
+            ]
+        )
+      },
+      show: true
+    },
+    {
+      type: 'render',
+      render: () => {
+        return h(Button, {
+          title: t('ui.zh_cn'),
+          thin: true,
+          icon: false,
+          onClick: () => {
+            //TODO:举报逻辑
+            setLocale('zh-cn')
+          }
+        })
+      }
+    },
+    {
+      type: 'render',
+      render: () => {
+        return h(Button, {
+          title: t('ui.en'),
+          thin: true,
+          icon: false,
+          onClick: () => {
+            //TODO:举报逻辑
+            setLocale('en')
+          }
+        })
+      }
+    },
+    {
+      type: 'render',
+      render: () => {
+        return h(Button, {
+          title: t('ui.ja'),
+          thin: true,
+          icon: false,
+          onClick: () => {
+            //TODO:举报逻辑
+            setLocale('ja')
+          }
+        })
+      }
+    }
+  ]
+
+})
 /**
  * @description 关于页面的底栏
  */
@@ -276,7 +384,8 @@ function renderCertification() {
 	return h(
 		'div',
 		{
-			style: 'display: flex; align-items: center; padding: 8px 12px;'
+			style:
+				'display: flex; align-items: center; padding: 8px 12px;'
 		},
 		[
 			h('div', null, [
@@ -322,10 +431,12 @@ function renderCertification() {
 						{
 							style:
 								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-							to: 'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000696',
+							to: 'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000716',
 							target: '_blank'
 						},
-						{ default: () => '皖公网安备34020202000696号' }
+						{
+							default: () => '皖公网安备34020202000716号'
+						}
 					),
 					h(
 						'a',
@@ -361,7 +472,9 @@ function renderCertification() {
 							to: 'https://12377.qinglangwuhu.cn/',
 							target: '_blank'
 						},
-						{ default: () => '违法不良信息举报电话：12377' }
+						{
+							default: () => '违法不良信息举报电话：12377'
+						}
 					),
 					h(
 						'a',
@@ -428,20 +541,55 @@ function renderCertification() {
 						{ default: () => '提供支持' }
 					)
 				]),
-				h('div', { style: 'font-size: 12px;color:var(--n-text-color)' }, [
-					h(NText, null, { default: () => 'Copyright © 2024-2025' })
-				]),
-				h('div', { style: 'font-size: 12px;color:var(--n-text-color)' }, [
-					h(NText, null, { default: () => '芜湖超正经科技有限公司' })
-				]),
-				h('div', { style: 'font-size: 12px;color:var(--n-text-color)' }, [
-					h(NText, null, {
-						default: () => '地址：安徽省芜湖市镜湖区范罗山街道蜂牛产业园D423室'
-					})
-				]),
-				h('div', { style: 'font-size: 12px;color:var(--n-text-color)' }, [
-					h(NText, null, { default: () => '邮箱：help@chaozj.com' })
-				])
+				h(
+					'div',
+					{
+						style:
+							'font-size: 12px;color:var(--n-text-color)'
+					},
+					[
+						h(NText, null, {
+							default: () => 'Copyright © 2024-2025'
+						})
+					]
+				),
+				h(
+					'div',
+					{
+						style:
+							'font-size: 12px;color:var(--n-text-color)'
+					},
+					[
+						h(NText, null, {
+							default: () => '芜湖超正经科技有限公司'
+						})
+					]
+				),
+				h(
+					'div',
+					{
+						style:
+							'font-size: 12px;color:var(--n-text-color)'
+					},
+					[
+						h(NText, null, {
+							default: () =>
+								'地址：安徽省芜湖市镜湖区范罗山街道蜂牛产业园D423室'
+						})
+					]
+				),
+				h(
+					'div',
+					{
+						style:
+							'font-size: 12px;color:var(--n-text-color)'
+					},
+					[
+						h(NText, null, {
+							default: () => '邮箱：help@chaozj.com'
+						})
+					]
+				)
 			])
 		]
 	)
@@ -454,20 +602,28 @@ function renderCertification() {
       <n-gi span="24 1:0 600:24">
         <n-flex :size="[0,0]" class="px-4" align="center" justify="space-between">
           <icons-keyframe class="icon"/>
-          <n-input id="search" class="min-w-[40%]" autosize round placeholder="搜索更多内容">
+          <n-input id="search" class="min-w-[40%]" autosize round :placeholder="$t('ui.searchMoreContent')">
             <!--          TODO:实现搜索逻辑-->
             <template #suffix>
               <n-icon :component="Search"/>
             </template>
           </n-input>
           <n-flex size="large">
+            <n-dropdown id="lang" trigger="hover" class="w-58 rounded-3xl" :options="i18n">
+              <n-button class="color-[--text-2]" size="large" text>
+                <template #icon>
+                    <Language/>
+                </template>
+              </n-button>
+            </n-dropdown>
+
             <n-dropdown id="flink" trigger="hover" class="w-64 rounded-3xl" :options="singleFriend">
               <n-button class="color-[--text-3]" size="large" text>
-                友情链接
+                {{$t('ui.friendsLink') }}
               </n-button>
             </n-dropdown>
             <n-button class="color-[--text-3]" size="large" text>
-              商务合作
+              {{$t('ui.contact') }}
             </n-button>
           </n-flex>
         </n-flex>
@@ -476,6 +632,7 @@ function renderCertification() {
         <n-flex class="w-full" justify="space-between">
           <icons-keyframe class="icon ml-4"/>
           <n-flex class="mr-4" align="center" size="small">
+
             <n-button circle quaternary>
               <template #icon>
                 <n-icon>
@@ -483,6 +640,13 @@ function renderCertification() {
                 </n-icon>
               </template>
             </n-button>
+            <n-dropdown id="lang" trigger="hover" class="w-58 rounded-3xl" :options="i18n">
+              <n-button circle quaternary class="color-[--text-2]">
+                <template #icon>
+                  <Language/>
+                </template>
+              </n-button>
+            </n-dropdown>
             <n-dropdown id="menu" trigger="click" class="w-58 rounded-3xl" :options="currentMore">
               <n-button circle quaternary>
                 <template #icon>

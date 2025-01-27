@@ -24,13 +24,13 @@ const len = computed(() => {
 // 数字模糊转换
 function numFormat(num: number) {
 	if (50000 >= num && num > 10000) {
-		return '1万+'
+		return `1${t('ui.w')}+`
 	}
 	if (100000 >= num && num > 50000) {
-		return '5万+'
+		return `5${t('ui.w')}+`
 	}
 	if (num > 100000) {
-		return '10万+'
+		return `10${t('ui.w')}+`
 	}
 	return num.toString()
 }

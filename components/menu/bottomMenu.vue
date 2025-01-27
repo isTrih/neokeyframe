@@ -18,7 +18,8 @@ function handleClick(menu: string) {
     CurrentMenu.value = 'home';
     navigateTo('/');
     return;
-  } else if (menu === 'user') {
+  }
+  if (menu === 'user') {
     if (!IsLogin.value) {
       showLogin()
       return;
@@ -95,8 +96,8 @@ onMounted(() => {
           v-show="!IsLogin" size="3dvh"
           :class="['icon', CurrentMenu=='user'?'color-[--czjB-7]':'color-[--text-1]']"
       >
-        <div class="w-3dvh h-3dvh font-600 font-sans font-not-italic text-1.4dvh">
-          登录
+        <div :class="['h-3dvh font-600 font-sans font-not-italic',$t('ui.login')==='ログイン'?'w-4dvh text-1dvh':'w-3dvh text-1.4dvh']">
+          {{ $t('ui.login') }}
         </div>
       </n-icon>
       <n-icon

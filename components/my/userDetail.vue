@@ -8,7 +8,7 @@
           :class="[{ active: activeIndex === index },'color-[--text-1]']"
           @click="handleButtonClick(index)"
       >
-        {{ item }}
+        {{ $t('ui.'+item) }}
       </button>
       <!-- 动画元素，半透明灰色圆角矩形 -->
       <div
@@ -33,12 +33,11 @@
             :data-direction="getDirection"
             class="content-container"
         >
-
           <n-spin class="w-full content-center" :show="isload">
             <div v-if="showLogic" :style="{height: userContainerHeight+'px'}"
                  class="w-full flex flex-col justify-center">
               <client-only>
-                <n-empty size="huge" description="只能看自己的哦">
+                <n-empty size="huge" :description="$t('ui.own')">
                   <template #icon>
                     <n-icon>
                       <IosEyeOff/>
@@ -58,10 +57,10 @@
               <!--        {{ i }}-->
               <!--      </div>-->
               <div v-if="isload" class="flex justify-center align-center">
-                加载中...
+                {{ $t('ui.loading') }}
               </div>
               <div v-if="disabled" class="flex justify-center align-center">
-                没有更多喽！
+                {{ $t('ui.noMore') }}
               </div>
             </n-infinite-scroll>
 
@@ -75,9 +74,8 @@
 
 <script setup lang="ts">
 import {IosEyeOff} from '@vicons/ionicons4';
-import {GetUserFeeds} from '~/apis/feed.ts';
-import type {Card} from '~/types/feed.ts';
-import {throttle} from '~/composables/utils.ts';
+import {GetUserFeeds} from '~/apis/feed';
+import type {Card} from '~/types/feed';
 // 查看用户ID
 const props = defineProps({
   // eslint-disable-next-line vue/require-default-prop

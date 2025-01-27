@@ -1,28 +1,10 @@
 import {$fetch} from 'ofetch'
 import {useRuntimeConfig} from '#app'
-import {useUserStore} from '~/stores/useUserStore.ts'
-// // region 提示
-// import type {ConfigProviderProps} from 'naive-ui'
-// import {createDiscreteApi, darkTheme, lightTheme} from 'naive-ui'
-// import {computed, ref} from 'vue'
+import {useUserStore} from '~/stores/useUserStore'
 
 interface RequestOptions {
 	[key: string]: any
 }
-
-// region 提示
-// const themeRef = ref<'light' | 'dark'>('light')
-// const configProviderPropsRef = computed<ConfigProviderProps>(() => ({
-//     theme: themeRef.value === 'light' ? lightTheme : darkTheme
-// }))
-//
-// const {message} = createDiscreteApi(
-//     ['message'],
-//     {
-//         configProviderProps: configProviderPropsRef
-//     }
-// )
-// endregion
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
@@ -35,13 +17,12 @@ function handleRequest(options: RequestOptions) {
 		Authorization: `Bearer ${UserInfo.value.token}`
 	}
 }
-
 // 响应拦截器
 function handleResponse(response: any) {
 	if (response.error) {
 		throw new Error(response.error.message || '响应错误')
 	}
-	return response.data
+	return response
 }
 
 /**

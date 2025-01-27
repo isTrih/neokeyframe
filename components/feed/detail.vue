@@ -59,7 +59,7 @@ function singleClick() {
       <n-gi class="mediaContainer" span="12">
         大图片组{{ fid }}
         <div v-rich-text-render="richTextConfig">
-          这是一个包含 [!bp aid="{{ fid }}"!] 的示例文本。
+          这是一个包含  的示例文本。
         </div>
       </n-gi>
       <n-gi class="InfoContainer" span="12">

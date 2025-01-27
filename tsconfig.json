@@ -1,32 +1,4 @@
 {
 	"extends": "./.nuxt/tsconfig.json",
-
-	"compilerOptions": {
-		"target": "ES2022",
-
-		"module": "ESNext",
-
-		"allowJs": true,
-		"sourceMap": true,
-		"useDefineForClassFields": true,
-
-		"lib": ["ES2022", "ESNext", "DOM", "DOM.Iterable"],
-		"skipLibCheck": true,
-		"moduleResolution": "Node",
-		"allowImportingTsExtensions": true,
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"noEmit": true,
-		"jsx": "preserve",
-		"jsxImportSource": "vue",
-		"strict": true,
-		"noImplicitThis": true,
-		"forceConsistentCasingInFileNames": true,
-		"allowSyntheticDefaultImports": false,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true,
-		"noImplicitAny": true
-	},
 	"exclude": ["node_modules"]
 }

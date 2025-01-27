@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import {DarkModeRound, LightModeRound, AutoAwesomeRound} from '@vicons/material';
+import {
+	DarkModeRound,
+	LightModeRound,
+	AutoAwesomeRound
+} from '@vicons/material'
 
-const {ColorMode} = storeToRefs(useConfigStore());
-const click = function (index: number) {
-  ColorMode.value = index;
-};
+const { ColorMode } = storeToRefs(useConfigStore())
+const click = (index: number) => {
+	ColorMode.value = index
+}
 </script>
 
 <template>
   <div class="w-full h-full">
     <n-flex class="m-2" justify="space-between" align="center">
-      <div class="ml-5 text-sm">深色模式</div>
+      <div class="ml-5 text-sm color-[--text-1]">{{ $t('ui.darkMode') }}</div>
       <div
           id="container"
           class="mr-2 w-21 h-7 rounded-full flex flex-row"
@@ -38,7 +42,7 @@ const click = function (index: number) {
             </div>
           </template>
           <template #default>
-            跟随系统
+            {{ $t('ui.followSystem') }}
           </template>
         </n-tooltip>
         <n-tooltip
@@ -63,19 +67,16 @@ const click = function (index: number) {
             </div>
           </template>
           <template #default>
-            浅色模式
+            {{ $t('ui.light') }}
           </template>
 
         </n-tooltip>
         <n-tooltip
             :show-arrow="false"
+            class="content-center"
             :style="[
-            {
-              fontSize: '0.6rem'
-            },
-            {
-              height: '1rem'
-            },
+            {height: '1rem'},
+            {fontSize: '0.6rem'},
             { width: '2.6rem' },
             { background: `var(--bg-2)`},
             { color: `var(--text-1)` }
@@ -89,7 +90,7 @@ const click = function (index: number) {
             </div>
           </template>
           <template #default>
-            深色模式
+            {{ $t('ui.dark') }}
           </template>
         </n-tooltip>
       </div>
