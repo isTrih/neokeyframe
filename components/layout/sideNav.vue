@@ -190,7 +190,7 @@ const currentMore = computed(() => {
 										h(
 											NText,
 											{ depth: 3 },
-											{ default: () => '设置' }
+											{ default: () => t('ui.set') }
 										)
 									]
 								)
