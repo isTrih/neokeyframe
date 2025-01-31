@@ -17,10 +17,16 @@ const columns = ref(0)
 const card_columns = ref({})
 const arrHeight = ref([])
 
+useHead({
+  title: '每一秒都是关键帧',
+  meta: [
+    { name: 'keywords', content: '关键帧, 关键帧社区, 关键帧动画, 动画社区, 二次元社区, 半次元, 二次元, 约稿, 米画师，画加, 优动漫, csp ,动画, 小红书' }
+  ]
+})
+
+
 onMounted(async () => {
 	InitMenu()
-
-
   GetFeeds(0, query.value as string).then(res=>{
     console.log('data', res)
     cards.value = res.data.feeds

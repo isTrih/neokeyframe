@@ -11,10 +11,12 @@ type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 // 请求拦截器
 function handleRequest(options: RequestOptions) {
 	const { UserInfo } = storeToRefs(useUserStore())
+	const userIp = useCookie('user_ip')
 	options.headers = {
 		...options.headers,
 		'Content-Type': 'application/json',
-		Authorization: `Bearer ${UserInfo.value.token}`
+		Authorization: `Bearer ${UserInfo.value.token}`,
+		KIP: userIp.value?userIp.value:'unknown',
 	}
 }
 // 响应拦截器

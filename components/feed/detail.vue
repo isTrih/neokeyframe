@@ -1,48 +1,75 @@
 <script setup lang="ts">
-import { Close } from "@vicons/ionicons5";
-import { FeedBPlayer } from "#components";
+import { Close } from '@vicons/ionicons5'
+import { FeedBPlayer, NuxtLink } from '#components'
+import { GetFeedDetail } from '~/apis/feed'
+import type { Feed } from '~/types/feed'
 // 组件属性
 const props = defineProps({
 	fid: {
 		type: Number,
-		required: true,
+		required: true
 	},
 	single: {
 		type: Boolean,
-		default: false,
-	},
-});
+		default: false
+	}
+})
+// 定义 API 响应的类型
+interface FeedResponse {
+	data: {
+		Feed: Feed
+	}
+}
+
+const { data } = await useFetch<FeedResponse>(
+	`/apikeyframe/feed/${props.fid}`
+)
+console.log(data)
+useHead({
+	title: data.value
+		? data.value.data.Feed.title
+		: '标题获取错误',
+	meta: [{ name: 'keywords', content: '前端, keywords' }]
+})
 const richTextConfig = ref({
-	markers: ["bp"],
+	markers: ['bp'],
 	//使用方式是先在markers中添加标记文本
-	//[!xxx param=??!]
+	//[xxx param=??]
 	//再在components中添加文本对应的组件
 	components: {
-		bp: FeedBPlayer,
+		bp: FeedBPlayer
 	},
-});
+  link: NuxtLink
+})
 // 定义组件方法
-const emit = defineEmits(["closeDetail"]);
+const emit = defineEmits(['closeDetail'])
 //
-const { IsSmall, WaterFallHeight } = storeToRefs(useConfigStore());
+const { IsSmall, WaterFallHeight } = storeToRefs(
+	useConfigStore()
+)
 
 function singleClick() {
 	if (props.single) {
-		navigateTo("/");
+		navigateTo('/')
 	} else {
-		emit("closeDetail");
+		emit('closeDetail')
 	}
 }
+
+// 获取当前时间戳的方法
+const today = computed(() => {
+	return Math.floor(new Date().getTime() / 1000)
+})
+console.log(data.value)
 </script>
 
 <template>
 
-  <div>
-
+  <div class="w-full">
     <n-tooltip v-if="!IsSmall&&!single" trigger="hover" :show-arrow="false"
                :style="[{fontSize: '0.6rem'},{height: '1rem'},{ width: '2.8rem' },{ background: `var(--bg-2)`},{ color: `var(--text-1)` }]">
       <template #trigger>
-        <n-float-button position="absolute" class="op-80 hover-op-100" height="30" :right="20"
+        <n-float-button position="absolute" class="op-80 hover-op-100" height="30" :left="20"
                         :top="20" @click="emit('closeDetail')"
         >
           <n-icon>
@@ -53,39 +80,46 @@ function singleClick() {
       <n-text class="color-[--text-2]">关闭</n-text>
       <n-text class="color-[--text-2]" code>ESC</n-text>
     </n-tooltip>
-
-
-    <n-grid v-if="!IsSmall">
+    <n-grid class="w-full" v-if="!IsSmall" cols="24">
       <n-gi class="mediaContainer" span="12">
-        大图片组{{ fid }}
-        <div v-rich-text-render="richTextConfig">
-          这是一个包含  的示例文本。
-        </div>
+
       </n-gi>
-      <n-gi class="InfoContainer" span="12">
-        这是文字
+      <n-gi class="InfoContainer" span="12" style="white-space: pre-wrap;">
+        <n-text class="text-4.5" strong>
+          {{ data.data.Feed.title }}
+        </n-text>
+        <n-scrollbar class="feedContent">
+          <div class="text-3.5" v-rich-text-render="richTextConfig">
+            {{ data.data.Feed.content }}
+
+          </div>
+          <n-text class="text-3" depth="3">
+            {{t('ui.editedOn')}}
+            <n-time :time="data.data.Feed.publish_time" format="yyyy-MM-dd" unix/>
+            &nbsp;
+            <n-time :time="data.data.Feed.publish_time" type="relative" unix/>
+          </n-text>
+        </n-scrollbar>
+        <div class="bg-red h-4rem">这是操作栏</div>
       </n-gi>
     </n-grid>
-    <n-scrollbar :style="{maxHeight: WaterFallHeight+'px'}">
-      <n-flex v-if="IsSmall" vertical>
+    <n-scrollbar v-if="IsSmall" :style="{maxHeight: WaterFallHeight+'px'}">
+      <n-flex vertical>
         <n-flex class="w-full" align="center" justify="space-between">
-          <n-button class="op-80 hover-op-100" height="30" @click="singleClick">
+          <n-button class="op-80 hover-op-100" size="tiny" @click="singleClick">
             <n-icon>
               <Close/>
             </n-icon>
           </n-button>
+          小{{ data.data.Feed.title }}
         </n-flex>
         <div>
           详情部分
           <div v-rich-text-render="richTextConfig">
-            这是一个使用变量的，当前id为{{ fid }}
-            [!bp aid="{{ fid }}"!]
-            <br>
-            这是使用av号的
-            [!bp aid=1155780864!]
-            <br>
-            这是使用bv号的
-            [!bp bvid=BV1Bz421Y7Zc!]
+
+            <div v-rich-text-render="richTextConfig">
+              {{ data.data.Feed.content }}
+            </div>
           </div>
         </div>
         <div>
@@ -97,5 +131,9 @@ function singleClick() {
 </template>
 
 <style scoped>
-
+:deep(.feedContent) {
+  max-height: calc(80dvh - 8rem);
+  min-height: calc(80dvh - 8rem);
+  padding-bottom: 0.25rem;
+}
 </style>

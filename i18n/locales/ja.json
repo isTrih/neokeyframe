@@ -85,7 +85,8 @@
 		"en": "English",
 		"zh_cn": "简体中文",
 		"ja": "日本語",
-		"language": "言語"
+		"language": "言語",
+		"editedOn": "編集日："
 	},
 	"flink": {
 		"qys": "鉛元素アニメーション",

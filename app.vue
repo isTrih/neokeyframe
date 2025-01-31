@@ -1,5 +1,5 @@
 <template>
-  <n-config-provider inline-theme-disabled :theme="theme" :theme-overrides="theme === null ? lightThemeOverrides : darkThemeOverrides">
+  <n-config-provider :locale="locale[0]" :date-locale="locale[1]" inline-theme-disabled :theme="theme" :theme-overrides="theme === null ? lightThemeOverrides : darkThemeOverrides">
     <n-message-provider>
     <NuxtLayout>
       <NuxtPage/>
@@ -10,10 +10,13 @@
 <script setup lang="ts">
 import {
 	NConfigProvider,
-	type GlobalThemeOverrides
+	type GlobalThemeOverrides,
+  type NLocale,
+  type NDateLocale,
 } from 'naive-ui'
 import { useColorMode } from '@vueuse/core'
 import { darkTheme } from 'naive-ui'
+import { zhCN, dateZhCN,jaJP,dateJaJP,enGB,dateEnGB} from 'naive-ui'
 // import { isMobile } from '~/composables/utils.ts'
 
 const theme = ref<null | typeof darkTheme>(null)
@@ -112,11 +115,23 @@ function InitTheme() {
 watch([ColorMode, colorMode], () => {
 	InitTheme()
 })
-
+const locale = computed<[NLocale, NDateLocale]>(() => {
+  const lancookie = useCookie('i18n_redirected')
+  if (lancookie.value === 'en') {
+    return [enGB, dateEnGB]
+  }
+  if (lancookie.value === 'ja') {
+    return [jaJP, dateJaJP]
+  }
+  return [zhCN, dateZhCN]
+})
 onMounted(() => {
 	InitTheme()
-	console.log(
-		// isMobile() ? '当前环境是移动端' : '当前环境不是移动端'
+	$fetch('https://api64.ipify.org').then(
+      (res) => {
+			const userIp = useCookie('user_ip')
+			userIp.value = String(res)
+		}
 	)
 })
 </script>

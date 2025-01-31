@@ -65,13 +65,13 @@
     "wuhuReportCenter": "Wuhu Internet Reporting Center (China)",
     "onlineReportArea": "Online Harmful Information Reporting Area (China)",
     "ipDataSupport": "IP Address Location Data Supported by Chunzhen CZ88",
-    "company": "Wuhu Chaozhengjing Technology Co., Ltd. (China)",
+    "company": "SupraRectus Technology Co., Ltd(China)",
     "address": "Address: Room D423, Fengniu Industrial Park, Fanluoshan Sub - district, Jinghu District, Wuhu City, Anhui Province",
     "email": "Email: ",
     "followSystem": "Auto",
     "light": "Light",
     "dark": "Dark",
-    "w": "*10k",
+    "w": "W(10K)",
     "noMore": "There is no more!",
     "unfollow": "Unfollow",
     "cantFollowSelf": "You can't follow yourself!",
@@ -85,7 +85,8 @@
     "en": "English",
     "zh_cn": "简体中文",
     "ja": "日本語",
-    "language": "Language"
+    "language": "Language",
+    "editedOn": "Edited on"
   },
   "flink": {
     "qys": "Pb Animation",

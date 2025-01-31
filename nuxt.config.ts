@@ -38,8 +38,8 @@ export default defineNuxtConfig({
 		ssrHandlers: true
 	},
 	build: {
-		transpile: ['vueuc','naive-ui'],
-		analyze: true,
+		transpile: ['vueuc', 'naive-ui'],
+		analyze: true
 	},
 	nitro: {
 		routeRules: {
@@ -52,9 +52,7 @@ export default defineNuxtConfig({
 	router: {},
 	app: {
 		head: {
-			title: '关键帧丨每一秒都是关键帧',
 			meta: [
-				{ charset: 'utf-8' },
 				{
 					name: 'viewport',
 					content:
@@ -64,6 +62,16 @@ export default defineNuxtConfig({
 			link: [],
 			script: []
 		}
+	}, // SEO 配置
+	site: {
+		url: 'https://checkpoint321.com',
+		name: '关键帧',
+		description:
+			'无论你是创作者还是爱好者，这里都是你的家',
+		defaultLocale: 'zh-cn',
+		exclude: ['/admin/**'], // 过滤不需要的 url
+		cacheMaxAgeSeconds: 24 * 3600, // 缓存时间一天
+		autoLastmod: true // 自动检测每个 URL 的 lastmod 日期
 	},
 	css: ['~/assets/main.css'],
 	compatibilityDate: '2024-11-01',
@@ -92,6 +100,9 @@ export default defineNuxtConfig({
 	},
 	// vite 构建工具配置
 	vite: {
+		ssr: {
+			noExternal: ['naive-ui', 'vueuc', 'date-fns']
+		},
 		build: {
 			sourcemap: true
 		},

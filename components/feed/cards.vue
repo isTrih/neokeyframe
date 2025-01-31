@@ -49,7 +49,9 @@ const showDetails = (id: number) => {
 			h(
 				FeedDetail,
 				{
-					class: 'flex items-center justify-center',
+					class: IsSmall.value
+              ? 'w-100dvw h-100dvh'
+              : 'rounded-xl w-80dvw h-80dvh',
 					fid: id,
 					onCloseDetail: () => {
 						m.destroy()
@@ -126,7 +128,7 @@ const heightCaculate = (
             </div>
             <div class="bottom" style="display:flex; justify-content: space-between; align-content: center;">
               <n-flex align="center" size="small">
-                <nuxt-link class="flex align-center" :to="{name: 'user-uid', params: {uid: card.user.id}}">
+                <nuxt-link class="flex align-center" :to="{name: 'user-uid', params: {uid: card.user.user_id}}">
                   <n-skeleton v-if="!card.loaded" circle height="24px"/>
                   <n-avatar
                       v-else
@@ -139,7 +141,7 @@ const heightCaculate = (
                 </nuxt-link>
                 <nuxt-link
                     class="flex align-center decoration-none text-xs user_name"
-                    :to="{name: 'user-uid', params: {uid: card.user.id}}"
+                    :to="{name: 'user-uid', params: {uid: card.user.user_id}}"
                 >
                   <div class="user_name">{{ card.user.user_name }}</div>
                 </nuxt-link>

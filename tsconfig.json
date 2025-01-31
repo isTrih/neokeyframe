@@ -1,6 +1,6 @@
 {
 	"extends": "./.nuxt/tsconfig.json",
-	"exclude": ["node_modules"],
 	"compilerOptions": {
+		"types": ["naive-ui/volar"]
 	}
 }

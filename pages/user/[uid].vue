@@ -20,9 +20,11 @@ const signatureFormat = (signature: string) => {
 const ipLocationFormat = (location: string): string => {
 	const parts = location.split('–')
 	if (parts.length >= 3) {
-		// 去除省份名称中的 "省", "特别行政区", "自治区" 等字符
 		return parts[1]
 	}
+  if (parts.length === 2) {
+    return parts[1].split('\t')[0]
+  }
 	return t('ui.unknown')
 }
 // 检查是否是自己
@@ -88,7 +90,12 @@ onMounted(async () => {
 	if (checkUser()) {
 		InitMenu()
 	}
-
+  useHead({
+    title: data.user_name,
+    meta: [
+      { name: 'keywords', content: '关键帧, 关键帧社区, 关键帧动画, 动画社区, 二次元社区, 半次元, 二次元, 约稿, 米画师，画加, 优动漫, csp ,动画, 小红书' }
+    ]
+  })
 	CurrentUser.value = data
 })
 import Button from '~/components/menu/button.vue'

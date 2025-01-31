@@ -8,11 +8,8 @@ export const Login = async (mobile: string, password: string) =>
 	)
 
 export const GetUserInfo = async (uid: number) =>
-	use$Post(
-		'/user/info',
-		JSON.stringify({
-			user_id: uid
-		})
+	use$Get(
+		`/user/${uid}`
 	)
 
 export const SendCode = async (mobile: string) => {
