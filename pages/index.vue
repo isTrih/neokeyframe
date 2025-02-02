@@ -101,7 +101,7 @@ const { WaterFallHeight } = storeToRefs(useConfigStore())
             加载中...
           </div>
           <div v-if="disabled" class="flex justify-center align-center">
-            已经到底啦！ 🤪
+            {{t('ui.noMore')}}
           </div>
           <div v-if="disabled" class="text"/>
         </n-infinite-scroll>

@@ -195,6 +195,7 @@ html,
 body,
 #app  {
 	background-color: var(--bg-1);
+	color: var(--text-1);
 	margin: 0;
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 	width: 100%;

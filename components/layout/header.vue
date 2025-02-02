@@ -585,7 +585,7 @@ function renderCertification() {
   <n-grid :cols="24" item-responsive>
       <n-gi span="24 1:0 600:24">
         <n-flex :size="[0,0]" class="px-4" align="center" justify="space-between">
-          <icons-keyframe class="icon"/>
+          <icons-keyframe class="color-[--czjB-5] h-34px"/>
           <n-input id="search" class="min-w-[40%]" autosize round :placeholder="t('ui.searchMoreContent')">
             <!--          TODO:实现搜索逻辑-->
             <template #suffix>
@@ -650,9 +650,3 @@ function renderCertification() {
       </n-gi>
     </n-grid>
 </template>
-
-<style scoped>
-.icon {
-  color: var(--czjB-5);
-}
-</style>

@@ -48,4 +48,5 @@ export type Feed = {
 	ai_insp: number;
 	ai_insp_code: number;
 	insp: number;
+	ip_location: string;
 };

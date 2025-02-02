@@ -16,17 +16,7 @@ const signatureFormat = (signature: string) => {
 	}
 	return signature
 }
-// 属地格式化
-const ipLocationFormat = (location: string): string => {
-	const parts = location.split('–')
-	if (parts.length >= 3) {
-		return parts[1]
-	}
-  if (parts.length === 2) {
-    return parts[1].split('\t')[0]
-  }
-	return t('ui.unknown')
-}
+
 // 检查是否是自己
 const checkUser = () => {
 	return UserInfo.value.user_id === Number(userId)

@@ -49,9 +49,6 @@ const showDetails = (id: number) => {
 			h(
 				FeedDetail,
 				{
-					class: IsSmall.value
-              ? 'w-100dvw h-100dvh'
-              : 'rounded-xl w-80dvw h-80dvh',
 					fid: id,
 					onCloseDetail: () => {
 						m.destroy()
@@ -146,7 +143,7 @@ const heightCaculate = (
                   <div class="user_name">{{ card.user.user_name }}</div>
                 </nuxt-link>
               </n-flex>
-              <n-flex align="center" justify="flex-end" :size="2" class="text-xs flex align-center">
+              <n-flex align="center" justify="flex-end" :size="2" class="text-xs color-[--text-1] flex align-center">
                 <n-icon>
                   <IosHeartEmpty/>
                 </n-icon>
@@ -221,6 +218,5 @@ section {
 
 .user_name:hover {
   color: var(--czjB-8);
-  transition: all 0.2s ease;
 }
 </style>

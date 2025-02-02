@@ -1,7 +1,6 @@
 // plugins/rich-text.ts
 import type {DirectiveBinding} from 'vue'
 import {h, render} from 'vue'
-import {NuxtLink} from '#components'
 
 export default defineNuxtPlugin(nuxtApp => {
 	const renderRichText = {
@@ -32,15 +31,23 @@ export default defineNuxtPlugin(nuxtApp => {
 				})
 			}
 
-			// 处理 #xxx 格式并替换为 NuxtLink
+			// 处理 #xxx 格式并替换为 a 标签
 			const hashRegex = /#([^#\s]+)/g;
 			innerHTML = innerHTML.replace(hashRegex, (match, id) => {
 				console.log('匹配到的 # 标记:', match, 'ID:', id);
 				const container = document.createElement('div');
-				const linkInstance = h(link, {
-					to: { name: 'frame-fid', params: { fid:id } }
-				}, { default: () => `#${id}` });
-				render(linkInstance, container);
+				// 生成 a 标签的样式
+				const linkStyle = 'text-decoration: none;';
+				const linkHref = `/frame/tag/${id}`;
+				const linkElement = document.createElement('a');
+				linkElement.href = linkHref;
+				linkElement.style.cssText = linkStyle;
+				linkElement.textContent = `#${id}`;
+				// 添加类名
+				linkElement.classList.add('color-[--czjB-5]');
+				// 添加到容器
+				container.appendChild(linkElement);
+
 				return container.innerHTML;
 			});
 

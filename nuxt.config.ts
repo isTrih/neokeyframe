@@ -5,6 +5,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import { currentLocales } from './i18n/config'
+import removeConsole from "vite-plugin-remove-console";
 export default defineNuxtConfig({
 	plugins: [
 		{
@@ -38,13 +39,13 @@ export default defineNuxtConfig({
 		ssrHandlers: true
 	},
 	build: {
-		transpile: ['vueuc', 'naive-ui'],
-		analyze: true
-	},
+		transpile: ['vueuc', 'naive-ui','@nuxt/console'],
+		analyze: false,},
 	nitro: {
 		routeRules: {
 			'/apikeyframe/**': {
-				proxy: 'http://apix.checkpoint321.com:8888/v1/**'
+				// proxy: 'http://apix.checkpoint321.com:8888/v1/**'
+				proxy: 'http://127.0.0.1:8888/v1/**'
 			}
 		},
 		compressPublicAssets: true // 启动压缩
@@ -53,14 +54,10 @@ export default defineNuxtConfig({
 	app: {
 		head: {
 			meta: [
-				{
-					name: 'viewport',
-					content:
-						'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'
-				}
+				{ name: 'keywords', content: '关键帧社区, 关键帧, keyframe ani, checkpoint321, checkpoint, 关键帧动画' },
+				{ name: 'description', content: '无论你是创作者还是爱好者，这里都是你的家' }
 			],
-			link: [],
-			script: []
+			link: [{ rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' }],
 		}
 	}, // SEO 配置
 	site: {
@@ -70,11 +67,11 @@ export default defineNuxtConfig({
 			'无论你是创作者还是爱好者，这里都是你的家',
 		defaultLocale: 'zh-cn',
 		exclude: ['/admin/**'], // 过滤不需要的 url
-		cacheMaxAgeSeconds: 24 * 3600, // 缓存时间一天
+		cacheMaxAgeSeconds: 2 * 3600, // 缓存时间一天
 		autoLastmod: true // 自动检测每个 URL 的 lastmod 日期
 	},
 	css: ['~/assets/main.css'],
-	compatibilityDate: '2024-11-01',
+	compatibilityDate: '2025-02-01',
 	devtools: { enabled: true },
 	// typescript 配置
 	typescript: {
@@ -123,7 +120,9 @@ export default defineNuxtConfig({
 			}),
 			Components({
 				resolvers: [NaiveUiResolver()]
-			})
+			}),
+			// 用于移除控制台输出
+			removeConsole(),
 		]
 	}
 })
