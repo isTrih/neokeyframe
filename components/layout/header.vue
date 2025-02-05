@@ -8,10 +8,15 @@ import Link from '~/components/menu/link.vue'
 import Theme from '~/components/menu/theme.vue'
 import { fLink, fLinkThin } from '~/types/fLink'
 import { NuxtLink } from '#components'
+import {GetFeeds} from '~/apis/feed';
 
 // region 用户登陆态
 const useUser = useUserStore()
 const { IsLogin } = storeToRefs(useUser)
+const searchValue = ref('')
+const doQuery = () => {
+  navigateTo({name: 'search', query: {q: searchValue.value}});
+}
 // endregion
 // region 更多选项
 const moreIndex = ref(0)
@@ -586,10 +591,14 @@ function renderCertification() {
       <n-gi span="24 1:0 600:24">
         <n-flex :size="[0,0]" class="px-4" align="center" justify="space-between">
           <icons-keyframe class="color-[--czjB-5] h-34px"/>
-          <n-input id="search" class="min-w-[40%]" autosize round :placeholder="t('ui.searchMoreContent')">
+          <n-input v-model:value="searchValue" id="search" class="min-w-[40%]" autosize clearable round :placeholder="t('ui.searchMoreContent')">
             <!--          TODO:实现搜索逻辑-->
             <template #suffix>
-              <n-icon :component="Search"/>
+              <n-button circle text size="tiny" @click="doQuery">
+                <template #icon>
+                  <n-icon :component="Search"/>
+                </template>
+              </n-button>
             </template>
           </n-input>
           <n-flex size="large">

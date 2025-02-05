@@ -2,29 +2,15 @@ export const GetFeeds = async (
 	offset: number,
 	query: string
 ) =>
-	use$Post(
-		'/home/getfeeds',
-		JSON.stringify({
-			offset: offset,
-			query: query
-		})
+	use$Get(
+		`/home/getfeeds?os=${offset}&q=${query}`
 	)
 export const GetUserFeeds = async (
 	offset: number,
 	userId: number,
-	feedType: string
+	feedType: number
 ) =>
-	use$Post(
-		'/home/userfeeds',
-		JSON.stringify({
-			offset: offset,
-			user_id: userId,
-			feed_type: feedType
-		})
-	)
-
+	use$Get(`/home/userfeeds?uid=${userId}&os=${offset}&ftype=${feedType}`)
 
 export const GetFeedDetail = async (id: number) =>
-	use$Get(
-		`/feed/${id}`
-	)
+	use$Get(`/feed/${id}`)

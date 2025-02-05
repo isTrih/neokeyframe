@@ -2,7 +2,8 @@
 //获取查询参数
 import {GetFeeds} from '~/apis/feed'
 import type {Card} from '~/types/feed'
-
+import {AlertCircle} from '@vicons/ionicons5'
+import {IosArrowBack} from '@vicons/ionicons4';
 const query = computed(() => {
 	const { query } = useRoute()
 	return query.q ? query.q : ''
@@ -18,7 +19,7 @@ const card_columns = ref({})
 const arrHeight = ref([])
 
 useHead({
-  title: '每一秒都是关键帧',
+  title: `搜索：${query.value}`,
   meta: [
     { name: 'keywords', content: '关键帧, 关键帧社区, 关键帧动画, 动画社区, 二次元社区, 半次元, 二次元, 约稿, 米画师，画加, 优动漫, csp ,动画, 小红书' }
   ]
@@ -83,18 +84,37 @@ const { WaterFallHeight } = storeToRefs(useConfigStore())
   </div>
   <client-only>
   <div id="waterfall-container" ref="gridRef" class="h-full w-full ">
-    <div
-        v-if="cards.length===0" id="waterfall-container"
+    <div v-if="isload" id="waterfall-container"
         class="h-full w-full flex flex-col justify-center align-center">
-      <n-empty description="正在加载中...">
+      <n-empty v-show="isload"  description="正在加载中...">
         <template #icon>
           <n-spin/>
         </template>
       </n-empty>
+
     </div>
     <div v-else id="waterfall-container" class="h-full w-full flex flex-col justify-center">
+
       <n-spin :show="isload">
         <n-infinite-scroll class="rounded-2xl" :style="{height: WaterFallHeight+'px'}" :distance="100" @load="load">
+          <n-button circle size="small" text @click="() => useRouter().back()">
+            <template #icon>
+              <n-icon>
+                <IosArrowBack/>
+              </n-icon>
+            </template>
+            {{ t('ui.back') }}
+          </n-button>
+          <n-empty class="mt-30vh" v-show="cards.length===0"  description="什么都没有找到哦">
+            <template #icon>
+              <AlertCircle/>
+            </template>
+            <template #extra>
+              <n-button type="primary" size="small" @click="() => useRouter().back()">
+                回到首页
+              </n-button>
+            </template>
+          </n-empty>
           <FeedCards ref="homeCardRef" class="rounded-2xl" :card-columns="card_columns" @show-detail="showDetail"/>
           <div v-if="isload" class="flex justify-center align-center">
             加载中...

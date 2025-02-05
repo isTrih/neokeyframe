@@ -2,7 +2,7 @@
 import { Close } from '@vicons/ionicons5'
 import { FeedBPlayer, NuxtLink } from '#components'
 import type { Feed } from '~/types/feed'
-import {ipLocationFormat} from '~/composables/utils';
+import { ipLocationFormat } from '~/composables/utils'
 
 // 组件属性
 const props = defineProps({
@@ -27,8 +27,10 @@ interface FeedResponse {
 const { data } = await useFetch<FeedResponse>(
 	`/apikeyframe/feed/${props.fid}`
 )
-
+// 定义关闭浮窗组件方法
+const emit = defineEmits(['closeDetail'])
 // 设置标题头
+
 useHead({
 	title: data.value
 		? data.value.data.Feed.title
@@ -43,10 +45,9 @@ const richTextConfig = ref({
 	//再在components中添加文本对应的组件
 	components: {
 		bp: FeedBPlayer
-	}
+	},
+	bemit: emit
 })
-// 定义关闭浮窗组件方法
-const emit = defineEmits(['closeDetail'])
 
 // 获取全局配置
 const { IsSmall, WaterFallHeight } = storeToRefs(

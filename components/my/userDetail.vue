@@ -116,7 +116,7 @@ const arrHeight = ref([])
 
 // 主页获取帖子
 const doQuery = async (offset: number) => {
-  const res = await GetUserFeeds(offset, props.currentId, activeType.value);
+  const res = await GetUserFeeds(offset, props.currentId, activeIndex.value);
   console.log(res)
   switch (activeIndex.value) {
     case 0:
@@ -148,7 +148,7 @@ const load = async () => {
         isload.value = true;
         disabled.value = true;
         const offset = cards0.value.length;
-        const res = await GetUserFeeds(offset, props.currentId, activeType.value);
+        const res = await GetUserFeeds(offset, props.currentId, activeIndex.value);
         const more = res.data.feeds;
         if (more.length === 0) {
           disabled.value = true;
@@ -168,7 +168,7 @@ const load = async () => {
         isload.value = true;
         disabled.value = true;
         const offset = cards1.value.length;
-        const res = await GetUserFeeds(offset, props.currentId, activeType.value);
+        const res = await GetUserFeeds(offset, props.currentId, activeIndex.value);
         const more = res.data.feeds;
         if (more.length === 0) {
           disabled.value = true;
@@ -185,7 +185,7 @@ const load = async () => {
         isload.value = true;
         disabled.value = true;
         const offset = cards2.value.length;
-        const res = await GetUserFeeds(offset, props.currentId, activeType.value);
+        const res = await GetUserFeeds(offset, props.currentId, activeIndex.value);
         const more = res.data.feeds;
         if (more.length === 0) {
           disabled.value = true;
