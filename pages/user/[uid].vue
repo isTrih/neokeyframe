@@ -8,6 +8,8 @@
 import { GetUserInfo } from '~/apis/user'
 import type { User } from '~/types/user'
 import { IosArrowBack } from '@vicons/ionicons4'
+import { SadOutline } from '@vicons/ionicons5'
+
 import { NText } from 'naive-ui'
 import Link from '~/components/menu/link.vue'
 const { ContainerWidth, CurrentColor } = storeToRefs(
@@ -54,7 +56,8 @@ const isDark = computed(() => {
 	return CurrentColor.value === 'dark'
 })
 // 用户信息
-const CurrentUser = ref<User>({} as User);
+const CurrentUser = ref<User>({} as User)
+const Code = ref(1101)
 // 路由
 const router = useRouter()
 // 初始化菜单
@@ -73,22 +76,28 @@ const changeSig = () => {
 	isFullSignature.value = !isFullSignature.value
 }
 onMounted(async () => {
-	const { data } = await GetUserInfo(Number(userId))
+	const { data, code } = await GetUserInfo(Number(userId))
 
 	if (checkUser()) {
 		InitMenu()
 	}
-  useHead({
-    title: data.user_name,
-    meta: [
-      { name: 'keywords', content: '关键帧, 关键帧社区, 关键帧动画, 动画社区, 二次元社区, 半次元, 二次元, 约稿, 米画师，画加, 优动漫, csp ,动画, 小红书' }
-    ]
-  })
+	useHead({
+		title: data?data.user_name:t('ui.voidUser'),
+		meta: [
+			{
+				name: 'keywords',
+				content:
+					'关键帧, 关键帧社区, 关键帧动画, 动画社区, 二次元社区, 半次元, 二次元, 约稿, 米画师，画加, 优动漫, csp ,动画, 小红书'
+			}
+		]
+	})
 	CurrentUser.value = data
+  console.log('code', code)
+  Code.value = code
 })
 import Button from '~/components/menu/button.vue'
 const userMore = computed(() => {
-  return [
+	return [
 		{
 			type: 'render',
 			render: () => {
@@ -126,9 +135,9 @@ const userMore = computed(() => {
 				return h(Button, {
 					title: t('ui.report'),
 					thin: true,
-          icon: false,
+					icon: false,
 					onClick: () => {
-            //TODO:举报逻辑
+						//TODO:举报逻辑
 						console.log('举报逻辑')
 					}
 				})
@@ -157,7 +166,7 @@ const userMore = computed(() => {
 
 
     </n-flex>
-    <div class="w-full">
+    <div v-if="Code===0" class="w-full">
       <n-grid class="w-full" cols="20 760:24" item-responsive>
         <n-gi span="1"/>
         <n-gi class="flex flex-col justify-center" offset="1" span="4">
@@ -253,7 +262,10 @@ const userMore = computed(() => {
                 <my-user-count :name="t('ui.posts')" :value="CurrentUser.feed_count"/>
               </n-flex>
               <n-flex size="small">
-                <n-button class="w-6rem" strong round type="primary">
+                <n-button v-if="useUserStore().CheckFollow(Number(userId))" class="w-6rem" strong round secondary>
+                  {{ t('ui.unfollow') }}
+                </n-button>
+                <n-button v-else class="w-6rem" strong round type="primary">
                   {{ t('ui.follow') }}
                 </n-button>
               </n-flex>
@@ -262,11 +274,27 @@ const userMore = computed(() => {
         </n-gi>
       </n-grid>
     </div>
+    <n-empty v-else-if="Code===6021" class="mt-30vh" :description="t('ui.voidUser')">
+      <template #icon>
+        <SadOutline/>
+      </template>
+      <template #extra>
+        <n-button type="primary" round @click="() => navigateTo('/')">
+          回到首页
+        </n-button>
+      </template>
+    </n-empty>
+    <n-flex v-else vertical class="h-full" align="center" justify="center" :size="0">
+      <n-empty :description="t('ui.loading')">
+        <template #icon>
+          <n-spin/>
+        </template>
+      </n-empty>
+    </n-flex>
     <div class="h-full w-full">
-      <my-user-detail v-if="CurrentUser.user_id!==0" :user-id="UserInfo.user_id" :current-id="CurrentUser.user_id"/>
+      <my-user-detail v-if="Code===0" :user-id="UserInfo.user_id" :current-id="CurrentUser.user_id"/>
     </div>
   </n-flex>
-
 </template>
 
 <style scoped>

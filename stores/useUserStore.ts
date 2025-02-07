@@ -29,6 +29,10 @@ export const useUserStore = defineStore(
 		// 用户评论点赞
 		const LikeComments = ref<number[]>([]);
 
+		const CheckFollow = (uid: number) => {
+			return FollowUsers.value.includes(uid);
+		}
+
 		// 获取用户关注、收藏、喜欢列表
 		const GetUserList = async () => {
 			GetUserRelation().then((res) => {
@@ -81,6 +85,7 @@ export const useUserStore = defineStore(
 			IsLogin,
 			FollowUsers,
 			GetUserList,
+			CheckFollow,
 		};
 	},
 	{

@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
 import { Close } from '@vicons/ionicons5'
-import { FeedBPlayer, NuxtLink } from '#components'
+import { FeedBPlayer } from '#components'
 import type { Feed } from '~/types/feed'
 import { ipLocationFormat } from '~/composables/utils'
 
@@ -60,7 +60,7 @@ const { IsSmall, WaterFallHeight } = storeToRefs(
 )
 
 // 适用于单页时候的按钮
-function singleClick() {
+const singleClick = () => {
 	if (props.single) {
 		navigateTo('/')
 	} else {
@@ -68,6 +68,11 @@ function singleClick() {
 	}
 }
 
+// 个人主页按钮
+const userIndex = (uid: number) => {
+	navigateTo(`/user/${uid}`)
+	emit('closeDetail')
+}
 // TODO：关注逻辑
 </script>
 
@@ -119,7 +124,12 @@ function singleClick() {
 
             </n-flex>
           </a>
-          <n-button class="w-6rem mr-1" strong round type="primary">
+          <n-button v-if="useUserStore().CheckFollow(data.data.Feed.user.user_id)"
+                    @click="userIndex(data.data.Feed.user.user_id)"
+                    class="w-6rem mr-1" strong round secondary type="primary">
+            {{ t('ui.userIndex') }}
+          </n-button>
+          <n-button v-else class="w-6rem mr-1" strong round type="primary">
             {{ t('ui.follow') }}
           </n-button>
         </n-flex>
@@ -188,5 +198,6 @@ function singleClick() {
   max-height: calc(80dvh - 2.5rem);
   min-height: calc(80dvh - 3rem);
   @apply rounded-xl;
+  box-shadow: var(--shadow-2-c);
 }
 </style>
