@@ -1,3 +1,10 @@
+/*
+ * 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+ * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+ */
+
+import {use$Get} from '~/composables/httpCore';
+
 export const Login = async (mobile: string, password: string) =>
 	use$Post(
 		'/user/login-mobile-pass',
@@ -36,3 +43,6 @@ export const Register = async (
 			verifyCode: sms
 		})
 	)
+
+export const GetUserRelation = async () =>
+	use$Get('/user/relation')

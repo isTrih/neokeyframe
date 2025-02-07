@@ -1,3 +1,8 @@
+/*
+ * 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+ * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+ */
+
 module.exports = {
   /*打印宽度，超过后，会将属性换行*/
   printWidth: 120,

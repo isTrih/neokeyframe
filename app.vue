@@ -1,3 +1,8 @@
+<!--
+  - 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+  - Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+  -->
+
 <template>
   <n-config-provider :locale="locale[0]" :date-locale="locale[1]" inline-theme-disabled :theme="theme" :theme-overrides="theme === null ? lightThemeOverrides : darkThemeOverrides">
     <n-message-provider>
@@ -17,6 +22,7 @@ import {
 import { useColorMode } from '@vueuse/core'
 import { darkTheme } from 'naive-ui'
 import { zhCN, dateZhCN,jaJP,dateJaJP,enGB,dateEnGB} from 'naive-ui'
+import {GetUserRelation} from '~/apis/user';
 // import { isMobile } from '~/composables/utils.ts'
 
 const theme = ref<null | typeof darkTheme>(null)
@@ -133,5 +139,6 @@ onMounted(() => {
 			userIp.value = String(res)
 		}
 	)
+  useUserStore().GetUserList()
 })
 </script>

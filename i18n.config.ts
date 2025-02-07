@@ -1,3 +1,8 @@
+/*
+ * 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+ * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+ */
+
 import en from '~/i18n/locales/en.json'
 import zh from '~/i18n/locales/zh-cn.json'
 import ja from '~/i18n/locales/ja.json'

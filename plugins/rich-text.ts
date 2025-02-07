@@ -1,3 +1,8 @@
+/*
+ * 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+ * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+ */
+
 // import type { DirectiveBinding } from 'vue'
 // import { h, render } from 'vue'
 // import { Pricetag } from '@vicons/ionicons5'
@@ -116,7 +121,7 @@ export default defineNuxtPlugin(nuxtApp => {
 		mounted(el: HTMLElement, binding: DirectiveBinding) {
 			const markers = binding.value.markers
 			const components = binding.value.components
-			const  emit  = binding.value.bemit
+			const emit = binding.value.bemit
 			// 第一次处理：原生标记组件
 			const processMarkers = () => {
 				// biome-ignore lint/style/useConst: <explanation>
@@ -267,13 +272,16 @@ export default defineNuxtPlugin(nuxtApp => {
 									class:
 										'color-[--czjB-5] hover-color-[--czjB-4]'
 								},
-								{
-									icon: () =>
-										h(NIcon, null, {
+								[
+									h(
+										NIcon,
+										{ class: 'mr-1' },
+										{
 											default: () => h(Pricetag)
-										}),
-									default: () => `${id}`
-								}
+										}
+									),
+									`${id}`
+								]
 							)
 							render(button, container)
 							fragment.appendChild(container)

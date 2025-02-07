@@ -1,3 +1,8 @@
+/*
+ * 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+ * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+ */
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 // 引入unplugin-auto-import插件，用于naive-ui组件自动导入
 import AutoImport from 'unplugin-auto-import/vite'

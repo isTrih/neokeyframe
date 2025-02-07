@@ -1,3 +1,8 @@
+<!--
+  - 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+  - Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+  -->
+
 <script setup lang="ts">
 import { Close } from '@vicons/ionicons5'
 import { FeedBPlayer, NuxtLink } from '#components'
@@ -114,7 +119,7 @@ function singleClick() {
 
             </n-flex>
           </a>
-          <n-button class="w-6rem" strong round type="primary">
+          <n-button class="w-6rem mr-1" strong round type="primary">
             {{ t('ui.follow') }}
           </n-button>
         </n-flex>
@@ -140,7 +145,7 @@ function singleClick() {
         <div class="bg-red h-4rem">这是操作栏</div>
       </n-gi>
     </n-grid>
-    <n-scrollbar v-if="IsSmall" :style="{maxHeight: WaterFallHeight+'px'}">
+    <n-scrollbar v-else :style="{maxHeight: WaterFallHeight+'px'}">
       <n-flex vertical>
         <n-flex class="w-full" align="center" justify="space-between">
           <n-button class="op-80 hover-op-100" size="tiny" @click="singleClick">

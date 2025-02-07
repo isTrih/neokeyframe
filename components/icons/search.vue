@@ -1,3 +1,8 @@
+<!--
+  - 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+  - Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+  -->
+
 <template>
   <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
     <path

@@ -1,3 +1,8 @@
+/*
+ * 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+ * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+ */
+
 // 检查是否使用了 pnpm 或 bun 作为包管理工具
 const isUsingPnpm = /pnpm/.test(process.env.npm_execpath || "");
 if (!isUsingPnpm) {

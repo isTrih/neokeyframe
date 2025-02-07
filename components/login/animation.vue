@@ -1,3 +1,8 @@
+<!--
+  - 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+  - Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+  -->
+
 <script setup lang="ts">
 const tips = [
   '你知道吗？关键帧还有一个名字叫做“正片叠底”',

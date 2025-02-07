@@ -1,3 +1,8 @@
+<!--
+  - 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+  - Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+  -->
+
 <script setup lang="ts">
 import { Search,Language } from '@vicons/ionicons5'
 import { MenuRound } from '@vicons/material'
@@ -625,7 +630,7 @@ function renderCertification() {
       </n-gi>
       <n-gi span="0 1:24 600:0">
         <n-flex class="w-full" justify="space-between">
-          <icons-keyframe class="icon ml-4"/>
+          <icons-keyframe class="color-[--czjB-5] ml-4"/>
           <n-flex class="mr-4" align="center" size="small">
 
             <n-button circle quaternary>

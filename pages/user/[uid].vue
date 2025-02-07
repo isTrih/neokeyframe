@@ -1,3 +1,9 @@
+
+<!--
+  - 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+  - Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+  -->
+
 <script setup lang="ts">
 import { GetUserInfo } from '~/apis/user'
 import type { User } from '~/types/user'
@@ -21,13 +27,15 @@ const signatureFormat = (signature: string) => {
 const checkUser = () => {
 	return UserInfo.value.user_id === Number(userId)
 }
-
+// 小屏适配
 const containerIsSmall = computed(() => {
 	return ContainerWidth.value < 760
 })
+// 认证信息
 const isVerti = computed(() => {
 	return CurrentUser.value.type > 1
 })
+// 认证颜色配置
 const VertiColor = computed(() => {
 	if (CurrentUser.value.type === 2) {
 		// 个人认证
@@ -41,23 +49,13 @@ const VertiColor = computed(() => {
 	}
 	return ''
 })
+// 深色模式适配
 const isDark = computed(() => {
 	return CurrentColor.value === 'dark'
 })
-
-const CurrentUser = ref<User>({
-	user_id: 0,
-	user_name: '',
-	avatar: '',
-	type: 0,
-	status: 0,
-	v_note: '',
-	signature: '',
-	feed_count: 0,
-	fans_count: 0,
-	follow_count: 0,
-	ip_location: ''
-})
+// 用户信息
+const CurrentUser = ref<User>({} as User);
+// 路由
 const router = useRouter()
 // 初始化菜单
 const InitMenu = () => {

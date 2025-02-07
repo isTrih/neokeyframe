@@ -1,3 +1,8 @@
+<!--
+  - 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+  - Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+  -->
+
 <template>
   <div class="w-full h-full justify-center items-center">
     <n-grid class="w-full h-full justify-center items-center" :cols="12">

@@ -1,3 +1,8 @@
+/*
+ * 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+ * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+ */
+
 import Link from '~/components/menu/link.vue'
 import {t} from '~/composables/i18n'
 // 抽离 title 和 url 到一个数组中，方便添加内容

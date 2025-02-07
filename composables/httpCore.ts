@@ -1,3 +1,8 @@
+/*
+ * 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+ * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+ */
+
 import {$fetch} from 'ofetch'
 import {useRuntimeConfig} from '#app'
 import {useUserStore} from '~/stores/useUserStore'

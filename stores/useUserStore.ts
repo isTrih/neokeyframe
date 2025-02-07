@@ -1,5 +1,10 @@
+/*
+ * 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+ * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+ */
+
 import { defineStore } from "pinia";
-import { Login } from "~/apis/user";
+import { Login , GetUserRelation} from "~/apis/user";
 
 export interface UserInfo {
 	avatar?: string;
@@ -16,11 +21,27 @@ export const useUserStore = defineStore(
 		// 用户信息
 		const UserInfo = ref<UserInfo>({});
 		// 用户关注
-		const UserFollow = ref([]);
+		const FollowUsers = ref<number[]>([]);
 		// 用户收藏
-		const UserCollect = ref([]);
-		// 用户点赞
-		const UserLike = ref([]);
+		const CollectFeeds = ref<number[]>([]);
+		// 用户帖子点赞
+		const LikeFeeds = ref<number[]>([]);
+		// 用户评论点赞
+		const LikeComments = ref<number[]>([]);
+
+		// 获取用户关注、收藏、喜欢列表
+		const GetUserList = async () => {
+			GetUserRelation().then((res) => {
+				console.log("UserRelation", res);
+				if (res.code===0){
+					FollowUsers.value = res.data.follow_users.split(",").map(Number);
+					CollectFeeds.value = res.data.collect_feeds.split(",").map(Number);
+					LikeFeeds.value = res.data.like_comments.split(",").map(Number);
+					LikeComments.value = res.data.like_comments.split(",").map(Number);
+				}
+			});
+		};
+
 		// 登录
 		const UserLogin = async ({
 			mobile,
@@ -39,6 +60,7 @@ export const useUserStore = defineStore(
 					user_name: data.user_name,
 					type: data.type,
 				};
+				await GetUserList();
 			}
 			return {code, msg, data};
 		};
@@ -53,10 +75,12 @@ export const useUserStore = defineStore(
 			UserLogout,
 			UserLogin,
 			UserInfo,
-			UserLike,
-			UserCollect,
-			UserFollow,
+			CollectFeeds,
+			LikeComments,
+			LikeFeeds,
 			IsLogin,
+			FollowUsers,
+			GetUserList,
 		};
 	},
 	{

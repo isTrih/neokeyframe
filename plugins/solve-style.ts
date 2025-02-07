@@ -1,3 +1,8 @@
+/*
+ * 版权所有(c) Trih(HUA Haohui) 2025 - 2025
+ * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
+ */
+
 import {setup} from '@css-render/vue3-ssr'
 
 export default defineNuxtPlugin(nuxtApp => {
