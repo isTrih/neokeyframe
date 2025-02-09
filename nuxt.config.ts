@@ -21,7 +21,8 @@ export default defineNuxtConfig({
 	],
 	runtimeConfig: {
 		public: {
-			baseUrl: '/apikeyframe'
+			baseUrl: '/apikeyframe',
+			imgUrl: 'https://coss.chaozj.com',
 		}
 	},
 	i18n: {
@@ -49,9 +50,11 @@ export default defineNuxtConfig({
 	nitro: {
 		routeRules: {
 			'/apikeyframe/**': {
-				// proxy: 'http://apix.checkpoint321.com:8888/v1/**'
 				proxy: 'http://127.0.0.1:8888/v1/**'
-			}
+			},
+			'/proapi/**': {
+				proxy: 'http://172.17.0.2:8888/v1/**'
+			},
 		},
 		compressPublicAssets: true // 启动压缩
 	},

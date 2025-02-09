@@ -3,7 +3,11 @@
   - Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
   -->
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+onMounted(() => {
+InitMenu('notification')
+})
+</script>
 
 <template>
   <div class="h-full w-full flex flex-col justify-center">

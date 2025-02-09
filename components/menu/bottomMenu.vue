@@ -39,7 +39,7 @@ function handleClick(menu: string) {
 
 const avatar = computed(() => {
   if (UserInfo.value.avatar) {
-    return String(UserInfo.value.avatar)
+    return avatarUrl(UserInfo.value.avatar)
   }
   return ''
 })

@@ -62,17 +62,17 @@ onUnmounted(() => {
                 <layout-side-nav/>
               </div>
             </n-gi>
-            <n-gi ref="gridRef" class="mb-2 px-2 mx-2 bg-[--bg-2] shadow-[--shadow-i-c] rounded-2xl" span="11 1:14 600:10 700:11 1000:12">
-              <div v-if="notClient" class="h-full w-full flex flex-col justify-center align-center">
-                <n-empty description="正在加载中...">
-                  <template #icon>
-                    <n-spin />
-                  </template>
-                </n-empty>
-              </div>
-              <!--            <Suspense>-->
+            <n-gi ref="gridRef" span="11 1:14 600:10 700:11 1000:12">
+              <div class="h-full mb-2 px-2 mx-2 bg-[--bg-2] shadow-[--shadow-i-c] rounded-2xl">
+                <div v-if="notClient" class="h-full w-full flex flex-col justify-center align-center">
+                  <n-empty description="正在加载中...">
+                    <template #icon>
+                      <n-spin />
+                    </template>
+                  </n-empty>
+                </div>
                 <slot/>
-              <!--            </Suspense>-->
+              </div>
             </n-gi>
           </n-grid>
 

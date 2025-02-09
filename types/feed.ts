@@ -4,54 +4,62 @@
  */
 
 export type Card = {
-	title: string;
-	id: number;
-	media_url: string;
+	title: string
+	id: number
+	media_url: string
 	media: {
-		width: number;
-		height: number;
-	};
-	view_num: number;
-	like_num: number;
-	loaded: boolean;
+		width: number
+		height: number
+	}
+	view_num: number
+	like_num: number
+	loaded: boolean
 	user: {
-		id: number;
-		user_name: string;
-		avatar: string;
-	};
-};
+		id: number
+		user_name: string
+		avatar: string
+	}
+}
 
 type FeedMedia = {
-	width: number;
-	height: number;
-};
+	width: number
+	height: number
+}
 
 type FeedUser = {
-	user_id: number;
-	user_name: string;
-	avatar: string;
-};
+	user_id: number
+	user_name: string
+	avatar: string
+	type: number
+}
 
 export type Feed = {
-	title: string;
-	id: number;
-	media_url: string;
-	content: string;
-	type: number;
-	comment_num: number;
-	like_num: number;
-	collect_num: number;
-	view_num: number;
-	share_num: number;
-	media: FeedMedia;
-	media_list: string[];
-	user: FeedUser;
-	author_id: number;
-	publish_time: number;
-	create_time: number;
-	update_time: number;
-	ai_insp: number;
-	ai_insp_code: number;
-	insp: number;
-	ip_location: string;
-};
+	title: string
+	id: number
+	media_url: string
+	content: string
+	type: number
+	comment_num: number
+	like_num: number
+	collect_num: number
+	view_num: number
+	share_num: number
+	media: FeedMedia
+	media_list: string[]
+	user: FeedUser
+	author_id: number
+	publish_time: number
+	create_time: number
+	update_time: number
+	ai_insp: number
+	ai_insp_code: number
+	insp: number
+	ip_location: string
+}
+
+export type Img = {
+	id: string
+	key: string
+	width: number
+	height: number
+}

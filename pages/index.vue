@@ -30,7 +30,6 @@ useHead({
 })
 
 onMounted(async () => {
-	InitMenu()
   GetFeeds(0, query.value as string).then(res=>{
     console.log('data', res)
     cards.value = res.data.feeds
@@ -39,6 +38,7 @@ onMounted(async () => {
     isload.value = false // 加载完成
     disabled.value = false // 启用滚动加载
     resizeWaterFall(columns, card_columns, arrHeight, cards)
+    InitMenu('home')
   })
 })
 
@@ -74,11 +74,6 @@ const load = async () => {
 }
 
 // 主页卡片结束////////////////////////////////////////////////////////////////
-const InitMenu = () => {
-	//store客户端
-	const { CurrentMenu } = storeToRefs(useConfigStore())
-	CurrentMenu.value = 'home'
-}
 
 const { WaterFallHeight } = storeToRefs(useConfigStore())
 </script>

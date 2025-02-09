@@ -26,27 +26,27 @@ const signatureFormat = (signature: string) => {
 }
 
 // 检查是否是自己
-const checkUser = () => {
+const checkUser = computed(() => {
 	return UserInfo.value.user_id === Number(userId)
-}
+})
 // 小屏适配
 const containerIsSmall = computed(() => {
 	return ContainerWidth.value < 760
 })
 // 认证信息
 const isVerti = computed(() => {
-	return CurrentUser.value.type > 1
+	return CurrentUser.value.type > 199 && CurrentUser.value.type < 900
 })
 // 认证颜色配置
 const VertiColor = computed(() => {
-	if (CurrentUser.value.type === 2) {
+	if (200<=CurrentUser.value.type&& CurrentUser.value.type<300) {
 		// 个人认证
 		return 'color-[--czjB-6]'
 	}
-	if (CurrentUser.value.type === 3) {
+	if (300<=CurrentUser.value.type&&CurrentUser.value.type<400) {
 		return 'color-[--czjY-6]'
 	}
-	if (CurrentUser.value.type > 3) {
+	if (400<=CurrentUser.value.type) {
 		return 'color-[--v-1]'
 	}
 	return ''
@@ -60,11 +60,6 @@ const CurrentUser = ref<User>({} as User)
 const Code = ref(1101)
 // 路由
 const router = useRouter()
-// 初始化菜单
-const InitMenu = () => {
-	const { CurrentMenu } = storeToRefs(useConfigStore())
-	CurrentMenu.value = 'user'
-}
 
 const isFullSignature = ref(false)
 
@@ -78,11 +73,13 @@ const changeSig = () => {
 onMounted(async () => {
 	const { data, code } = await GetUserInfo(Number(userId))
 
-	if (checkUser()) {
-		InitMenu()
-	}
+	if (checkUser.value) {
+		InitMenu('user')
+	}else{
+    InitMenu('other')
+  }
 	useHead({
-		title: data?data.user_name:t('ui.voidUser'),
+		title: data ? data.user_name : t('ui.voidUser'),
 		meta: [
 			{
 				name: 'keywords',
@@ -92,8 +89,8 @@ onMounted(async () => {
 		]
 	})
 	CurrentUser.value = data
-  console.log('code', code)
-  Code.value = code
+	console.log('code', code)
+	Code.value = code
 })
 import Button from '~/components/menu/button.vue'
 const userMore = computed(() => {
@@ -173,7 +170,7 @@ const userMore = computed(() => {
           <div class="flex items-end justify-end">
             <n-avatar
                 round
-                :src="CurrentUser.avatar"
+                :src="avatarUrl(CurrentUser.avatar)"
                 :class="['relative z-0', containerIsSmall ? 'w-16 h-16' : 'w-28 h-28']"
             />
             <!-- 认证图标 -->
@@ -196,10 +193,10 @@ const userMore = computed(() => {
               <n-flex v-show="isVerti" align="center" :size="0">
                 <icons-verti
                     v-if="isVerti&&!isDark"
-                    :class="['rounded-full w-1rem h-1rem z-10 bg-[--bg-2]',VertiColor]"/>
+                    :class="['rounded-full w-1rem h-1rem z-10 bg-[--bg-2] shadow-[--shadow-1-c]',VertiColor]"/>
                 <icons-verti-d
                     v-if="isVerti&&isDark"
-                    :class="['rounded-full w-1rem h-1rem bg-[--bg-2]',VertiColor]"/>
+                    :class="['rounded-full w-1rem h-1rem bg-[--bg-2] shadow-[--shadow-1-c]',VertiColor]"/>
                 <my-user-verti-note :user-note="CurrentUser.v_note" :user-type="CurrentUser.type"/>
               </n-flex>
               <n-text class="text-3 font-320 ml-0.1rem" depth="3">
@@ -265,9 +262,13 @@ const userMore = computed(() => {
                 <n-button v-if="useUserStore().CheckFollow(Number(userId))" class="w-6rem" strong round secondary>
                   {{ t('ui.unfollow') }}
                 </n-button>
+                <n-button v-else-if="checkUser" class="w-6rem" strong round type="primary">
+                  {{ t('ui.editProfile') }}
+                </n-button>
                 <n-button v-else class="w-6rem" strong round type="primary">
                   {{ t('ui.follow') }}
                 </n-button>
+
               </n-flex>
             </n-flex>
           </n-flex>
@@ -298,4 +299,7 @@ const userMore = computed(() => {
 </template>
 
 <style scoped>
+.shadow{
+  box-shadow: var(--shadow-i-c);
+}
 </style>

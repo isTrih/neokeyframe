@@ -47,9 +47,10 @@ const showLogin = () => {
 	})
 }
 // region 菜单
+
 //菜单选中值
 const { CurrentMenu } = storeToRefs(useConfigStore())
-
+const noClient = ref(true)
 const menuOptions = computed(() => [
 	{
 		label: () =>
@@ -108,7 +109,7 @@ const menuOptions = computed(() => [
 			),
 		key: 'user',
 		show: IsLogin.value,
-		icon: renderIcon(avatar, UserInfo.value.avatar)
+		icon: renderIcon(avatar, avatarUrl(UserInfo.value.avatar))
 	}
 ])
 
@@ -124,7 +125,9 @@ function renderIcon(
 }
 
 //endregion
-
+onMounted(()=>{
+  noClient.value = false
+})
 // region 更多选项
 const moreIndex = ref(0)
 const currentMore = computed(() => {
@@ -567,7 +570,11 @@ function renderCertification() {
 <template>
     <n-flex class="h-full" vertical align="stretch">
       <div class="w-full h-auto flex-items-stretch">
-        <n-menu v-model:value="CurrentMenu" class="fw-600 !p--0" :icon-size="26" :options="menuOptions"/>
+
+        <client-only>
+          <n-menu v-model:value="CurrentMenu" default-value="home" class="fw-600 !p--0" :icon-size="26" :options="menuOptions"/>
+        </client-only>
+        <n-menu v-if="noClient" v-model:value="CurrentMenu" default-value="home" class="fw-600 !p--0" :icon-size="26" :options="menuOptions"/>
         <n-button v-show="!IsLogin" block class="mt-1.5" type="primary" size="large" round @click="showLogin">
           {{t('ui.login')}}
         </n-button>

@@ -53,7 +53,7 @@ export const useUserStore = defineStore(
 		}: { mobile: string; password: string }) => {
 			const {code, msg, data} = await Login(mobile, password);
 			console.log(data, msg, data)
-			//TODO：还要获取其他用户信息
+			//TODO：可能获取其他用户信息
 			if (code === 0) {
 				console.log("success", data);
 				UserInfo.value = {

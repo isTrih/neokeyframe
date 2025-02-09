@@ -38,7 +38,7 @@
             :data-direction="getDirection"
             class="content-container"
         >
-          <n-spin class="w-full content-center" :show="isload">
+          <n-spin class="h-full w-full content-center" :show="isload">
             <div v-if="showLogic" :style="{height: userContainerHeight+'px'}"
                  class="w-full flex flex-col justify-center">
               <client-only>
@@ -155,7 +155,9 @@ const load = async () => {
         const offset = cards0.value.length;
         const res = await GetUserFeeds(offset, props.currentId, activeIndex.value);
         const more = res.data.feeds;
-        if (more.length === 0) {
+        if (more.length < 10) {
+          cards0.value = [...cards0.value, ...more];
+          waterFallMore(arrHeight, card0_columns, more)
           disabled.value = true;
           isload.value = false;
           console.log('没有更多了')
@@ -175,7 +177,9 @@ const load = async () => {
         const offset = cards1.value.length;
         const res = await GetUserFeeds(offset, props.currentId, activeIndex.value);
         const more = res.data.feeds;
-        if (more.length === 0) {
+        if (more.length < 10) {
+          cards1.value = [...cards1.value, ...more];
+          waterFallMore(arrHeight, card1_columns, more)
           disabled.value = true;
           isload.value = false;
         } else {
@@ -192,7 +196,9 @@ const load = async () => {
         const offset = cards2.value.length;
         const res = await GetUserFeeds(offset, props.currentId, activeIndex.value);
         const more = res.data.feeds;
-        if (more.length === 0) {
+        if (more.length < 10) {
+          cards1.value = [...cards1.value, ...more];
+          waterFallMore(arrHeight, card1_columns, more)
           disabled.value = true;
           isload.value = false;
         } else {
@@ -335,6 +341,7 @@ watch(() => activeIndex.value, () => {
   height: 48%;
   background-color: var(--fill-1);
   border-radius: 20rem;
+  box-shadow: var(--shadow-i-c);
   transition: transform 0.3s ease, width 0.3s ease;
   z-index: -0;
 }

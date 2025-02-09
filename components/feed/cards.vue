@@ -4,11 +4,11 @@
   -->
 
 <script setup lang="ts">
-import {IosHeartEmpty} from '@vicons/ionicons4'
-import type {Card} from '~/types/feed'
-import {h} from 'vue'
-import {FeedDetail} from '#components'
-import {useModal} from 'naive-ui'
+import { IosHeartEmpty } from '@vicons/ionicons4'
+import type { Card } from '~/types/feed'
+import { h } from 'vue'
+import { FeedDetail } from '#components'
+import { useModal } from 'naive-ui'
 // 监听容器宽度
 const { ContainerWidth, IsSmall } = storeToRefs(
 	useConfigStore()
@@ -106,10 +106,10 @@ const heightCaculate = (
                 width="100%"
                 object-fit="cover"
                 preview-disabled
-                :src="card.media_url"
+                :src="imgUrl(card.media_url)"
                 class="image"
                 :height="heightCaculate(len, card.media.height, card.media.width)"
-                alt=""
+                :alt="card.title"
                 @load="handleLoad(card)"
             >
               <template #placeholder>
@@ -123,7 +123,7 @@ const heightCaculate = (
           <div style="padding: 0.1rem">
             <div
                 id="title"
-                style="margin-bottom: 6px;"
+                class="mb-1"
                 @click="showDetails(card.id)"
             >
               {{ card.title }}
@@ -136,7 +136,7 @@ const heightCaculate = (
                       v-else
                       round
                       :size="24"
-                      :src="card.user.avatar"
+                      :src="avatarUrl(card.user.avatar)"
                       style="border: var(--gray-2) thin solid; border-radius: 100%; transition: all 0.4s ease;"
                       :alt="`${card.user.user_name}的头像`"
                   />
@@ -164,7 +164,7 @@ const heightCaculate = (
 
 <style scoped>
 #title {
-  transition: all 0.4s ease;
+  transition: all 0.18s ease;
   white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -173,12 +173,14 @@ const heightCaculate = (
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   margin-bottom: 0.2rem;
-  color: var(--gray-10);
+  color: var(--text-1);
   font-size: 0.9rem;
   font-weight: 500;
   width: 100%;
 }
-
+#title:hover {
+  color: var(--czjB-8);
+}
 .col {
   display: flex;
   flex-direction: row;
@@ -208,12 +210,12 @@ section {
   width: 100%;
   object-fit: cover;
   border: var(--gray-2) 1px solid;
-  transition: all 0.4s cubic-bezier(0.19, 0.055, 0.675, 0.55);
+  transition: all 0.18s cubic-bezier(0.19, 0.055, 0.675, 0.55);
   opacity: 1;
 }
 
 .image:hover {
-  opacity: 0.7;
+  opacity: 0.85;
 }
 
 .user_name {

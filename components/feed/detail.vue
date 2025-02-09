@@ -8,6 +8,7 @@ import { Close } from '@vicons/ionicons5'
 import { FeedBPlayer } from '#components'
 import type { Feed } from '~/types/feed'
 import { ipLocationFormat } from '~/composables/utils'
+import { useRuntimeConfig } from '#app'
 
 // 组件属性
 const props = defineProps({
@@ -30,7 +31,7 @@ interface FeedResponse {
 
 // 获取数据
 const { data } = await useFetch<FeedResponse>(
-	`/apikeyframe/feed/${props.fid}`
+	`${useRuntimeConfig().public.baseUrl}/feed/${props.fid}`
 )
 // 定义关闭浮窗组件方法
 const emit = defineEmits(['closeDetail'])
@@ -74,6 +75,36 @@ const userIndex = (uid: number) => {
 	emit('closeDetail')
 }
 // TODO：关注逻辑
+
+const { CurrentColor } = storeToRefs(useConfigStore())
+// 认证信息
+const isVerti = computed(() => {
+	return data.value.data.Feed.user.type > 100
+})
+// 认证颜色配置
+const VertiColor = computed(() => {
+	if (
+		200 <= data.value.data.Feed.user.type &&
+		data.value.data.Feed.user.type < 300
+	) {
+		// 个人认证
+		return 'color-[--czjB-6]'
+	}
+	if (
+		300 <= data.value.data.Feed.user.type &&
+		data.value.data.Feed.user.type < 400
+	) {
+		return 'color-[--czjY-6]'
+	}
+	if (400 <= data.value.data.Feed.user.type) {
+		return 'color-[--v-1]'
+	}
+	return ''
+})
+// 深色模式适配
+const isDark = computed(() => {
+	return CurrentColor.value === 'dark'
+})
 </script>
 
 <template>
@@ -101,29 +132,43 @@ const userIndex = (uid: number) => {
               object-fit="scale-down"
               lazy
               class="content-center"
-              :src="item"
+              :src="imgUrl(item)"
               :img-props="{class:'carousel-img'}"
           />
         </n-carousel>
       </n-gi>
       <n-gi class="InfoContainer whitespace-pre-wrap" span="12">
         <n-flex :size="[0,0]" class="h-2.5rem mb-1rem" justify="space-between" align="center">
-          <a :href="`/user/${data.data.Feed.user.user_id}`" class="no-underline" target="_blank">
             <n-flex :size="[12,0]" align="center">
+              <div>
+
+              </div>
               <n-avatar
                   round
                   size="large"
-                  :src="data.data.Feed.user.avatar"
+                  :src="avatarUrl(data.data.Feed.user.avatar)"
                   style="border: var(--gray-2) thin solid; border-radius: 100%; transition: all 0.4s ease;"
-                  class="hover-op-80"
+                  class="cursor-pointer hover-op-80 relative z-0"
                   :alt="`${data.data.Feed.user.user_name}的头像`"
+                  @click="userIndex(data.data.Feed.user.user_id)"
               />
-              <n-ellipsis class="color-[--text-1] text-3.8 font-500 hover-color-[--text-2] transition-300" style="max-width: 16dvw">
-                {{ data.data.Feed.user.user_name }}
-              </n-ellipsis>
+              <!-- 认证图标 -->
+              <icons-verti
+                  v-if="isVerti&&!isDark"
+                  :class="['rounded-full border-2 z-10 bg-[--bg-2] z-99',VertiColor,'ml-[-1.8rem] mb-[-1.5rem] w-6 h-6']"/>
+              <icons-verti-d
+                  v-if="isVerti&&isDark"
+                  :class="['rounded-full border-2 z-10 bg-[--bg-2] z-99',VertiColor,'ml-[-1.8rem] mb-[-1.5rem] w-6 h-6']"/>
+              <n-button
+                  text
+                  @click="userIndex(data.data.Feed.user.user_id)">
+                <n-ellipsis
+                    class="cursor-pointer color-[--text-1] text-3.8 font-500 hover-color-[--text-2] transition-300" style="max-width: 16dvw">
+                  {{ data.data.Feed.user.user_name }}
+                </n-ellipsis>
+              </n-button>
 
             </n-flex>
-          </a>
           <n-button v-if="useUserStore().CheckFollow(data.data.Feed.user.user_id)"
                     @click="userIndex(data.data.Feed.user.user_id)"
                     class="w-6rem mr-1" strong round secondary type="primary">

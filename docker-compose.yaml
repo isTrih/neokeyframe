@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+  my-nuxt-app:
+    build: .
+    image: my-nuxt
+    container_name: NeoKeyframe
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+  my-nuxt-app2:
+    build: .
+    image: my-nuxt
+    container_name: NeoKeyframe2
+    restart: unless-stopped
+    ports:
+      - 3001:3000

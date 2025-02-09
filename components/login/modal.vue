@@ -176,101 +176,102 @@ const login = (e: MouseEvent) => {
         </div>
       </n-gi>
       <n-gi span="2 580:1">
-        <div class="w-full">
-          <n-menu
-              v-model:value="currentLogin"
-              class="flex items-center w-full justify-center"
-              :options="loginTitle"
-              mode="horizontal"
-          />
-        </div>
-        <div v-if="currentLogin === 'login'" class="h-full items-center mt-12">
-          <n-form ref="logFormRef" :show-label="false" :label-width="80" :model="logFormValue" :rules="logRules">
-            <n-form-item label="账号" path="phone">
-              <n-input v-model:value="logFormValue.phone" round placeholder="请输入账号（手机号）"/>
-            </n-form-item>
-            <n-form-item label="密码" path="password">
-              <n-input
-                  v-model:value="logFormValue.password" type="password" show-password-on="mousedown"
-                  autocomplete="current-password" maxlength="20" round placeholder="请输入密码"/>
-            </n-form-item>
-            <n-form-item path="agreement">
-              <n-checkbox size="small" @update:checked="logCheck">
-                <div class="text-3">
-                  我已阅读并同意
-                  <nuxt-link
-                      style="color:var(--czjB-6);text-decoration: none;"
-                      to="/doc/agreement"
-                      target="_blank">关键帧平台用户服务协议
-                  </nuxt-link>
-                  和
-                  <nuxt-link
-                      style="color:var(--czjB-6);text-decoration: none;"
-                      to="/doc/privacy"
-                      target="_blank">关键帧隐私政策
-                  </nuxt-link>
-                  。
-                </div>
-              </n-checkbox>
-            </n-form-item>
-            <n-form-item>
-              <n-button class="mt-2" type="primary" round block @click="login"> 登录</n-button>
-            </n-form-item>
-          </n-form>
-        </div>
-        <div v-else class="">
-          <n-form
-              ref="regFormRef" require-mark-placement="right-hanging" :show-label="false" :label-width="80"
-              :model="regFormValue" :rules="regRules">
-            <n-form-item path="name" feedback-class="text-1">
-              <n-input v-model:value="regFormValue.name" round placeholder="请输入昵称"/>
-            </n-form-item>
-            <n-form-item path="phone" feedback-class="text-1">
-              <n-input-group>
-                <n-input v-model:value="regFormValue.phone" round placeholder="请输入手机号"/>
-                <n-button round type="primary" @click="sendSms">发送验证码</n-button>
-              </n-input-group>
-            </n-form-item>
-            <n-form-item path="sms">
-              <n-input v-model:value="regFormValue.sms" round placeholder="请输入验证码"/>
-            </n-form-item>
-            <n-form-item path="password">
-              <n-input
-                  v-model:value="regFormValue.password" type="password" maxlength="20"
-                  show-password-on="mousedown" round autocomplete="new-password"
+        <n-tabs
+            class="card-tabs"
+            default-value="signin"
+            size="large"
+            animated
+            pane-wrapper-style="margin: 0 -4px"
+            pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+        >
+          <n-tab-pane name="signin" tab="登录">
+            <n-form ref="logFormRef" :show-label="false" :label-width="80" :model="logFormValue" :rules="logRules">
+              <n-form-item label="账号" path="phone">
+                <n-input v-model:value="logFormValue.phone" round placeholder="请输入账号（手机号）"/>
+              </n-form-item>
+              <n-form-item label="密码" path="password">
+                <n-input
+                    v-model:value="logFormValue.password" type="password" show-password-on="mousedown"
+                    autocomplete="current-password" maxlength="20" round placeholder="请输入密码"/>
+              </n-form-item>
+              <n-form-item path="agreement">
+                <n-checkbox size="small" @update:checked="logCheck">
+                  <div class="text-3">
+                    我已阅读并同意
+                    <nuxt-link
+                        style="color:var(--czjB-6);text-decoration: none;"
+                        to="/doc/agreement"
+                        target="_blank">关键帧平台用户服务协议
+                    </nuxt-link>
+                    和
+                    <nuxt-link
+                        style="color:var(--czjB-6);text-decoration: none;"
+                        to="/doc/privacy"
+                        target="_blank">关键帧隐私政策
+                    </nuxt-link>
+                    。
+                  </div>
+                </n-checkbox>
+              </n-form-item>
+              <n-form-item>
+                <n-button class="mt-2" type="primary" round block @click="login"> 登录</n-button>
+              </n-form-item>
+            </n-form>
+          </n-tab-pane>
+          <n-tab-pane name="signup" tab="注册">
+            <n-form
+                ref="regFormRef" require-mark-placement="right-hanging" :show-label="false" :label-width="80"
+                :model="regFormValue" :rules="regRules">
+              <n-form-item path="name" feedback-class="text-1">
+                <n-input v-model:value="regFormValue.name" round placeholder="请输入昵称"/>
+              </n-form-item>
+              <n-form-item path="phone" feedback-class="text-1">
+                <n-input-group>
+                  <n-input v-model:value="regFormValue.phone" round placeholder="请输入手机号"/>
+                  <n-button round type="primary" @click="sendSms">发送验证码</n-button>
+                </n-input-group>
+              </n-form-item>
+              <n-form-item path="sms">
+                <n-input v-model:value="regFormValue.sms" round placeholder="请输入验证码"/>
+              </n-form-item>
+              <n-form-item path="password">
+                <n-input
+                    v-model:value="regFormValue.password" type="password" maxlength="20"
+                    show-password-on="mousedown" round autocomplete="new-password"
 
-                  placeholder="请输入密码"/>
-            </n-form-item>
-            <n-form-item path="rePassword">
-              <n-input
-                  v-model:value="regFormValue.rePassword" type="password" maxlength="20"
-                  autocomplete="new-password" show-password-on="mousedown" round
-                  placeholder="请确认密码"/>
-            </n-form-item>
-            <n-form-item path="agreement">
-              <n-checkbox size="small" @update:checked="regCheck">
-                <div class="text-3">
-                  我已阅读并同意
-                  <nuxt-link
-                      style="color:var(--czjB-6);text-decoration: none;"
-                      to="/doc/agreement"
-                      target="_blank">关键帧平台用户服务协议
-                  </nuxt-link>
-                  和
-                  <nuxt-link
-                      style="color:var(--czjB-6);text-decoration: none;"
-                      to="/doc/privacy"
-                      target="_blank">关键帧隐私政策
-                  </nuxt-link>
-                  。
-                </div>
-              </n-checkbox>
-            </n-form-item>
-            <n-form-item>
-              <n-button class="mt-2" type="primary" round block>{{t('ui.register')}}</n-button>
-            </n-form-item>
-          </n-form>
-        </div>
+                    placeholder="请输入密码"/>
+              </n-form-item>
+              <n-form-item path="rePassword">
+                <n-input
+                    v-model:value="regFormValue.rePassword" type="password" maxlength="20"
+                    autocomplete="new-password" show-password-on="mousedown" round
+                    placeholder="请确认密码"/>
+              </n-form-item>
+              <n-form-item path="agreement">
+                <n-checkbox size="small" @update:checked="regCheck">
+                  <div class="text-3">
+                    我已阅读并同意
+                    <nuxt-link
+                        style="color:var(--czjB-6);text-decoration: none;"
+                        to="/doc/agreement"
+                        target="_blank">关键帧平台用户服务协议
+                    </nuxt-link>
+                    和
+                    <nuxt-link
+                        style="color:var(--czjB-6);text-decoration: none;"
+                        to="/doc/privacy"
+                        target="_blank">关键帧隐私政策
+                    </nuxt-link>
+                    。
+                  </div>
+                </n-checkbox>
+              </n-form-item>
+              <n-form-item>
+                <n-button class="mt-2" type="primary" round block>{{t('ui.register')}}</n-button>
+              </n-form-item>
+            </n-form>
+          </n-tab-pane>
+        </n-tabs>
       </n-gi>
     </n-grid>
   </div>

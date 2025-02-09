@@ -4,6 +4,8 @@
  * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
  */
 
+import type {Img} from '~/types/feed';
+
 /**
  * 节流函数，用于限制函数在指定时间内只能执行一次
  * @param func - 要节流的函数
@@ -94,21 +96,50 @@ const numFormat = (num: number): string => {
 };
 
 // 属地格式化
-const ipLocationFormat = (location: string): string => {
-    const parts = location.split('–')
-    if (parts.length >= 3) {
-        return parts[1]
+const ipLocationFormat = (input: string): string => {
+    if(input==='未知'||input===''){
+        return t('ui.unknown')
     }
-    if (parts.length === 2) {
-        return parts[1].split('\t')[0]
+    // 第一步：去掉 "\t" 后面的文字包括 "\t"
+    const firstStepResult = input.split("\t")[0];
+    // 第二步：删除从左往右数最后一个 "-" 前的文字（包括 -）
+    const lastDashIndex = firstStepResult.lastIndexOf("–");
+    if (lastDashIndex !== -1) {
+        return firstStepResult.slice(lastDashIndex + 1);
     }
-    return t('ui.unknown')
+    return firstStepResult;
+}
+const avatarUrl = (avatar :string): string =>{
+    return useRuntimeConfig().public.imgUrl+'/avatar/'+avatar+'-o'
 }
 
+const imgUrl = (img :string): string =>{
+    return useRuntimeConfig().public.imgUrl+'/img/'+img+'-d'
+}
+
+const InitMenu = (to :string) => {
+    const { CurrentMenu } = storeToRefs(useConfigStore())
+    CurrentMenu.value = to
+    console.log('更新菜单：',to)
+}
+
+function removeImgById(items: Img[], id: string): Img[] {
+    // 创建一个 Map，将数组元素存储到 Map 中，键为 id，值为对象
+    const itemMap = new Map<string, Img>();
+    items.forEach(item => itemMap.set(item.id, item));
+    // 根据 id 从 Map 中删除对应的对象
+    itemMap.delete(id);
+    // 将 Map 中的值转换为数组
+    return Array.from(itemMap.values());
+}
 export {
     throttle,
     numFormat,
     debounce,
     isMobile,
     ipLocationFormat,
+    avatarUrl,
+    imgUrl,
+    InitMenu,
+    removeImgById
 };
