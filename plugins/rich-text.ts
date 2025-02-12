@@ -113,7 +113,7 @@
 
 import type { DirectiveBinding } from 'vue'
 import { h, render } from 'vue'
-import { Pricetag } from '@vicons/ionicons5'
+import { RiEthFill } from '@remixicon/vue'
 import { NButton, NIcon } from 'naive-ui'
 
 export default defineNuxtPlugin(nuxtApp => {
@@ -261,9 +261,7 @@ export default defineNuxtPlugin(nuxtApp => {
 									onClick: () => {
 										console.log('点击了 # 标记:', id)
 										emit('closeDetail')
-										navigateTo({
-											name: 'search',
-											query: { q: id }
+										navigateTo({name: 'search', query: { q: id }
 										})
 									},
 									text: true,
@@ -277,7 +275,7 @@ export default defineNuxtPlugin(nuxtApp => {
 										NIcon,
 										{ class: 'mr-1' },
 										{
-											default: () => h(Pricetag)
+											default: () => h(RiEthFill,{style:"transform: rotate(30deg);"})
 										}
 									),
 									`${id}`

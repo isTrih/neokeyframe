@@ -7,8 +7,8 @@
 //获取查询参数
 import {GetFeeds} from '~/apis/feed'
 import type {Card} from '~/types/feed'
-import {AlertCircle} from '@vicons/ionicons5'
-import {IosArrowBack} from '@vicons/ionicons4';
+import {RiArrowLeftSLine, RiSpamLine} from '@remixicon/vue';
+
 const query = computed(() => {
 	const { query } = useRoute()
 	return query.q ? query.q : ''
@@ -53,7 +53,7 @@ const showDetail = () => {
 // 无限滚动
 const load = async () => {
 	if (disabled.value !== true) {
-		isload.value = true
+		isload.value = false
 		disabled.value = true
 		const offset = cards.value.length
 		const res = await GetFeeds(
@@ -105,14 +105,16 @@ const { WaterFallHeight } = storeToRefs(useConfigStore())
           <n-button circle size="small" text @click="() => useRouter().back()">
             <template #icon>
               <n-icon>
-                <IosArrowBack/>
+                <RiArrowLeftSLine/>
               </n-icon>
             </template>
             {{ t('ui.back') }}
           </n-button>
           <n-empty class="mt-30vh" v-show="cards.length===0"  description="什么都没有找到哦">
             <template #icon>
-              <AlertCircle/>
+              <n-icon class="color-[--text-4] text-10">
+                <RiSpamLine/>
+              </n-icon>
             </template>
             <template #extra>
               <n-button type="primary" size="small" @click="() => useRouter().back()">

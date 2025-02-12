@@ -4,8 +4,7 @@
   -->
 
 <script setup lang="ts">
-import { Search,Language } from '@vicons/ionicons5'
-import { MenuRound } from '@vicons/material'
+import { RiTranslate, RiMenuFill , RiSearch2Line} from '@remixicon/vue'
 import { NButton, NIcon, NText } from 'naive-ui'
 import Button from '~/components/menu/button.vue'
 import Head from '~/components/menu/head.vue'
@@ -13,14 +12,24 @@ import Link from '~/components/menu/link.vue'
 import Theme from '~/components/menu/theme.vue'
 import { fLink, fLinkThin } from '~/types/fLink'
 import { NuxtLink } from '#components'
-import {GetFeeds} from '~/apis/feed';
+import { GetFeeds } from '~/apis/feed'
 
 // region 用户登陆态
 const useUser = useUserStore()
 const { IsLogin } = storeToRefs(useUser)
 const searchValue = ref('')
+// endregion
+// region 搜索
 const doQuery = () => {
-  navigateTo({name: 'search', query: {q: searchValue.value}});
+	navigateTo({
+		name: 'search',
+		query: { q: searchValue.value }
+	})
+}
+const handleKeyup = (event)=> {
+  if (event.keyCode === 13) {
+    doQuery()
+  }
 }
 // endregion
 // region 更多选项
@@ -310,82 +319,81 @@ const { setLocale } = useI18n() //i18n
    setLocale 设置i18n语言
 */
 const i18n = computed(() => {
-  return [
-    {
-      type: 'render',
-      render: () => {
-        return h(
-            'div',
-            {
-              style:
-                  'display: flex; align-items: center; padding: 8px 12px;'
-            },
-            [
-              h('div', null, [
-                h(
-                    'div',
-                    {
-                      style:
-                          'font-size: 12px;margin-left:1rem'
-                    },
-                    [
-                      h(
-                          NText,
-                          { depth: 3 },
-                          { default: () => t('ui.language') }
-                      )
-                    ]
-                )
-              ])
-            ]
-        )
-      },
-      show: true
-    },
-    {
-      type: 'render',
-      render: () => {
-        return h(Button, {
-          title: t('ui.zh_cn'),
-          thin: true,
-          icon: false,
-          onClick: () => {
-            //TODO:举报逻辑
-            setLocale('zh-cn')
-          }
-        })
-      }
-    },
-    {
-      type: 'render',
-      render: () => {
-        return h(Button, {
-          title: t('ui.en'),
-          thin: true,
-          icon: false,
-          onClick: () => {
-            //TODO:举报逻辑
-            setLocale('en')
-          }
-        })
-      }
-    },
-    {
-      type: 'render',
-      render: () => {
-        return h(Button, {
-          title: t('ui.ja'),
-          thin: true,
-          icon: false,
-          onClick: () => {
-            //TODO:举报逻辑
-            setLocale('ja')
-          }
-        })
-      }
-    }
-  ]
-
+	return [
+		{
+			type: 'render',
+			render: () => {
+				return h(
+					'div',
+					{
+						style:
+							'display: flex; align-items: center; padding: 8px 12px;'
+					},
+					[
+						h('div', null, [
+							h(
+								'div',
+								{
+									style:
+										'font-size: 12px;margin-left:1rem'
+								},
+								[
+									h(
+										NText,
+										{ depth: 3 },
+										{ default: () => t('ui.language') }
+									)
+								]
+							)
+						])
+					]
+				)
+			},
+			show: true
+		},
+		{
+			type: 'render',
+			render: () => {
+				return h(Button, {
+					title: t('ui.zh_cn'),
+					thin: true,
+					icon: false,
+					onClick: () => {
+						//TODO:举报逻辑
+						setLocale('zh-cn')
+					}
+				})
+			}
+		},
+		{
+			type: 'render',
+			render: () => {
+				return h(Button, {
+					title: t('ui.en'),
+					thin: true,
+					icon: false,
+					onClick: () => {
+						//TODO:举报逻辑
+						setLocale('en')
+					}
+				})
+			}
+		},
+		{
+			type: 'render',
+			render: () => {
+				return h(Button, {
+					title: t('ui.ja'),
+					thin: true,
+					icon: false,
+					onClick: () => {
+						//TODO:举报逻辑
+						setLocale('ja')
+					}
+				})
+			}
+		}
+	]
 })
 /**
  * @description 关于页面的底栏
@@ -502,7 +510,7 @@ function renderCertification() {
 							to: 'https://12377.qinglangwuhu.cn/',
 							target: '_blank'
 						},
-						{ default: () =>  t('ui.wuhuReportCenter')}
+						{ default: () => t('ui.wuhuReportCenter') }
 					),
 					h(
 						'a',
@@ -533,7 +541,7 @@ function renderCertification() {
 							target: '_blank'
 						},
 						{ default: () => t('ui.ipDataSupport') }
-					),
+					)
 				]),
 				h(
 					'div',
@@ -567,8 +575,7 @@ function renderCertification() {
 					},
 					[
 						h(NText, null, {
-							default: () =>
-								t('ui.address')
+							default: () => t('ui.address')
 						})
 					]
 				),
@@ -580,7 +587,8 @@ function renderCertification() {
 					},
 					[
 						h(NText, null, {
-							default: () => `${t('ui.email')}help@chaozj.com`
+							default: () =>
+								`${t('ui.email')}help@chaozj.com`
 						})
 					]
 				)
@@ -596,12 +604,12 @@ function renderCertification() {
       <n-gi span="24 1:0 600:24">
         <n-flex :size="[0,0]" class="px-4" align="center" justify="space-between">
           <icons-keyframe class="color-[--czjB-5] h-34px"/>
-          <n-input v-model:value="searchValue" id="search" class="min-w-[40%]" autosize clearable round :placeholder="t('ui.searchMoreContent')">
-            <!--          TODO:实现搜索逻辑-->
+          <n-input passively-activated @keyup="handleKeyup" v-model:value="searchValue" id="search" class="min-w-[40%]" autosize clearable round :placeholder="t('ui.searchMoreContent')">
+            <!--          TODO:可能需要更新搜索逻辑-->
             <template #suffix>
               <n-button circle text size="tiny" @click="doQuery">
                 <template #icon>
-                  <n-icon :component="Search"/>
+                  <n-icon :component="RiSearch2Line"/>
                 </template>
               </n-button>
             </template>
@@ -611,7 +619,7 @@ function renderCertification() {
               <n-button class="color-[--text-2]" size="large" text>
                 <template #icon>
                   <n-icon>
-                    <Language/>
+                    <RiTranslate/>
                   </n-icon>
                 </template>
               </n-button>
@@ -636,7 +644,7 @@ function renderCertification() {
             <n-button circle quaternary>
               <template #icon>
                 <n-icon>
-                  <Search/>
+                  <RiSearch2Line/>
                 </n-icon>
               </template>
             </n-button>
@@ -644,7 +652,7 @@ function renderCertification() {
               <n-button circle quaternary class="color-[--text-2]">
                 <template #icon>
                   <n-icon>
-                  <Language/>
+                  <RiTranslate/>
                   </n-icon>
                 </template>
               </n-button>
@@ -653,7 +661,7 @@ function renderCertification() {
               <n-button circle quaternary>
                 <template #icon>
                   <n-icon>
-                    <MenuRound/>
+                    <RiMenuFill/>
                   </n-icon>
                 </template>
               </n-button>

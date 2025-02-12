@@ -4,12 +4,7 @@
   -->
 
 <script setup lang="ts">
-import {
-	DarkModeRound,
-	LightModeRound,
-	AutoAwesomeRound
-} from '@vicons/material'
-
+import {RiSunFill, RiContrast2Fill, RiMoonFill} from '@remixicon/vue'
 const { ColorMode } = storeToRefs(useConfigStore())
 const click = (index: number) => {
 	ColorMode.value = index
@@ -42,7 +37,7 @@ const click = (index: number) => {
           <template #trigger>
             <div class="themebutton w-7 h-7 flex justify-center items-center" @click="click(0)">
               <div :class="ColorMode === 0 ? 'selected' : ''" class="w-5 h-5 flex items-center justify-center">
-                <AutoAwesomeRound :class="ColorMode === 0 ? 'selected-button' : ''" class="icon mr-1px"/>
+                <RiContrast2Fill :class="ColorMode === 0 ? 'selected-button' : ''" class="icon mr-1px"/>
               </div>
             </div>
           </template>
@@ -67,7 +62,7 @@ const click = (index: number) => {
           <template #trigger>
             <div class="themebutton w-7 h-7 flex justify-center items-center" @click="click(1)">
               <div :class="ColorMode === 1 ? 'selected' : ''" class="w-5 h-5 flex items-center justify-center">
-                <LightModeRound :class="ColorMode === 1 ? 'selected-button' : ''" class="icon"/>
+                <RiSunFill :class="ColorMode === 1 ? 'selected-button' : ''" class="icon"/>
               </div>
             </div>
           </template>
@@ -90,7 +85,7 @@ const click = (index: number) => {
           <template #trigger>
             <div class="themebutton w-7 h-7 flex justify-center items-center" @click="click(2)">
               <div :class="ColorMode === 2 ? 'selected' : ''" class="w-5 h-5 flex items-center justify-center">
-                <DarkModeRound :class="ColorMode === 2 ? 'selected-button' : ''" class="icon"/>
+                <RiMoonFill :class="ColorMode === 2 ? 'selected-button' : ''" class="icon"/>
               </div>
             </div>
           </template>

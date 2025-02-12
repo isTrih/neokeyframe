@@ -4,7 +4,7 @@
   -->
 
 <script setup lang="ts">
-import { ArrowForwardIosRound } from '@vicons/material';
+import {RiArrowRightSFill} from '@remixicon/vue';
 const props = defineProps({
   title: {
     type: String,
@@ -46,7 +46,7 @@ const goto = () => {
         </div>
         <div>
           <n-icon v-if="icon">
-            <ArrowForwardIosRound />
+            <RiArrowRightSFill />
           </n-icon>
         </div>
       </n-flex>
@@ -58,7 +58,7 @@ const goto = () => {
         </div>
         <div>
           <n-icon v-if="icon">
-            <ArrowForwardIosRound />
+            <RiArrowRightSFill />
           </n-icon>
         </div>
       </n-flex>

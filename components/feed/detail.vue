@@ -4,7 +4,7 @@
   -->
 
 <script setup lang="ts">
-import { Close } from '@vicons/ionicons5'
+import {RiCloseLine} from '@remixicon/vue';
 import { FeedBPlayer } from '#components'
 import type { Feed } from '~/types/feed'
 import { ipLocationFormat } from '~/composables/utils'
@@ -69,6 +69,12 @@ const singleClick = () => {
 	}
 }
 
+// 用于渲染器的方法
+const handleClickTag= (id) =>{
+  console.log('点击了 # 标记:', id)
+  emit('closeDetail')
+  navigateTo({name: 'search', query: { q: id }})
+}
 // 个人主页按钮
 const userIndex = (uid: number) => {
 	navigateTo(`/user/${uid}`)
@@ -117,7 +123,7 @@ const isDark = computed(() => {
                         :top="48" @click="emit('closeDetail')"
         >
           <n-icon>
-            <Close/>
+            <RiCloseLine/>
           </n-icon>
         </n-float-button>
       </template>
@@ -132,7 +138,7 @@ const isDark = computed(() => {
               object-fit="scale-down"
               lazy
               class="content-center"
-              :src="imgUrl(item)"
+              :src="imgUrl(item,String(data.data.Feed.user.user_id))"
               :img-props="{class:'carousel-img'}"
           />
         </n-carousel>
@@ -182,9 +188,7 @@ const isDark = computed(() => {
           <n-text class="text-4.5" strong>
             {{ data.data.Feed.title }}
           </n-text>
-          <div class="text-3.5" v-rich-text-render="richTextConfig">
-            {{ data.data.Feed.content }}
-          </div>
+          <editor-view :content="data.data.Feed.content" @clickTag="handleClickTag"/>
           <n-text class="text-3" depth="3">
             {{t('ui.editedOn')}}
             <n-time :time="data.data.Feed.publish_time" format="yyyy-MM-dd" unix/>
@@ -205,17 +209,12 @@ const isDark = computed(() => {
         <n-flex class="w-full" align="center" justify="space-between">
           <n-button class="op-80 hover-op-100" size="tiny" @click="singleClick">
             <n-icon>
-              <Close/>
+              <RiCloseLine/>
             </n-icon>
           </n-button>
-          小{{ data.data.Feed.title }}
+          {{ data.data.Feed.title }}
         </n-flex>
-        <div class="whitespace-pre-wrap">
-          详情部分
-            <div v-rich-text-render="richTextConfig">
-              {{ data.data.Feed.content }}
-            </div>
-        </div>
+          <editor-view :content="data.data.Feed.content" @clickTag="handleClickTag"/>
         <div>
           评论部分
         </div>

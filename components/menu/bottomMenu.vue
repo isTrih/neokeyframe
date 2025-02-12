@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
 import {useModal} from "naive-ui";
-import {AddCircleOutline, NotificationsOutline} from '@vicons/ionicons5';
+import {RiAddBoxLine, RiMessage3Line} from '@remixicon/vue';
 import {LoginModal} from '#components';
 
 const {CurrentMenu} = storeToRefs(useConfigStore());
@@ -45,6 +45,7 @@ const avatar = computed(() => {
 })
 
 // endregion
+const noClient = ref(true);
 function showLogin() {
   const m = modal.create({
     class: 'border-rd-xl w-90dvw',
@@ -60,12 +61,13 @@ function showLogin() {
   });
 };
 onMounted(() => {
+  noClient.value = false;
   console.log(IsLogin.value, UserInfo.value);
 })
 </script>
 
 <template>
-  <n-flex class="h-6dvh w-full" justify="space-around" :size="0" align="center">
+  <n-flex v-if="noClient" class="h-6dvh w-full" justify="space-around" :size="0" align="center">
     <div
         :class="['menu-item my-1 h-4.2dvh w-20dvw flex items-center justify-center',CurrentMenu=='home'?'menu-item-selected':'']"
         @click="handleClick('home')">
@@ -81,7 +83,7 @@ onMounted(() => {
       <n-icon
           size="3dvh"
           :class="['icon', CurrentMenu=='upload'?'color-[--czjB-7]':'color-[--text-1]']">
-        <AddCircleOutline/>
+        <RiAddBoxLine/>
       </n-icon>
     </div>
     <div
@@ -90,7 +92,7 @@ onMounted(() => {
       <n-icon
           size="3dvh"
           :class="['icon', CurrentMenu=='notification'?'color-[--czjB-7]':'color-[--text-1]']">
-        <NotificationsOutline/>
+        <RiMessage3Line/>
       </n-icon>
 
     </div>
@@ -112,6 +114,55 @@ onMounted(() => {
       </n-icon>
     </div>
   </n-flex>
+  <client-only>
+    <n-flex class="h-6dvh w-full" justify="space-around" :size="0" align="center">
+      <div
+          :class="['menu-item my-1 h-4.2dvh w-20dvw flex items-center justify-center',CurrentMenu=='home'?'menu-item-selected':'']"
+          @click="handleClick('home')">
+        <n-icon
+            size="3dvh"
+            :class="['icon', CurrentMenu=='home'?'color-[--czjB-7]':'color-[--text-1]']">
+          <icons-home/>
+        </n-icon>
+      </div>
+      <div
+          :class="['menu-item my-1 h-4.2dvh w-20dvw flex items-center justify-center',CurrentMenu=='upload'?'menu-item-selected':'']"
+          @click="handleClick('upload')">
+        <n-icon
+            size="3dvh"
+            :class="['icon', CurrentMenu=='upload'?'color-[--czjB-7]':'color-[--text-1]']">
+          <RiAddBoxLine/>
+        </n-icon>
+      </div>
+      <div
+          :class="['menu-item my-1 h-4.2dvh w-20dvw flex items-center justify-center',CurrentMenu=='notification'?'menu-item-selected':'']"
+          @click="handleClick('notification')">
+        <n-icon
+            size="3dvh"
+            :class="['icon', CurrentMenu=='notification'?'color-[--czjB-7]':'color-[--text-1]']">
+          <RiMessage3Line/>
+        </n-icon>
+
+      </div>
+      <div
+          :class="['menu-item my-1 h-4.2dvh w-20dvw flex items-center justify-center',CurrentMenu=='user'?'menu-item-selected':'']"
+          @click="handleClick('user')">
+        <n-icon
+            v-show="!IsLogin" size="3dvh"
+            :class="['icon', CurrentMenu=='user'?'color-[--czjB-7]':'color-[--text-1]']"
+        >
+          <div :class="['h-3dvh font-600 font-sans font-not-italic',t('ui.login')==='ログイン'?'w-4dvh text-1dvh':'w-3dvh text-1.4dvh']">
+            {{ t('ui.login') }}
+          </div>
+        </n-icon>
+        <n-icon
+            v-show="IsLogin" size="3dvh"
+            :class="['icon', CurrentMenu=='user'?'color-[--czjB-7]':'color-[--text-1]']">
+          <n-avatar class="h-3dvh w-3dvh" round :src="avatar"/>
+        </n-icon>
+      </div>
+    </n-flex>
+  </client-only>
 </template>
 
 <style scoped>

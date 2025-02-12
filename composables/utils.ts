@@ -110,11 +110,15 @@ const ipLocationFormat = (input: string): string => {
     return firstStepResult;
 }
 const avatarUrl = (avatar :string): string =>{
+    if (avatar === 'avatar.jpg')
+        return useRuntimeConfig().public.imgUrl+'/default/avatar.jpg-o'
+    else
     return useRuntimeConfig().public.imgUrl+'/avatar/'+avatar+'-o'
 }
 
-const imgUrl = (img :string): string =>{
+const imgUrl = (img :string, watermark: string = ''): string =>{
     return useRuntimeConfig().public.imgUrl+'/img/'+img+'-d'
+    // (watermark ? `?watermark/2/text/${toUrlSafeBase64('关键帧号：'+watermark)}/font/5oCd5rqQ6buR5L2T/fontsize/480/fill/I2ZmZmZmZg==/dissolve/90/gravity/SouthEast/dx/110/dy/60` : '')
 }
 
 const InitMenu = (to :string) => {
@@ -132,6 +136,29 @@ function removeImgById(items: Img[], id: string): Img[] {
     // 将 Map 中的值转换为数组
     return Array.from(itemMap.values());
 }
+
+//字符串转换成安全的 Base64
+function toUrlSafeBase64(input: string): string {
+    let base64: string;
+    if (typeof window === 'undefined') {
+        // Node.js 环境
+        const buffer = Buffer.from(input, 'utf8');
+        base64 = buffer.toString('base64');
+    } else {
+        // 浏览器环境
+        const encoder = new TextEncoder();
+        const bytes = encoder.encode(input);
+        const binary = Array.from(bytes, (byte) => String.fromCharCode(byte)).join('');
+        base64 = btoa(binary);
+    }
+    // 将 + 替换为 -
+    base64 = base64.replace(/\+/g, '-');
+    // 将 / 替换为 _
+    base64 = base64.replace(/\//g, '_');
+    // 移除填充字符 =
+    base64 = base64.replace(/=/g, '');
+    return base64;
+}
 export {
     throttle,
     numFormat,
@@ -141,5 +168,6 @@ export {
     avatarUrl,
     imgUrl,
     InitMenu,
-    removeImgById
+    removeImgById,
+    toUrlSafeBase64
 };

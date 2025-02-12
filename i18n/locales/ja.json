@@ -1,4 +1,9 @@
 {
+  "editor": {
+    "emoji": {
+      "cute": ""
+    }
+  },
   "flink": {
     "Macwk": "MacWk - 精品macソフトウェア",
     "dhn": "大火鳥文化",
@@ -64,6 +69,7 @@
     "menu": "メニュー",
     "newUpload": "",
     "newUploadText": "",
+    "newUploadTitle": "",
     "nickname": "ニックネーム",
     "nicknameLess12": "ニックネームは12文字以下でなければなりません",
     "noMore": "もうありません！",
@@ -91,6 +97,19 @@
     "unfollow": "フォローを外す",
     "unknown": "未知",
     "upload": "アップロード",
+    "uploadCenter": "",
+    "uploadContentTitle": "",
+    "uploadManager": "",
+    "uploadNew": "",
+    "uploadPhotos": "",
+    "uploadPhotosButton": "",
+    "uploadPlaceholder": "",
+    "uploadSelectCover": "",
+    "uploadSelectCoverTip1": "",
+    "uploadSelectCoverTip2": "",
+    "uploadSelectCoverTipNone": "",
+    "uploadSelectCoverTipNone2": "",
+    "uploadTitle": "",
     "userAgreement": "ユーザー契約",
     "userIndex": "",
     "verifyCode": "認証コード",

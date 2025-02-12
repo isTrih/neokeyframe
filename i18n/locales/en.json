@@ -1,4 +1,9 @@
 {
+  "editor": {
+    "emoji": {
+      "cute": ""
+    }
+  },
   "flink": {
     "Macwk": "MacWk - Mac Software",
     "dhn": "Big Firebird Culture",
@@ -64,6 +69,7 @@
     "menu": "Menu",
     "newUpload": "",
     "newUploadText": "",
+    "newUploadTitle": "",
     "nickname": "Nickname",
     "nicknameLess12": "Nickname needs to be less than 12 characters",
     "noMore": "There is no more!",
@@ -91,6 +97,19 @@
     "unfollow": "Unfollow",
     "unknown": "Unknown",
     "upload": "Upload",
+    "uploadCenter": "",
+    "uploadContentTitle": "",
+    "uploadManager": "",
+    "uploadNew": "",
+    "uploadPhotos": "",
+    "uploadPhotosButton": "",
+    "uploadPlaceholder": "",
+    "uploadSelectCover": "",
+    "uploadSelectCoverTip1": "",
+    "uploadSelectCoverTip2": "",
+    "uploadSelectCoverTipNone": "",
+    "uploadSelectCoverTipNone2": "",
+    "uploadTitle": "",
     "userAgreement": "User Agreement",
     "userIndex": "",
     "verifyCode": "Verify Code",

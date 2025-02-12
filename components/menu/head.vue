@@ -10,7 +10,7 @@
         <n-button circle text size="medium" @click="$emit('back')">
           <template #icon>
             <n-icon>
-              <ArrowBackIosRound />
+              <RiArrowLeftSLine />
             </n-icon>
           </template>
         </n-button>
@@ -25,9 +25,9 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { ArrowBackIosRound } from '@vicons/material';
+import {RiArrowLeftSLine} from '@remixicon/vue';
 
-  defineProps({
+defineProps({
     title: {
       type: String,
       default: ''

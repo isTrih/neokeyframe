@@ -4,7 +4,7 @@
   -->
 
 <script setup lang="ts">
-import { IosHeartEmpty } from '@vicons/ionicons4'
+import { RiHeart2Line } from '@remixicon/vue'
 import type { Card } from '~/types/feed'
 import { h } from 'vue'
 import { FeedDetail } from '#components'
@@ -106,7 +106,7 @@ const heightCaculate = (
                 width="100%"
                 object-fit="cover"
                 preview-disabled
-                :src="imgUrl(card.media_url)"
+                :src="imgUrl(card.media_url,String(card.user.user_id))"
                 class="image"
                 :height="heightCaculate(len, card.media.height, card.media.width)"
                 :alt="card.title"
@@ -142,17 +142,15 @@ const heightCaculate = (
                   />
                 </nuxt-link>
                 <nuxt-link
-                    class="flex align-center decoration-none text-xs user_name"
+                    class="flex align-center decoration-none text-3 user_name"
                     :to="{name: 'user-uid', params: {uid: card.user.user_id}}"
                 >
                   <div class="user_name">{{ card.user.user_name }}</div>
                 </nuxt-link>
               </n-flex>
-              <n-flex align="center" justify="flex-end" :size="2" class="text-xs color-[--text-1] flex align-center">
-                <n-icon>
-                  <IosHeartEmpty/>
-                </n-icon>
-                {{ numFormat(card.like_num) }}
+              <n-flex align="center" justify="flex-end" :size="[0,0]" >
+                  <icons-like-b/>
+                <n-text class="text-2.8 color-[--text-1]">{{ numFormat(card.like_num) }}</n-text>
               </n-flex>
             </div>
           </div>

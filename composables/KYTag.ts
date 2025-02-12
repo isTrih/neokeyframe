@@ -1,70 +1,107 @@
-import { Extension } from '@tiptap/core';
-import type { RawCommands } from '@tiptap/core';
+import {type Commands, Node} from '@tiptap/core'
+import { Plugin } from 'prosemirror-state'
 
-const KYTag = Extension.create({
-    name: 'KYTag',
+
+declare module '@tiptap/core' {
+    interface Commands<ReturnType> {
+        KYTag: {
+            setKYTag: (id: string) => ReturnType
+            toggleKYTag: () => ReturnType
+        }
+        // Ensure 'chain' is included if it's missing in your context
+        chain: () => any
+    }
+}
+
+export interface KYTagOptions {
+    allowClick: boolean
+    navigate: (id: string) => void
+}
+
+export const KYTag = Node.create<KYTagOptions>({
+    name: 'kyTag',
+    inline: true,
+    group: 'inline',
+    selectable: false,
+    atom: true,
 
     addOptions() {
         return {
             allowClick: true,
-        };
+            navigate: (id) => console.warn('请通过配置提供 navigate 函数'),
+        }
     },
 
-    addNode() {
+    addAttributes() {
         return {
-            group: 'inline',
-            inline: true,
-            selectable: true,
-            atom: true,
-            parseDOM: [
-                {
-                    tag: '.kyTag',
-                    getAttrs: (dom) => ({
-                        id: dom.getAttribute('data-id'),
-                    }),
-                },
-            ],
-            toDOM: (node) => [
-                'span',
-                {
-                    class: 'kyTag',
-                    'data-id': node.attrs.id,
-                },
-                ['i', { class: 'ri-eth-fill', style: 'transform: rotate(30deg);' }],
-                node.attrs.id,
-            ],
-        };
+            id: {
+                default: null,
+                parseHTML: element => element.getAttribute('data-id'),
+                renderHTML: attributes => ({
+                    'data-id': attributes.id,
+                }),
+            },
+        }
+    },
+
+    parseHTML() {
+        return [
+            {
+                tag: 'span.kyTag',
+            },
+        ]
+    },
+
+    renderHTML({ node }) {
+        return [
+            'span',
+            {
+                class: 'kyTag',
+                'data-id': node.attrs.id,
+            },
+            ['i', { class: 'ri-eth-fill'},''],
+            node.attrs.id,
+        ]
     },
 
     addCommands() {
         return {
-            setKYTag:
-                (id: string) =>
-                    ({ commands }) => {
-                        return commands.insertContent({
-                            type: this.name,  // 使用 this.name
-                            attrs: { id },
-                        });
-                    },
+            setKYTag: (id) => ({ commands }) => {
+                return commands.insertContent({
+                    type: this.name,
+                    attrs: { id },
+                })
+            },
 
-            toggleKYTag:
-                (id: string) =>
-                    ({ commands, editor }) => {
-                        const { from, to } = editor.state.selection;
-                        const selectedText = editor.state.doc.textBetween(from, to, ' ', ' ');
-                        return commands.insertContent({
-                            type: this.name,
-                            attrs: { id: selectedText || id },
-                        });
-                    },
-        } as Partial<RawCommands>;  // 显式指定返回类型为 Partial<RawCommands>
+            toggleKYTag: () => ({ commands, state }) => {
+                const { from, to } = state.selection
+                const text = state.doc.textBetween(from, to, '')
+                if (!text) return false
+                commands.deleteRange({ from, to })
+                return commands.insertContent({ type: this.name, attrs: { id: text } })
+            },
+        }
     },
 
     addProseMirrorPlugins() {
         return [
-            // 插件代码
-        ];
-    },
-});
+            new Plugin({
+                props: {
+                    handleClick: (view, pos, event) => {
+                        const target = event.target as HTMLElement
+                        const kyTag = target.closest?.('.kyTag')
 
-export default KYTag;
+                        if (kyTag && this.options.allowClick) {
+                            const id = kyTag.getAttribute('data-id')
+                            if (id) {
+                                this.options.navigate(id)
+                                return true
+                            }
+                        }
+                        return false
+                    },
+                },
+            }),
+        ]
+    },
+})

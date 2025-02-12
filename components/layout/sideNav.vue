@@ -14,9 +14,10 @@ import Button from '~/components/menu/button.vue'
 import Theme from '~/components/menu/theme.vue'
 import Link from '~/components/menu/link.vue'
 import {
-	AddCircleOutline as CreateIcon,
-	NotificationsOutline as NotifIcon
-} from '@vicons/ionicons5'
+	RiAddBoxLine as CreateIcon,
+	RiMessage3Line as NotifIcon,
+    RiMenu4Line
+} from '@remixicon/vue'
 import { MenuRound } from '@vicons/material'
 import {fLink} from '~/types/fLink';
 const useUser = useUserStore()
@@ -71,7 +72,7 @@ const menuOptions = computed(() => [
 				{
 					to: '/upload'
 				},
-				{ default: () => t('ui.upload') }
+				{ default: () => t('ui.uploadCenter') }
 			),
 		key: 'upload',
 		icon: renderIcon(CreateIcon)
@@ -585,7 +586,7 @@ function renderCertification() {
           <n-button block round quaternary size="large">
             <template #icon>
               <n-icon>
-                <MenuRound />
+                <RiMenu4Line />
               </n-icon>
             </template>
             {{t('ui.menu')}}

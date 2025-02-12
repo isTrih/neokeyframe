@@ -38,18 +38,11 @@ onUnmounted(() => {
   <div class="flex flex-col h-100dvh">
     <n-modal-provider>
         <client-only>
+          <!--TODO:上传前记得开启-->
           <n-watermark
-        :content="t('ui.devRegStatus')"
-        cross
-        fullscreen
-        :font-size="16"
-        :line-height="16"
-        :width="384"
-        :height="384"
-        :x-offset="12"
-        :y-offset="60"
-        :rotate="-15"
-    /></client-only>
+              v-if="false"
+              :content="t('ui.devRegStatus')"
+              cross fullscreen :font-size="16" :line-height="16" :width="384" :height="384" :x-offset="12" :y-offset="60" :rotate="-15"/></client-only>
         <div class="pt-4 pb-2 h-34px">
         <layout-header/>
       </div>
@@ -62,8 +55,8 @@ onUnmounted(() => {
                 <layout-side-nav/>
               </div>
             </n-gi>
-            <n-gi ref="gridRef" span="11 1:14 600:10 700:11 1000:12">
-              <div class="h-full mb-2 px-2 mx-2 bg-[--bg-2] shadow-[--shadow-i-c] rounded-2xl">
+            <n-gi class="mb-2" ref="gridRef" span="11 1:14 600:10 700:11 1000:12">
+              <div class="h-full px-2 mx-2 bg-[--bg-2] shadow-[--shadow-i-c] rounded-2xl">
                 <div v-if="notClient" class="h-full w-full flex flex-col justify-center align-center">
                   <n-empty description="正在加载中...">
                     <template #icon>
@@ -76,7 +69,7 @@ onUnmounted(() => {
             </n-gi>
           </n-grid>
 
-            <div v-show="IsSmall" class="h-6dvh">
+            <div v-show="IsSmall" class="h-6vh">
             <layout-bottom/>
           </div>
 

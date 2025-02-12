@@ -4,7 +4,8 @@
   -->
 
 <script setup lang="ts">
-  import { ArrowForwardIosRound } from '@vicons/material';
+  import {RiArrowRightSLine} from '@remixicon/vue';
+
   defineProps({
     title: {
       type: String,
@@ -30,7 +31,7 @@
         </div>
         <div>
           <n-icon v-if="icon">
-            <ArrowForwardIosRound />
+            <RiArrowRightSLine />
           </n-icon>
         </div>
       </n-flex>
@@ -42,7 +43,7 @@
         </div>
         <div>
           <n-icon v-if="icon">
-            <ArrowForwardIosRound />
+            <RiArrowRightSLine />
           </n-icon>
         </div>
       </n-flex>

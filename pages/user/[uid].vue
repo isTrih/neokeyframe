@@ -7,8 +7,7 @@
 <script setup lang="ts">
 import { GetUserInfo } from '~/apis/user'
 import type { User } from '~/types/user'
-import { IosArrowBack } from '@vicons/ionicons4'
-import { SadOutline } from '@vicons/ionicons5'
+import {RiArrowLeftSLine, RiEmotionSadLine} from '@remixicon/vue'
 
 import { NText } from 'naive-ui'
 import Link from '~/components/menu/link.vue'
@@ -150,7 +149,7 @@ const userMore = computed(() => {
       <n-button circle size="small" text @click="() => router.back()">
         <template #icon>
           <n-icon>
-            <IosArrowBack/>
+            <RiArrowLeftSLine/>
           </n-icon>
         </template>
         {{ t('ui.back') }}
@@ -276,8 +275,10 @@ const userMore = computed(() => {
       </n-grid>
     </div>
     <n-empty v-else-if="Code===6021" class="mt-30vh" :description="t('ui.voidUser')">
-      <template #icon>
-        <SadOutline/>
+      <template #icon class="content-center">
+        <n-icon class="text-10 color-[--text-4]">
+          <RiEmotionSadLine/>
+        </n-icon>
       </template>
       <template #extra>
         <n-button type="primary" round @click="() => navigateTo('/')">

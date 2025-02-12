@@ -22,7 +22,7 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			baseUrl: '/apikeyframe',
-			imgUrl: 'https://coss.chaozj.com',
+			imgUrl: 'https://cdn.checkpoint321.com',
 		}
 	},
 	i18n: {

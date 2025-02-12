@@ -6,9 +6,11 @@
 <template>
   <n-config-provider :locale="locale[0]" :date-locale="locale[1]" inline-theme-disabled :theme="theme" :theme-overrides="theme === null ? lightThemeOverrides : darkThemeOverrides">
     <n-message-provider>
-    <NuxtLayout>
-      <NuxtPage/>
-    </NuxtLayout>
+      <n-dialog-provider>
+        <NuxtLayout>
+          <NuxtPage/>
+        </NuxtLayout>
+        </n-dialog-provider>
     </n-message-provider>
   </n-config-provider>
 </template>
@@ -29,7 +31,9 @@ const theme = ref<null | typeof darkTheme>(null)
 const lightThemeOverrides: GlobalThemeOverrides = {
 	Scrollbar: {
 		width: '0px',
-		borderRadius: '0px'
+		borderRadius: '8px',
+    color:'rgba(39,100,173,0.6)',
+    colorHover:'rgba(69,127,189,0.6)'
 	},
 	common: {
 		baseColor: '#FFF',
@@ -58,7 +62,9 @@ const lightThemeOverrides: GlobalThemeOverrides = {
 const darkThemeOverrides: GlobalThemeOverrides = {
 	Scrollbar: {
 		width: '0px',
-		borderRadius: '0px'
+		borderRadius: '8px',
+    color:'rgba(71,128,189,0.6)',
+    colorHover:'rgba(51,107,173,0.6)'
 	},
 	common: {
 		primaryColor: '#4780BD',

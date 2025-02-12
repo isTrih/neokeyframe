@@ -1,4 +1,9 @@
 {
+  "editor": {
+    "emoji": {
+      "cute": "默认表情"
+    }
+  },
   "flink": {
     "Macwk": "MacWk-精品mac软件",
     "dhn": "大火鸟文化",
@@ -64,6 +69,7 @@
     "menu": "菜单",
     "newUpload": "上传图文",
     "newUploadText": "上传纯文字",
+    "newUploadTitle": "标题",
     "nickname": "昵称",
     "nicknameLess12": "昵称需要少于12个字符",
     "noMore": "没有更多喽！",
@@ -91,6 +97,19 @@
     "unfollow": "取消关注",
     "unknown": "未知",
     "upload": "上传",
+    "uploadCenter": "创作中心",
+    "uploadContentTitle": "正文编辑",
+    "uploadManager": "创作管理",
+    "uploadNew": "发布图文",
+    "uploadPhotos": "图片上传",
+    "uploadPhotosButton": "上传图片",
+    "uploadPlaceholder": "你可以输入任何东西，但是请遵守规则。",
+    "uploadSelectCover": "选择封面",
+    "uploadSelectCoverTip1": "点击\"图片上传\"中图片后，点击",
+    "uploadSelectCoverTip2": "选择封面",
+    "uploadSelectCoverTipNone": "当前未选择封面",
+    "uploadSelectCoverTipNone2": "（必选项）",
+    "uploadTitle": "一个好标题是成功的一半",
     "userAgreement": "用户协议",
     "userIndex": "个人主页",
     "verifyCode": "验证码",
