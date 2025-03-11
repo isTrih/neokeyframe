@@ -4,11 +4,11 @@
   -->
 
 <script setup lang="ts">
-import {RiCloseLine} from '@remixicon/vue';
-import { FeedBPlayer } from '#components'
+import { RiCloseLine } from '@remixicon/vue'
 import type { Feed } from '~/types/feed'
 import { ipLocationFormat } from '~/composables/utils'
 import { useRuntimeConfig } from '#app'
+import { ShareFeedXHS } from '~/apis/feed'
 
 // 组件属性
 const props = defineProps({
@@ -43,17 +43,6 @@ useHead({
 		: '标题获取错误',
 	meta: [{ name: 'keywords', content: '前端, keywords' }]
 })
-// 富文本配置
-const richTextConfig = ref({
-	markers: ['bp'],
-	//使用方式是先在markers中添加标记文本
-	//[xxx param=??]
-	//再在components中添加文本对应的组件
-	components: {
-		bp: FeedBPlayer
-	},
-	bemit: emit
-})
 
 // 获取全局配置
 const { IsSmall, WaterFallHeight } = storeToRefs(
@@ -70,10 +59,10 @@ const singleClick = () => {
 }
 
 // 用于渲染器的方法
-const handleClickTag= (id) =>{
-  console.log('点击了 # 标记:', id)
-  emit('closeDetail')
-  navigateTo({name: 'search', query: { q: id }})
+const handleClickTag = id => {
+	console.log('点击了 # 标记:', id)
+	emit('closeDetail')
+	navigateTo({ name: 'search', query: { q: id } })
 }
 // 个人主页按钮
 const userIndex = (uid: number) => {
@@ -81,6 +70,57 @@ const userIndex = (uid: number) => {
 	emit('closeDetail')
 }
 // TODO：关注逻辑
+
+declare global {
+	interface Window {
+		xhs: {
+			share: (options: {
+				shareInfo: {
+					type: string
+					title: string
+					content: string
+					images: string[]
+				}
+				verifyConfig: {
+					appKey: string
+					nonce: string
+					timestamp: string
+					signature: string
+				}
+				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+				fail: (e: any) => void
+			}) => void
+		}
+	}
+}
+const shareXHS = (
+	images: string[],
+	title: string,
+	content: string
+) => {
+	console.log('分享到小红书')
+	ShareFeedXHS().then(res => {
+		console.log(res.data)
+		window.xhs.share({
+			shareInfo: {
+				type: 'normal', // 必填，笔记类型 'video' | 'normal'
+				title: title, // 笔记标题
+				content: content, // 笔记正文
+				images: images.map(img => imgUrl(img)) //图文类型必填，笔记图片，必须是服务器地址，暂时不支持本地文件
+			},
+			verifyConfig: {
+				appKey: 'red.jdTVXR4Ldj9sudhb', //必填，应用的唯一标识,
+				nonce: res.data.nonce, // 必填，服务端生成签名的随机字符串
+				timestamp: res.data.timestamp, // 必填，服务端生成签名的时间戳
+				signature: res.data.signature // 必填，服务端生成的签名
+			},
+			fail: e => {
+				console.log('分享失败', e)
+				// 调用失败时执行的回调函数
+			}
+		})
+	})
+}
 
 const { CurrentColor } = storeToRefs(useConfigStore())
 // 认证信息
@@ -185,10 +225,12 @@ const isDark = computed(() => {
           </n-button>
         </n-flex>
         <n-scrollbar class="feedContent">
-          <n-text class="text-4.5" strong>
+          <n-text class="text-6" strong>
             {{ data.data.Feed.title }}
           </n-text>
-          <editor-view :content="data.data.Feed.content" @clickTag="handleClickTag"/>
+          <client-only>
+            <editor-view :content="data.data.Feed.content" @clickTag="handleClickTag"/>
+          </client-only>
           <n-text class="text-3" depth="3">
             {{t('ui.editedOn')}}
             <n-time :time="data.data.Feed.publish_time" format="yyyy-MM-dd" unix/>
@@ -201,7 +243,9 @@ const isDark = computed(() => {
             {{t('ui.comment1')}}&nbsp;{{data.data.Feed.comment_num}}&nbsp;{{t('ui.comment2')}}
           </n-text>
         </n-scrollbar>
-        <div class="bg-red h-4rem">这是操作栏</div>
+        <div class="bg-red h-4rem">这是操作栏
+<!--          <n-button @click="shareXHS(data.data.Feed.media_list,data.data.Feed.title,data.data.Feed.content)">分享</n-button>-->
+        </div>
       </n-gi>
     </n-grid>
     <n-scrollbar v-else :style="{maxHeight: WaterFallHeight+'px'}">
@@ -214,9 +258,14 @@ const isDark = computed(() => {
           </n-button>
           {{ data.data.Feed.title }}
         </n-flex>
+        <client-only>
           <editor-view :content="data.data.Feed.content" @clickTag="handleClickTag"/>
+        </client-only>
         <div>
           评论部分
+        </div>
+        <div class="bg-red h-4rem">这是操作栏
+          <!--          <n-button @click="shareXHS(data.data.Feed.media_list,data.data.Feed.title,data.data.Feed.content)">分享</n-button>-->
         </div>
       </n-flex>
     </n-scrollbar>
@@ -224,6 +273,11 @@ const isDark = computed(() => {
 </template>
 
 <style scoped>
+
+
+:deep(.n-divider:not(.n-divider--vertical)){
+  @apply my;
+}
 :deep(.feedContent) {
   max-height: calc(80dvh - 3rem - 4rem - 2.5rem - 1rem);
   min-height: calc(80dvh - 3rem - 4rem - 2.5rem - 1rem);

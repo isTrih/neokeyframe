@@ -14,6 +14,13 @@ import { fLink, fLinkThin } from '~/types/fLink'
 import { NuxtLink } from '#components'
 import { GetFeeds } from '~/apis/feed'
 
+// region 禁止二次登录
+const isSearch = computed(() => {
+  const { query } = useRoute()
+  return !!query.q
+})
+// endregion
+
 // region 用户登陆态
 const useUser = useUserStore()
 const { IsLogin } = storeToRefs(useUser)
@@ -600,11 +607,11 @@ function renderCertification() {
 //endregion
 </script>
 <template>
-  <n-grid :cols="24" item-responsive>
+  <n-grid  :cols="24" item-responsive>
       <n-gi span="24 1:0 600:24">
         <n-flex :size="[0,0]" class="px-4" align="center" justify="space-between">
           <icons-keyframe class="color-[--czjB-5] h-34px"/>
-          <n-input passively-activated @keyup="handleKeyup" v-model:value="searchValue" id="search" class="min-w-[40%]" autosize clearable round :placeholder="t('ui.searchMoreContent')">
+          <n-input v-show="!isSearch" passively-activated @keyup="handleKeyup" v-model:value="searchValue" id="search" class="min-w-[40%]" autosize clearable round :placeholder="t('ui.searchMoreContent')">
             <!--          TODO:可能需要更新搜索逻辑-->
             <template #suffix>
               <n-button circle text size="tiny" @click="doQuery">

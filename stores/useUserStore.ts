@@ -47,10 +47,7 @@ export const useUserStore = defineStore(
 		};
 
 		// 登录
-		const UserLogin = async ({
-			mobile,
-			password,
-		}: { mobile: string; password: string }) => {
+		const UserLogin = async ({mobile, password,}: { mobile: string; password: string }) => {
 			const {code, msg, data} = await Login(mobile, password);
 			console.log(data, msg, data)
 			//TODO：可能获取其他用户信息

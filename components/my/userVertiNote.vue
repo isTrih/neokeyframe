@@ -18,13 +18,13 @@ const props = defineProps({
 })
 
 const suffix = computed(() => {
-	if (props.userType === 2) {
+	if (200 <= props.userType && props.userType < 300) {
 		return `${t('ui.keyframe')} ${t('ui.creatorCertification')}` //创作者认证
 	}
-	if (props.userType === 3) {
+	if (300 <= props.userType && props.userType < 400) {
 		return `${t('ui.keyframe')} ${t('ui.organizationCertification')}`// '关键帧 机构认证：'
 	}
-	if (props.userType >= 4) {
+	if (props.userType >= 400) {
 		return `${t('ui.keyframe')} ${t('ui.employeeCertification')}` // '关键帧 员工认证：'
 	}
 	return ''

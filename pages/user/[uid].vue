@@ -92,55 +92,6 @@ onMounted(async () => {
 	Code.value = code
 })
 import Button from '~/components/menu/button.vue'
-const userMore = computed(() => {
-	return [
-		{
-			type: 'render',
-			render: () => {
-				return h(
-					'div',
-					{
-						style:
-							'display: flex; align-items: center; padding: 8px 12px;'
-					},
-					[
-						h('div', null, [
-							h(
-								'div',
-								{
-									style:
-										'font-size: 12px;margin-left:1rem'
-								},
-								[
-									h(
-										NText,
-										{ depth: 3 },
-										{ default: () => t('ui.menu') }
-									)
-								]
-							)
-						])
-					]
-				)
-			},
-			show: true
-		},
-		{
-			type: 'render',
-			render: () => {
-				return h(Button, {
-					title: t('ui.report'),
-					thin: true,
-					icon: false,
-					onClick: () => {
-						//TODO:举报逻辑
-						console.log('举报逻辑')
-					}
-				})
-			}
-		}
-	]
-})
 </script>
 
 <template>
@@ -154,13 +105,7 @@ const userMore = computed(() => {
         </template>
         {{ t('ui.back') }}
       </n-button>
-      <n-dropdown trigger="hover" class="w-58 rounded-3xl" :options="userMore">
-        <n-button class="mr-2" text circle size="small">
-          •••
-        </n-button>
-      </n-dropdown>
-
-
+      <report-button/>
     </n-flex>
     <div v-if="Code===0" class="w-full">
       <n-grid class="w-full" cols="20 760:24" item-responsive>

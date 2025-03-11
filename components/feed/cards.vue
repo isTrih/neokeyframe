@@ -9,10 +9,12 @@ import type { Card } from '~/types/feed'
 import { h } from 'vue'
 import { FeedDetail } from '#components'
 import { useModal } from 'naive-ui'
+const message = useMessage()
 // 监听容器宽度
 const { ContainerWidth, IsSmall } = storeToRefs(
 	useConfigStore()
 )
+const { LikeFeeds,IsLogin } = storeToRefs(useUserStore())
 // 设置组件传参
 const props = defineProps({
 	cardColumns: {
@@ -26,8 +28,11 @@ const len = computed(() => {
 	return Object.keys(props.cardColumns).length
 })
 
-// 数字模糊转换
-function numFormat(num: number) {
+// 数字模糊转换 做好本地点赞
+function numFormat(num: number, id: number) {
+	if (1000 <= num && num < 10000) {
+		return `${(num / 1000).toFixed(1)}${t('ui.k')}+`
+	}
 	if (50000 >= num && num > 10000) {
 		return `1${t('ui.w')}+`
 	}
@@ -37,7 +42,24 @@ function numFormat(num: number) {
 	if (num > 100000) {
 		return `10${t('ui.w')}+`
 	}
-	return num.toString()
+	return LikeFeeds.value.includes(id)
+		? (num + 1).toString()
+		: num.toString()
+}
+
+function handleLike(id: number) {
+  if (!IsLogin.value){
+    message.warning('请先登录')
+    return
+  }
+	if (LikeFeeds.value.includes(id)) {
+		console.log('取消点赞', id)
+    // 这是移除本地点赞缓存
+		removeItem(LikeFeeds.value, id)
+	} else {
+		console.log('点赞', id)
+		LikeFeeds.value.push(id)
+	}
 }
 
 const modal = useModal()
@@ -99,7 +121,6 @@ const heightCaculate = (
       <section v-for="card in col" :key="card.id">
         <div style="padding: 0" class="card">
           <a class="w-full" :href="`/frame/${card.id}`" @click.prevent="showDetails(card.id)">
-
             <n-image
                 lazy
                 :id="`img-${card.id}`"
@@ -149,8 +170,8 @@ const heightCaculate = (
                 </nuxt-link>
               </n-flex>
               <n-flex align="center" justify="flex-end" :size="[0,0]" >
-                  <icons-like-b/>
-                <n-text class="text-2.8 color-[--text-1]">{{ numFormat(card.like_num) }}</n-text>
+                  <icons-like-b :is-liked="LikeFeeds.includes(card.id)" @toggleHeart="handleLike(card.id)"/>
+                <n-text class="text-2.8 color-[--text-1]">{{ numFormat(card.like_num, card.id) }}</n-text>
               </n-flex>
             </div>
           </div>

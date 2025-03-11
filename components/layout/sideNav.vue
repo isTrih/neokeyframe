@@ -18,7 +18,6 @@ import {
 	RiMessage3Line as NotifIcon,
     RiMenu4Line
 } from '@remixicon/vue'
-import { MenuRound } from '@vicons/material'
 import {fLink} from '~/types/fLink';
 const useUser = useUserStore()
 

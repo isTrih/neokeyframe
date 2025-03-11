@@ -45,7 +45,7 @@
                 <n-empty size="huge" :description="t('ui.own')">
                   <template #icon>
                     <n-icon>
-                      <IosEyeOff/>
+                      <RiEyeCloseLine/>
                     </n-icon>
                   </template>
                 </n-empty>
@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import {IosEyeOff} from '@vicons/ionicons4';
+import {RiEyeCloseLine} from '@remixicon/vue';
 import {GetUserFeeds} from '~/apis/feed';
 import type {Card} from '~/types/feed';
 // 查看用户ID

@@ -109,24 +109,27 @@ const ipLocationFormat = (input: string): string => {
     }
     return firstStepResult;
 }
+
+// 获取头像链接
 const avatarUrl = (avatar :string): string =>{
     if (avatar === 'avatar.jpg')
         return useRuntimeConfig().public.imgUrl+'/default/avatar.jpg-o'
     else
     return useRuntimeConfig().public.imgUrl+'/avatar/'+avatar+'-o'
 }
-
+// 获取图片链接
 const imgUrl = (img :string, watermark: string = ''): string =>{
-    return useRuntimeConfig().public.imgUrl+'/img/'+img+'-d'
-    // (watermark ? `?watermark/2/text/${toUrlSafeBase64('关键帧号：'+watermark)}/font/5oCd5rqQ6buR5L2T/fontsize/480/fill/I2ZmZmZmZg==/dissolve/90/gravity/SouthEast/dx/110/dy/60` : '')
-}
+    return watermark!='' ? useRuntimeConfig().public.imgUrl+'/img/'+img+'-d'+ `?watermark/2/text/${toUrlSafeBase64('关键帧号：'+watermark)}/font/5oCd5rqQ6buR5L2T/fontsize/480/fill/I2ZmZmZmZg==/dissolve/90/gravity/SouthEast/dx/110/dy/60` : useRuntimeConfig().public.imgUrl+'/img/'+img+'-d'
 
+}
+// 初始化菜单
 const InitMenu = (to :string) => {
     const { CurrentMenu } = storeToRefs(useConfigStore())
     CurrentMenu.value = to
     console.log('更新菜单：',to)
 }
 
+// 从数组中删除指定 id 的元素
 function removeImgById(items: Img[], id: string): Img[] {
     // 创建一个 Map，将数组元素存储到 Map 中，键为 id，值为对象
     const itemMap = new Map<string, Img>();
@@ -137,7 +140,7 @@ function removeImgById(items: Img[], id: string): Img[] {
     return Array.from(itemMap.values());
 }
 
-//字符串转换成安全的 Base64
+// 字符串转换成安全的 Base64
 function toUrlSafeBase64(input: string): string {
     let base64: string;
     if (typeof window === 'undefined') {
@@ -159,7 +162,24 @@ function toUrlSafeBase64(input: string): string {
     base64 = base64.replace(/=/g, '');
     return base64;
 }
+
+// 删除列表中的元素
+function removeItem<T>(items: T[], item: T): T[] {
+    const index = items.indexOf(item);
+    if (index !== -1) {
+        items.splice(index, 1);
+    }
+    return items;
+}
+
+// 往列表中添加元素
+function addItem<T>(items: T[], item: T): T[] {
+    items.push(item);
+    return items;
+}
 export {
+    removeItem,
+    addItem,
     throttle,
     numFormat,
     debounce,

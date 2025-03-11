@@ -10,7 +10,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import { currentLocales } from './i18n/config'
-import removeConsole from "vite-plugin-remove-console";
+import removeConsole from 'vite-plugin-remove-console'
 export default defineNuxtConfig({
 	plugins: [
 		{
@@ -22,7 +22,7 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			baseUrl: '/apikeyframe',
-			imgUrl: 'https://cdn.checkpoint321.com',
+			imgUrl: 'https://cdn.checkpoint321.com'
 		}
 	},
 	i18n: {
@@ -45,16 +45,17 @@ export default defineNuxtConfig({
 		ssrHandlers: true
 	},
 	build: {
-		transpile: ['vueuc', 'naive-ui','@nuxt/console'],
-		analyze: false,},
+		transpile: ['vueuc', 'naive-ui', '@nuxt/console'],
+		analyze: false
+	},
 	nitro: {
 		routeRules: {
 			'/apikeyframe/**': {
 				proxy: 'http://127.0.0.1:8888/v1/**'
 			},
 			'/proapi/**': {
-				proxy: 'http://172.17.0.2:8888/v1/**'
-			},
+				proxy: 'http://172.18.0.7:8888/v1/**'
+			}
 		},
 		compressPublicAssets: true // 启动压缩
 	},
@@ -62,10 +63,29 @@ export default defineNuxtConfig({
 	app: {
 		head: {
 			meta: [
-				{ name: 'keywords', content: '关键帧社区, 关键帧, keyframe ani, checkpoint321, checkpoint, 关键帧动画' },
-				{ name: 'description', content: '无论你是创作者还是爱好者，这里都是你的家' }
+				{
+					name: 'keywords',
+					content:
+						'关键帧社区, 关键帧, keyframe ani, checkpoint321, checkpoint, 关键帧动画'
+				},
+				{
+					name: 'description',
+					content:
+						'无论你是创作者还是爱好者，这里都是你的家'
+				}
 			],
-			link: [{ rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' }],
+			link: [
+				{
+					rel: 'icon',
+					type: 'image/x-icon',
+					href: 'favicon.ico'
+				}
+			],
+			script: [
+				{
+					src: 'https://fe-static.xhscdn.com/biz-static/goten/xhs-1.0.1.js'
+				}
+			]
 		}
 	}, // SEO 配置
 	site: {
@@ -130,7 +150,7 @@ export default defineNuxtConfig({
 				resolvers: [NaiveUiResolver()]
 			}),
 			// 用于移除控制台输出
-			removeConsole(),
+			removeConsole()
 		]
 	}
 })

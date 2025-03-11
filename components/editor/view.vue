@@ -5,16 +5,10 @@
 
 <!--suppress CssNoGenericFontName -->
 <script setup lang="ts">
-import { useEditor, EditorContent } from '@tiptap/vue-3'
-import Emoji, {
-	emojis
-} from '@tiptap-pro/extension-emoji'
-
+import {EditorContent, useEditor} from '@tiptap/vue-3'
+import Emoji, {emojis} from '@tiptap-pro/extension-emoji'
 import StarterKit from '@tiptap/starter-kit'
-import {
-	CuteEmojis,
-} from '~/types/cuteEmoji'
-
+import {CuteEmojis,} from '~/types/cuteEmoji'
 // region 渲染器专属属性
 const props = defineProps({
 	content: {
@@ -22,6 +16,7 @@ const props = defineProps({
 		required: true
 	}
 })
+
 const emit = defineEmits(['clickTag'])
 // endregion
 // region 仅限关键帧项目/深色模式
@@ -31,19 +26,8 @@ const isDark = computed(() => {
 })
 // endregion
 // region 注册编辑器
-//处理json兼容
-const fixJson = computed(()=>{
-  try {
-    // 使用 JSON.parse() 方法将字符串转换为 JSON 对象
-    const tmp =  JSON.parse(props.content);
-    return tmp
-  } catch (error) {
-    // 若字符串不是有效的 JSON 格式，会抛出错误，这里进行错误处理
-    return props.content
-  }
-})
 const editor = useEditor({
-	content: fixJson.value,
+	content: JSON.parse(gzipBase64ToStr(props.content)),
 	extensions: [
 		StarterKit.configure({
 			history: false

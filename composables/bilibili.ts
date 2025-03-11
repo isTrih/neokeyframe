@@ -62,12 +62,13 @@ export default Node.create<BilibiliOptions>({
     renderHTML({ HTMLAttributes }) {
         const { bvid } = HTMLAttributes
         return ['div', this.options.HTMLAttributes, ['iframe', {
-            src: `//player.bilibili.com/player.html?isOutside=true&aid=bvid=${bvid}&p=1&high_quality=1&danmaku=1`,
+            src: `//player.bilibili.com/player.html?isOutside=true&bvid=${bvid}&p=1&high_quality=1&danmaku=1`,
             allowfullscreen: this.options.allowFullscreen,
             width: '100%',
             height: '320',
             scrolling: 'no',
             frameborder: '0',
+            sandbox: "allow-top-navigation allow-same-origin allow-forms allow-scripts allow-popups"
         }]]
     },
 

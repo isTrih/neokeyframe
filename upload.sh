@@ -1,8 +1,21 @@
 #l/uSr/D1n/env bash
 version=$1
+doBuild=$2
+if [ -z "$version" ]; then
+    echo "请输入版本号"
+    exit 1
+fi
 
+if [ -z "$doBuild" ]; then
+    echo "请输入是否构建"
+    exit 1
+fi
+
+if [ "$doBuild" != "false" ]; then
 echo "开始build，版本号：${version}" >> build.log
 nuxt build
+fi
+
 
 echo "开始构建镜像，版本号：${version}" >> build.log
 docker build --platform linux/amd64 -t neo-keyframe:v"${version}" .

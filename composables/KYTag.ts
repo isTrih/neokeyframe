@@ -22,16 +22,17 @@ export const KYTag = Node.create<KYTagOptions>({
     name: 'kyTag',
     inline: true,
     group: 'inline',
-    selectable: false,
-    atom: true,
-
+    selectable: true,
+    atom: false,
+    renderText: ({ node }) => {
+        return `#${node.attrs.id} `
+    },
     addOptions() {
         return {
             allowClick: true,
             navigate: (id) => console.warn('请通过配置提供 navigate 函数'),
         }
     },
-
     addAttributes() {
         return {
             id: {
@@ -60,7 +61,7 @@ export const KYTag = Node.create<KYTagOptions>({
                 'data-id': node.attrs.id,
             },
             ['i', { class: 'ri-eth-fill'},''],
-            node.attrs.id,
+            node.attrs.id
         ]
     },
 
@@ -70,6 +71,7 @@ export const KYTag = Node.create<KYTagOptions>({
                 return commands.insertContent({
                     type: this.name,
                     attrs: { id },
+                    text: id
                 })
             },
 
@@ -77,8 +79,8 @@ export const KYTag = Node.create<KYTagOptions>({
                 const { from, to } = state.selection
                 const text = state.doc.textBetween(from, to, '')
                 if (!text) return false
-                commands.deleteRange({ from, to })
-                return commands.insertContent({ type: this.name, attrs: { id: text } })
+                // commands.deleteRange({ from, to })
+                return commands.insertContent({ type: this.name, text:text,attrs: { id: text } })
             },
         }
     },

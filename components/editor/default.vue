@@ -35,6 +35,7 @@ import {
 	CuteEmojiShow
 } from '~/types/cuteEmoji'
 import {getRandomText} from '~/composables/randomText';
+import {gzipBase64ToStr} from '~/composables/gzip';
 
 // region Bilibili按钮
 const showBilibiliModal = ref(false)
@@ -89,7 +90,7 @@ const isDark = computed(() => {
 // region 注册编辑器
 const {EditorTemp,EditorTempRaw} =storeToRefs(useEditorStore())
 const editor = useEditor({
-  content: EditorTemp.value,
+  content: gzipBase64ToStr(EditorTemp.value)===''?'':JSON.parse(gzipBase64ToStr(EditorTemp.value)),
   extensions: [
     StarterKit.configure({
       history: false
@@ -118,13 +119,12 @@ const editor = useEditor({
     })
   ],
   editable: true,
-  onUpdate: ({ editor }) => {
-    EditorTemp.value = editor.getJSON()
+  onBlur: ({ editor }) => {
+    EditorTemp.value = strToGzipBase64(JSON.stringify(editor.getJSON()))
     EditorTempRaw.value = editor.getText({ blockSeparator: ''})
     // send the content to an API here
   }
 })
-
 // endregion
 // region 卸载编辑器
 onUnmounted(() => {
@@ -317,7 +317,7 @@ onUnmounted(() => {
   @apply px-1 color-[--czjB-5] hover-color-[--czjB-4] cursor-pointer;
 }
 .kyTag i{
-  @apply px-1 color-[--czjB-5] hover-color-[--czjB-4] cursor-pointer;
+  @apply color-[--czjB-5] hover-color-[--czjB-4] cursor-pointer;
 }
 /* 表情包*/
 .chaozj {
@@ -401,7 +401,15 @@ onUnmounted(() => {
   margin-bottom: 0.2rem;
   text-wrap: pretty;
 }
-
+.tiptap h1{
+  font-size: 1.2rem;
+}
+.tiptap h2{
+  font-size: 1.1rem;
+}
+.tiptap h3{
+  font-size: 1.0rem;
+}
 h4,
 h5,
 h6 {

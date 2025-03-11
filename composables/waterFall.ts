@@ -15,6 +15,9 @@ function calculateWaterFallCols() {
 	if (Math.floor(contentWidth / 260) < 2) {
 		return 2
 	}
+	if (Math.floor(contentWidth / 260) > 5) {
+		return 5
+	}
 	return Math.floor(contentWidth / 260)
 }
 
@@ -103,6 +106,6 @@ export function resizeWaterFall(
 		}
 		timerId = setTimeout(() => {
 			waterFallInit(columns, card_columns, arrHeight, cards)
-		}, 300) as unknown as number
+		}, 200) as unknown as number
 	}
 }
