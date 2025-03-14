@@ -115,7 +115,10 @@ const editor = useEditor({
     }),
     Emoji.configure({
       emojis: [...emojis, ...CuteEmojis],
-      enableEmoticons: true
+      enableEmoticons: true,
+      HTMLAttributes: {
+        contenteditable:"true"
+      }
     })
   ],
   editable: true,
@@ -323,7 +326,7 @@ onUnmounted(() => {
 .chaozj {
   @apply cursor-pointer;
   font-family: "chaozj" !important;
-  font-size: 16px;
+  font-size: min(4dvw, 2rem);
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

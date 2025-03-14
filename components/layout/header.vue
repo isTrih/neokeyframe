@@ -14,13 +14,19 @@ import { fLink, fLinkThin } from '~/types/fLink'
 import { NuxtLink } from '#components'
 import { GetFeeds } from '~/apis/feed'
 
-// region 禁止二次登录
+// region 禁止二次搜索
 const isSearch = computed(() => {
   const { query } = useRoute()
   return !!query.q
 })
 // endregion
 
+// region 打开搜索框
+const showSearch = ref(false)
+const toggleSearch = ()=>{
+  showSearch.value = !showSearch.value
+}
+// endregion
 // region 用户登陆态
 const useUser = useUserStore()
 const { IsLogin } = storeToRefs(useUser)
@@ -644,38 +650,63 @@ function renderCertification() {
         </n-flex>
       </n-gi>
       <n-gi span="0 1:24 600:0">
-        <n-flex class="w-full" justify="space-between">
-          <icons-keyframe class="color-[--czjB-5] ml-4"/>
-          <n-flex class="mr-4" align="center" size="small">
-
-            <n-button circle quaternary>
-              <template #icon>
-                <n-icon>
-                  <RiSearch2Line/>
-                </n-icon>
+        <transition mode="out-in">
+          <n-flex v-if="showSearch" class="w-full" justify="center" align="center">
+            <n-input v-show="!isSearch" passively-activated @keyup="handleKeyup" v-model:value="searchValue" id="search" class="min-w-[80%]" autosize clearable round :placeholder="t('ui.searchMoreContent')">
+              <!--          TODO:可能需要更新搜索逻辑-->
+              <template #suffix>
+                <n-button circle text size="tiny" @click="doQuery">
+                  <template #icon>
+                    <n-icon :component="RiSearch2Line"/>
+                  </template>
+                </n-button>
               </template>
-            </n-button>
-            <n-dropdown id="lang" trigger="hover" class="w-58 rounded-3xl" :options="i18n">
-              <n-button circle quaternary class="color-[--text-2]">
-                <template #icon>
-                  <n-icon>
-                  <RiTranslate/>
-                  </n-icon>
-                </template>
-              </n-button>
-            </n-dropdown>
-            <n-dropdown id="menu" trigger="click" class="w-58 rounded-3xl" :options="currentMore">
-              <n-button circle quaternary>
-                <template #icon>
-                  <n-icon>
-                    <RiMenuFill/>
-                  </n-icon>
-                </template>
-              </n-button>
-            </n-dropdown>
-
+            </n-input>
+            <n-button @click="toggleSearch" secondary round type="primary">{{ t('ui.cancel') }}</n-button>
           </n-flex>
-        </n-flex>
+          <n-flex v-else class="w-full" justify="space-between">
+            <icons-keyframe class="color-[--czjB-5] ml-4"/>
+            <n-flex  class="mr-4" align="center" size="small">
+              <n-button @click="toggleSearch" circle quaternary>
+                <template #icon>
+                  <n-icon>
+                    <RiSearch2Line/>
+                  </n-icon>
+                </template>
+              </n-button>
+              <n-dropdown id="lang" trigger="hover" class="w-58 rounded-3xl" :options="i18n">
+                <n-button circle quaternary class="color-[--text-2]">
+                  <template #icon>
+                    <n-icon>
+                      <RiTranslate/>
+                    </n-icon>
+                  </template>
+                </n-button>
+              </n-dropdown>
+              <n-dropdown id="menu" trigger="click" class="w-58 rounded-3xl" :options="currentMore">
+                <n-button circle quaternary>
+                  <template #icon>
+                    <n-icon>
+                      <RiMenuFill/>
+                    </n-icon>
+                  </template>
+                </n-button>
+              </n-dropdown>
+
+            </n-flex>
+          </n-flex>
+        </transition>
       </n-gi>
     </n-grid>
 </template>
+<style scoped>
+.v-enter-active, .v-leave-active {
+  transition: all 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  transform: translateX(180px);
+  opacity: 0;
+}
+</style>

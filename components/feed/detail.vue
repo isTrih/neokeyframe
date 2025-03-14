@@ -151,6 +151,10 @@ const VertiColor = computed(() => {
 const isDark = computed(() => {
 	return CurrentColor.value === 'dark'
 })
+// 图片列表长度
+const mediaLength = computed(()=>{
+  return data.value.data.Feed.media_list.length
+})
 </script>
 
 <template>
@@ -170,9 +174,9 @@ const isDark = computed(() => {
       <n-text class="color-[--text-2]">关闭</n-text>
       <n-text class="color-[--text-2]" code>ESC</n-text>
     </n-tooltip>
-    <n-grid class="w-full" v-if="!IsSmall" cols="24">
+    <n-grid class="w-full" v-if="!IsSmall" :cols="mediaLength!==0?24:12">
       <n-gi class="mediaContainer pr-6" span="12">
-        <n-carousel autoplay :show-arrow="data.data.Feed.media_list.length>1" :centered-slides="true" class="bg-black carousel" >
+        <n-carousel v-if="mediaLength!==0" autoplay :show-arrow="mediaLength>1" :centered-slides="true" class="bg-black carousel" >
           <n-image
               v-for="item in data.data.Feed.media_list"
               object-fit="scale-down"
@@ -242,10 +246,13 @@ const isDark = computed(() => {
           <n-text class="text-3" depth="3">
             {{t('ui.comment1')}}&nbsp;{{data.data.Feed.comment_num}}&nbsp;{{t('ui.comment2')}}
           </n-text>
+          <div class="bg-blue h-full">
+            评论部分
+          </div>
         </n-scrollbar>
-        <div class="bg-red h-4rem">这是操作栏
-<!--          <n-button @click="shareXHS(data.data.Feed.media_list,data.data.Feed.title,data.data.Feed.content)">分享</n-button>-->
-        </div>
+        <client-only>
+          <feed-control-bar :is-single="mediaLength===0" class="absolute bottom-5.5"/>
+        </client-only>
       </n-gi>
     </n-grid>
     <n-scrollbar v-else :style="{maxHeight: WaterFallHeight+'px'}">
@@ -261,7 +268,7 @@ const isDark = computed(() => {
         <client-only>
           <editor-view :content="data.data.Feed.content" @clickTag="handleClickTag"/>
         </client-only>
-        <div>
+        <div class="bg-blue">
           评论部分
         </div>
         <div class="bg-red h-4rem">这是操作栏

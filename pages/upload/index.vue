@@ -186,7 +186,6 @@ const remove = ({ file }) => {
           <n-flex vertical justify-center align-center>
             <div>
               <n-text class="title">{{ t('ui.uploadPhotos') }}&nbsp;({{uploadFileData.length}} / 12)</n-text>
-              <n-text class="text-2.2 color-[--czjR-5]">{{ t('ui.uploadSelectCoverTipNone2') }}</n-text>
               <n-upload
                   class="mt-1"
                   accept="image/*"
@@ -203,7 +202,6 @@ const remove = ({ file }) => {
             </div>
             <div>
               <n-text class="title">{{ t('ui.uploadSelectCover') }}</n-text>
-              <n-text class="text-2.2 color-[--czjR-5]">{{ t('ui.uploadSelectCoverTipNone2') }}</n-text>
               <br/>
               <n-image v-if="currentCover.length>=3" width="100" :src="imgUrl(currentCover)">
                 <template #error>
@@ -226,7 +224,7 @@ const remove = ({ file }) => {
             </div>
             <div>
               <n-text  class="title">{{ t('ui.newUploadTitle') }}</n-text>
-              <n-text class="text-2.2 color-[--czjR-5]">{{ t('ui.uploadSelectCoverTipNone2') }}</n-text>
+              <n-text class="text-2.2 color-[--czjR-5]"> ( {{ t('ui.must') }} ) </n-text>
 
               <n-input
                   v-model:value="title"

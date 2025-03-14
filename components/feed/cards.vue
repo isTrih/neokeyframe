@@ -4,7 +4,7 @@
   -->
 
 <script setup lang="ts">
-import { RiHeart2Line } from '@remixicon/vue'
+import { RiHeart2Line, RiImageLine } from '@remixicon/vue'
 import type { Card } from '~/types/feed'
 import { h } from 'vue'
 import { FeedDetail } from '#components'
@@ -14,7 +14,7 @@ const message = useMessage()
 const { ContainerWidth, IsSmall } = storeToRefs(
 	useConfigStore()
 )
-const { LikeFeeds,IsLogin } = storeToRefs(useUserStore())
+const { LikeFeeds, IsLogin } = storeToRefs(useUserStore())
 // 设置组件传参
 const props = defineProps({
 	cardColumns: {
@@ -48,13 +48,13 @@ function numFormat(num: number, id: number) {
 }
 
 function handleLike(id: number) {
-  if (!IsLogin.value){
-    message.warning('请先登录')
-    return
-  }
+	if (!IsLogin.value) {
+		message.warning('请先登录')
+		return
+	}
 	if (LikeFeeds.value.includes(id)) {
 		console.log('取消点赞', id)
-    // 这是移除本地点赞缓存
+		// 这是移除本地点赞缓存
 		removeItem(LikeFeeds.value, id)
 	} else {
 		console.log('点赞', id)
@@ -96,6 +96,13 @@ onUnmounted(() => {})
 
 // 处理加载状态
 const handleLoad = (card: Card) => {
+	console.log('加载成功', card.id)
+	card.loaded = true
+}
+
+// 处理加载失败以及错误
+const handleError = (card: Card) => {
+	console.log('加载失败')
 	card.loaded = true
 }
 
@@ -122,29 +129,49 @@ const heightCaculate = (
         <div style="padding: 0" class="card">
           <a class="w-full" :href="`/frame/${card.id}`" @click.prevent="showDetails(card.id)">
             <n-image
-                lazy
                 :id="`img-${card.id}`"
                 width="100%"
                 object-fit="cover"
                 preview-disabled
                 :src="imgUrl(card.media_url,String(card.user.user_id))"
+                :fallback-src="imgUrl('f_4.jpg')"
                 class="image"
                 :height="heightCaculate(len, card.media.height, card.media.width)"
                 :alt="card.title"
                 @load="handleLoad(card)"
+                @error="handleError(card)"
             >
+              <template #error>
+                <n-flex v-if="card.media_url!=='xx'"
+                        :style="{height: heightCaculate(len, card.media.height, card.media.width) + 'px'}"
+                        class="w-full p-xy bg-[--bg-1] rounded-4" vertical justify="center" align="center">
+                  <n-icon class="text-4xl text-[--text-4]">
+                    <RiImageLine/>
+                  </n-icon>
+                  <n-text class="text-4 text-[--text-4]">{{ t('ui.imageLoadError') }}</n-text>
+                </n-flex>
+
+                <n-flex v-else
+                        :style="{height: heightCaculate(len, card.media.height, card.media.width) + 'px'}"
+                        class="w-full p-xy h-full bg-[--bg-1] rounded-4" vertical justify="center" align="center">
+                  <n-text class="font-mono text-align-center font-bold text-5 text-[--text-1]">{{card.title}}</n-text>
+                </n-flex>
+              </template>
               <template #placeholder>
                 <n-skeleton
+                    v-if="!card.loaded"
                     class="skeleton"
                     :height="heightCaculate(len, card.media.height, card.media.width)"
                 />
               </template>
             </n-image>
+
           </a>
           <div style="padding: 0.1rem">
             <div
+                v-show="card.media_url!=='xx'"
                 id="title"
-                class="mb-1"
+                class="mb-1 cursor-pointer"
                 @click="showDetails(card.id)"
             >
               {{ card.title }}
