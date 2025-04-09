@@ -99,7 +99,20 @@ const props = defineProps({
 const cards0 = ref<Card[]>([]);
 const cards1 = ref<Card[]>([]);
 const cards2 = ref<Card[]>([]);
-const disabled = ref(true); // 初始禁用滚动加载
+const disabled0 = ref(true); // 初始禁用滚动加载
+const disabled1 = ref(true); // 初始禁用滚动加载
+const disabled2 = ref(true); // 初始禁用滚动加载
+
+const disabled = computed(()=>{
+  if (activeIndex.value === 0) {
+    return disabled0.value
+  }if (activeIndex.value === 1) {
+    return disabled1.value
+  }if (activeIndex.value === 2) {
+    return disabled2.value
+  }
+  return disabled0.value
+}); // 初始禁用滚动加载
 const isload = ref(true);// 初始加载中
 
 const columns = ref(0)
@@ -128,20 +141,24 @@ const doQuery = async (offset: number) => {
       cards0.value = res.data.feeds;
       console.log(cards0)
       waterFallInit(columns, card0_columns, arrHeight, cards0)
+      disabled0.value = false; // 启用滚动加载
+
       break;
     case 1:
       cards1.value = res.data.feeds;
       waterFallInit(columns, card1_columns, arrHeight, cards1)
+      disabled1.value = false; // 启用滚动加载
+
       break;
     case 2:
       cards2.value = res.data.feeds;
       waterFallInit(columns, card2_columns, arrHeight, cards2)
+      disabled2.value = false; // 启用滚动加载
       break;
     default:
       break;
   }
   isload.value = false;// 加载完成
-  disabled.value = false; // 启用滚动加载
 };
 // 防抖查询
 const debounceDoQuery = throttle(doQuery, 500);
@@ -151,21 +168,21 @@ const load = async () => {
     switch (activeIndex.value) {
       case 0: {
         isload.value = true;
-        disabled.value = true;
+        disabled0.value = true;
         const offset = cards0.value.length;
         const res = await GetUserFeeds(offset, props.currentId, activeIndex.value);
         const more = res.data.feeds;
         if (more.length < 10) {
           cards0.value = [...cards0.value, ...more];
           waterFallMore(arrHeight, card0_columns, more)
-          disabled.value = true;
+          disabled0.value = true;
           isload.value = false;
           console.log('没有更多了')
         } else {
           console.log('继续获取')
           cards0.value = [...cards0.value, ...more];
           waterFallMore(arrHeight, card0_columns, more)
-          disabled.value = false;
+          disabled0.value = false;
           isload.value = false;
         }
         break;
@@ -173,38 +190,38 @@ const load = async () => {
       }
       case 1: {
         isload.value = true;
-        disabled.value = true;
+        disabled1.value = true;
         const offset = cards1.value.length;
         const res = await GetUserFeeds(offset, props.currentId, activeIndex.value);
         const more = res.data.feeds;
         if (more.length < 10) {
           cards1.value = [...cards1.value, ...more];
           waterFallMore(arrHeight, card1_columns, more)
-          disabled.value = true;
+          disabled1.value = true;
           isload.value = false;
         } else {
           cards1.value = [...cards1.value, ...more];
           waterFallMore(arrHeight, card1_columns, more)
-          disabled.value = false;
+          disabled1.value = false;
           isload.value = false;
         }
         break;
       }
       case 2: {
         isload.value = true;
-        disabled.value = true;
+        disabled2.value = true;
         const offset = cards2.value.length;
         const res = await GetUserFeeds(offset, props.currentId, activeIndex.value);
         const more = res.data.feeds;
         if (more.length < 10) {
           cards1.value = [...cards1.value, ...more];
           waterFallMore(arrHeight, card1_columns, more)
-          disabled.value = true;
+          disabled2.value = true;
           isload.value = false;
         } else {
           cards2.value = [...cards2.value, ...more];
           waterFallMore(arrHeight, card2_columns, more)
-          disabled.value = false;
+          disabled2.value = false;
           isload.value = false;
         }
         break;
@@ -248,6 +265,21 @@ const recalculateRectangle = () => {
   if (button) {
     rectanglePosition.value = button.offsetLeft;
     rectangleWidth.value = button.offsetWidth;
+  }
+  switch (activeIndex.value) {
+    case 0:
+      console.log(cards0)
+      resizeWaterFall(columns, card_columns, arrHeight, cards0)
+
+      break;
+    case 1:
+      resizeWaterFall(columns, card_columns, arrHeight, cards1)
+      break;
+    case 2:
+      resizeWaterFall(columns, card_columns, arrHeight, cards2)
+      break;
+    default:
+      break;
   }
 };
 

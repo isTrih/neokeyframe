@@ -462,7 +462,7 @@ h6 {
 
 /* 编辑器样式 */
 .edit-container .ProseMirror {
-  @apply p-2 mx-2 rounded-3 bg-[--bg-1] shadow-[--shadow-i-c] hover-outline hover-outline-[--czjB-5]
+  @apply p-2 mx-2 rounded-3 bg-[--bg-1] shadow-[--shadow-i-c] hover-outline hover-outline-[--czjB-5] min-h-40
   margin: 0;
 }
 
@@ -471,7 +471,8 @@ h6 {
   caret-color: var(--text-1);
 }
 
-.edit-container .ProseMirror [draggable][contenteditable="false"] {
+.ri-eth-fill,
+.edit-container .ProseMirror [contenteditable="false"] {
   user-select: text;
 }
 .edit-container .ProseMirror img.ProseMirror-separator {

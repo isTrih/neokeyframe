@@ -14,7 +14,7 @@ import removeConsole from 'vite-plugin-remove-console'
 export default defineNuxtConfig({
 	plugins: [
 		{
-			src: '~/plugins/rich-text.ts',
+			src: '~/plugins/disable-scale.ts',
 			mode: 'client'
 		},
 		{ src: '~/plugins/solve-style.ts', mode: 'server' }
@@ -63,6 +63,9 @@ export default defineNuxtConfig({
 	app: {
 		head: {
 			meta: [
+				{ charset: 'utf-8' },
+				{ name: 'format-detection', content: 'telephone=no' },
+				{ name: 'viewport', content: 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0' },
 				{
 					name: 'keywords',
 					content:

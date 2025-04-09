@@ -13,6 +13,8 @@ export const useConfigStore = defineStore(
 		const WaterFallHeight = ref(0);
 		const ContainerWidth = ref(0);
 		const IsSmall = ref(false);
+		const IsModalSmall = ref(false);
+
 		return {
 			ColorMode,
 			CurrentMenu,
@@ -20,6 +22,7 @@ export const useConfigStore = defineStore(
 			ContainerWidth,
 			CurrentColor,
 			IsSmall,
+			IsModalSmall
 		};
 	},
 	{

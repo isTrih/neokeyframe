@@ -5,6 +5,7 @@
 
 import { defineStore } from "pinia";
 import { Login , GetUserRelation} from "~/apis/user";
+import type {MessageApiInjection} from 'naive-ui/es/message/src/MessageProvider';
 
 export interface UserInfo {
 	avatar?: string;
@@ -46,6 +47,78 @@ export const useUserStore = defineStore(
 			});
 		};
 
+		// region 点赞收藏
+		function likeNumFormat(num: number, id: number) {
+			if (1000 <= num && num < 10000) {
+				return `${(num / 1000).toFixed(1)}${t('ui.k')}+`
+			}
+			if (50000 >= num && num > 10000) {
+				return `1${t('ui.w')}+`
+			}
+			if (100000 >= num && num > 50000) {
+				return `5${t('ui.w')}+`
+			}
+			if (num > 100000) {
+				return `10${t('ui.w')}+`
+			}
+			return LikeFeeds.value.includes(id)
+				? (num + 1).toString()
+				: num.toString()
+		}
+		const checkLike = (id: number) => {
+			return LikeFeeds.value.includes(id)
+		}
+		const handleLike = (id: number, message: MessageApiInjection)=> {
+			if (Object.keys(UserInfo.value).length <= 0) {
+				message.warning('请先登录')
+				return
+			}
+			if (LikeFeeds.value.includes(id)) {
+				console.log('取消点赞', id)
+				// 这是移除本地点赞缓存
+				removeItem(LikeFeeds.value, id)
+			} else {
+				console.log('点赞', id)
+				LikeFeeds.value.push(id)
+			}
+		}
+
+		const collectNumFormat = (num: number, id: number)=> {
+			if (1000 <= num && num < 10000) {
+				return `${(num / 1000).toFixed(1)}${t('ui.k')}+`
+			}
+			if (50000 >= num && num > 10000) {
+				return `1${t('ui.w')}+`
+			}
+			if (100000 >= num && num > 50000) {
+				return `5${t('ui.w')}+`
+			}
+			if (num > 100000) {
+				return `10${t('ui.w')}+`
+			}
+			return CollectFeeds.value.includes(id)
+				? (num + 1).toString()
+				: num.toString()
+		}
+		const checkCollect = (id: number) => {
+			return CollectFeeds.value.includes(id)
+		}
+		const handleCollect = (id: number, message: MessageApiInjection)=> {
+			if (!IsLogin.value) {
+				message.warning('请先登录')
+				return
+			}
+			if (CollectFeeds.value.includes(id)) {
+				console.log('取消收藏', id)
+				// 这是移除本地点赞缓存
+				removeItem(CollectFeeds.value, id)
+			} else {
+				console.log('收藏', id)
+				CollectFeeds.value.push(id)
+			}
+		}
+		// endregion
+		
 		// 登录
 		const UserLogin = async ({mobile, password,}: { mobile: string; password: string }) => {
 			const {code, msg, data} = await Login(mobile, password);
@@ -72,6 +145,14 @@ export const useUserStore = defineStore(
 		const IsLogin = computed(() => {
 			return Object.keys(UserInfo.value).length > 0;
 		});
+		
+		const notificationNum = ref(0)
+		const setNotificationNum = (num: number) => {
+			notificationNum.value = num
+		}
+		const getNotificationNum = () => {
+			return notificationNum.value
+		}
 		return {
 			UserLogout,
 			UserLogin,
@@ -83,6 +164,13 @@ export const useUserStore = defineStore(
 			FollowUsers,
 			GetUserList,
 			CheckFollow,
+			likeNumFormat,
+			handleLike,
+			checkLike,
+			collectNumFormat,
+			checkCollect,
+			handleCollect,
+			notificationNum,
 		};
 	},
 	{

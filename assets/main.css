@@ -208,6 +208,7 @@ body::selection {
 	color: var(--text-white);
 	background-color: var(--czjB-3);
 }
+
 html,
 body,
 #app {
@@ -252,3 +253,4 @@ body,
 		transform: scale(1);
 	}
 }
+

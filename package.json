@@ -14,9 +14,13 @@
     "overrides": {
       "@css-render/*": "^0.15.14",
       "css-render": "^0.15.14"
+    },
+    "patchedDependencies": {
+      "@juggle/resize-observer": "patches/@juggle__resize-observer.patch"
     }
   },
   "dependencies": {
+    "@intlify/message-compiler": "^11.1.3",
     "@nuxtjs/seo": "^2.1.0",
     "@pinia/nuxt": "0.9.0",
     "@remixicon/vue": "^4.6.0",

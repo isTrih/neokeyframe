@@ -15,9 +15,27 @@ import {
 	CuteEmojiShow
 } from '~/types/cuteEmoji'
 import { getRandomText } from '~/composables/randomText'
-import {RiEmojiStickerLine} from '@remixicon/vue';
-const props= defineProps({
-  isSingle: {
+import {RiEmojiStickerLine, RiMessage3Line, RiShare2Line} from '@remixicon/vue'
+import type { Feed } from '~/types/feed'
+const message = useMessage()
+
+const props = defineProps({
+  // 控制单双栏
+	isSingle: {
+		type: Boolean,
+		default: false
+	},
+	feed: {
+		type: Object as () => Feed,
+		required: true
+	},
+  //是独立的
+  individual: {
+    type: Boolean,
+    default: false
+  },
+  //小弹窗
+  isSmall: {
     type: Boolean,
     default: false
   }
@@ -25,11 +43,11 @@ const props= defineProps({
 // region 表情包
 const showEmoji = ref(false)
 const toggleEmoji = () => {
-  showEmoji.value = !showEmoji.value
+	showEmoji.value = !showEmoji.value
 }
 const inputEmoji = (emoji: string) => {
-  editor.value.chain().focus().setEmoji(emoji).run()
-  showEmoji.value = false
+	editor.value.chain().focus().setEmoji(emoji).run()
+	showEmoji.value = false
 }
 // endregion
 // region 仅限关键帧项目/深色模式
@@ -41,6 +59,7 @@ const isDark = computed(() => {
 // region 注册编辑器
 const editor = useEditor({
 	content: '',
+  autofocus:'end',
 	extensions: [
 		StarterKit.configure({
 			history: false,
@@ -68,9 +87,9 @@ const editor = useEditor({
 		Emoji.configure({
 			emojis: [...emojis, ...CuteEmojis],
 			enableEmoticons: true,
-      HTMLAttributes: {
-        contenteditable:"true"
-      }
+			HTMLAttributes: {
+				contenteditable: 'true'
+			}
 		})
 	],
 	editable: true,
@@ -90,16 +109,23 @@ const isComment = ref(false)
 
 // region 发送评论
 const sendComment = () => {
-  console.log('发送评论')
+	console.log('发送评论')
 }
 // endregion
+const handleLike = useUserStore().handleLike
+const checkLike = useUserStore().checkLike
+const likeNumFormat = useUserStore().likeNumFormat
+
+const handleCollect = useUserStore().handleCollect
+const checkCollect = useUserStore().checkCollect
+const collectNumFormat = useUserStore().collectNumFormat
 </script>
 
 <template>
 <div>
   <transition mode="out-in">
-    <n-flex v-if="isComment" class="bg-red" vertical >
-      <div v-if="editor" :class="{'edit-container':true, 'single': isSingle}">
+    <n-flex v-if="isComment" class="bg-[--n-color-modal]" vertical >
+      <div v-if="editor" :class="{'edit-container':true, 'single-ec': !isSmall&&isSingle&&!individual, 'individual-ec': individual||isSmall }">
         <editor-content :editor="editor"/>
       </div>
       <n-flex justify="space-between" align="center">
@@ -133,10 +159,30 @@ const sendComment = () => {
         </n-flex>
       </n-flex>
     </n-flex>
-    <n-flex v-else class="bg-red">
-      <n-button @click="isComment = true" type="primary" round>
-        {{t('ui.comment')}}
-      </n-button>
+    <n-flex v-else :class="{'control-container':true,'no-comment-single': isSingle&&(!individual||!isSmall), 'individual-cc':individual||isSmall }" align="center" justify="space-between">
+      <n-flex align="center" @click="isComment = true" :class="{'button-group shadow-[--shadow-i-c]':true,}">
+        <n-text class="ml-2 text-3.2 text-[--text-4]">{{t('ui.commentPlaceholder')}}</n-text>
+      </n-flex>
+      <n-flex align="center" justify="space-between" class="op-80 hover-op-100">
+        <n-flex align="center" justify="flex-end" :size="[0,0]" >
+          <icons-like-b :size='38' :is-liked="checkLike(feed.id)" @toggleHeart="handleLike(feed.id,message)"/>
+          <n-text class="text-2.8 color-[--text-1]">{{ likeNumFormat(feed.like_num, feed.id) }}</n-text>
+        </n-flex>
+
+
+
+        <n-flex align="center" justify="flex-end" :size="[0,0]" >
+          <icons-star-b :size='26' :is-collected="checkCollect(feed.id)" @toggleStar="handleCollect(feed.id,message)"/>
+          <n-text class="text-2.8 color-[--text-1]">{{ collectNumFormat(feed.collect_num, feed.id) }}</n-text>
+        </n-flex>
+
+
+        <n-flex align="center" justify="flex-end" :size="[0,0]" >
+          <RiMessage3Line @click="isComment = true" size='28' class="color-[--text-1] cursor-pointer"/>
+          <n-text class="text-2.8 color-[--text-1]">{{ feed.comment_num }}</n-text>
+        </n-flex>
+        <RiShare2Line size='28' class="color-[--text-1] cursor-pointer"/>
+      </n-flex>
     </n-flex>
   </transition>
 </div>
@@ -144,31 +190,57 @@ const sendComment = () => {
 </template>
 
 <style scoped>
+.control-container{
+  @apply bg-[--n-color-modal];
+  max-width: calc(40dvw - 1.5rem);
+  min-width: calc(40dvw - 1.5rem);
+}
+:deep(.no-comment-single){
+  min-width: calc(80dvw - 3rem) !important;
+}
+:deep(.individual-cc){
+  min-width: calc(100dvw - 3rem) !important;
+}
+
+
+.button-group{
+  @apply rounded-4 bg-[--bg-2] hover-outline hover-outline-[--czjB-5] min-h-[2.4rem] w-full mx-2px;
+  max-width: calc(40dvw - 4rem - 190px);
+
+}
+
+.no-comment-single .button-group{
+  max-width: calc(80dvw - 4rem - 190px) !important;
+}
+
+.individual-cc .button-group{
+  max-width: calc(100dvw - 4rem - 190px) !important;
+}
 .v-enter-active,
 .v-leave-active {
-  transition: all 0.25s ease-out;
+  transition: all 0.15s ease-out;
 }
-
 .v-enter-from {
-  opacity: 0;
+  opacity: 0.3;
   transform: translateY(-30px);
 }
-
 .v-leave-to {
-  opacity: 0;
+  opacity: 0.3;
   transform: translateY(30px);
 }
-:deep(.single){
-  all: unset;
-  @apply w-full;
-  flex: 1;
-  max-width: calc(80dvw - 3rem) !important;
-  min-width: calc(80dvw - 3rem) !important;
+
+/* 解决编辑器在小屏幕下的样式问题 */
+:deep(.individual-ec){
+  max-width: calc(100dvw - 3rem - 4px) !important;
+  min-width: calc(100dvw - 3rem - 4px) !important;
+}
+:deep(.single-ec){
+  max-width: calc(80dvw - 3rem - 4px) !important;
+  min-width: calc(80dvw - 3rem - 4px) !important;
 }
 :deep(.edit-container){
   all: unset;
-  @apply w-full pt-4;
-  flex: 1;
+  @apply pt-4 ;
   max-width: calc(40dvw - 1.5rem);
   min-width: calc(40dvw - 1.5rem);
 }

@@ -5,7 +5,13 @@
 
 <script setup lang="ts">
 import { h, ref, type Component } from 'vue'
-import { NIcon, NText, NButton, useModal } from 'naive-ui'
+import {
+	NIcon,
+	NText,
+	NButton,
+	useModal,
+	NBadge
+} from 'naive-ui'
 import home from '~/components/icons/home.vue'
 import avatar from '~/components/icons/avatar.vue'
 import Head from '~/components/menu/head.vue'
@@ -16,15 +22,16 @@ import Link from '~/components/menu/link.vue'
 import {
 	RiAddBoxLine as CreateIcon,
 	RiMessage3Line as NotifIcon,
-    RiMenu4Line
+	RiMenu4Line,
+	RiBookShelfLine
 } from '@remixicon/vue'
-import {fLink} from '~/types/fLink';
+import { fLink } from '~/types/fLink'
 const useUser = useUserStore()
 
 // 模态框
 const modal = useModal()
 // region 用户登陆态
-const { UserInfo, IsLogin } = storeToRefs(useUser)
+const { UserInfo, IsLogin,notificationNum } = storeToRefs(useUser)
 // endregion
 const showLogin = () => {
 	const m = modal.create({
@@ -83,10 +90,41 @@ const menuOptions = computed(() => [
 				{
 					to: '/notification'
 				},
-				{ default: () => t('ui.notifications') }
+				h(
+					NBadge,
+					{
+						processing: true,
+						value: notificationNum.value,
+						max: 99,
+						offset: [22, 9]
+					},
+					{ default: () => t('ui.notifications') }
+				)
 			),
 		key: 'notification',
 		icon: renderIcon(NotifIcon)
+	},
+	{
+		label: () =>
+			h(
+				NuxtLink,
+				{
+					to: '/wiki',
+          target: '_blank'
+				},
+				h(
+					NBadge,
+					{
+						processing: true,
+						value: 'Beta',
+						type: 'info',
+						offset: [22, 8]
+					},
+					{ default: () => t('ui.aniWiki') }
+				)
+			),
+		key: 'wiki',
+		icon: renderIcon(RiBookShelfLine)
 	},
 	{
 		label: () =>
@@ -103,16 +141,18 @@ const menuOptions = computed(() => [
 				{
 					default: () =>
 						UserInfo.value.user_name === undefined
-							? '我'
+							? t('ui.user')
 							: UserInfo.value.user_name
 				}
 			),
 		key: 'user',
 		show: IsLogin.value,
-		icon: renderIcon(avatar, avatarUrl(UserInfo.value.avatar))
+		icon: renderIcon(
+			avatar,
+			avatarUrl(UserInfo.value.avatar)
+		)
 	}
 ])
-
 //菜单图标渲染器
 function renderIcon(
 	icon: Component,
@@ -125,8 +165,8 @@ function renderIcon(
 }
 
 //endregion
-onMounted(()=>{
-  noClient.value = false
+onMounted(() => {
+	noClient.value = false
 })
 // region 更多选项
 const moreIndex = ref(0)
@@ -336,27 +376,27 @@ const currentMore = computed(() => {
 		]
 	}
 	if (moreIndex.value === 3) {
-    const base = [
-      {
-        type: 'render',
-        render: () => {
-          return h(Head, {
-            title: t('ui.friendsLink'),
-            onBack() {
-              // currentMore.value = baseMore.value;
-              moreIndex.value = 0
-            }
-          })
-        },
-        show: true
-      },
-      {
-        type: 'divider',
-        key: 'd1',
-        show: true
-      }
-    ]
-    base.push(...fLink)
+		const base = [
+			{
+				type: 'render',
+				render: () => {
+					return h(Head, {
+						title: t('ui.friendsLink'),
+						onBack() {
+							// currentMore.value = baseMore.value;
+							moreIndex.value = 0
+						}
+					})
+				},
+				show: true
+			},
+			{
+				type: 'divider',
+				key: 'd1',
+				show: true
+			}
+		]
+		base.push(...fLink)
 		return base
 	}
 	return []
@@ -366,202 +406,202 @@ const currentMore = computed(() => {
  * @description 关于页面的底栏
  */
 function renderCertification() {
-  return h(
-      'div',
-      {
-        style:
-            'display: flex; align-items: center; padding: 8px 12px;'
-      },
-      [
-        h('div', null, [
-          h('div', { style: 'font-size: 12px;' }, [
-            h(
-                NuxtLink,
-                {
-                  style:
-                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-                  to: 'https://beian.miit.gov.cn/',
-                  target: '_blank'
-                },
-                { default: () => t('ui.icpRecord') }
-            ),
-            h(
-                'a',
-                {
-                  style:
-                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-                },
-                { default: () => '丨' }
-            ),
-            h(
-                NuxtLink,
-                {
-                  style:
-                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-                  to: 'https://www.helloimg.com/i/2025/01/06/677b702d6bd5a.jpg',
-                  target: '_blank'
-                },
-                { default: () => t('ui.businessLicense') }
-            ),
-            h(
-                'a',
-                {
-                  style:
-                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-                },
-                { default: () => '丨' }
-            ),
-            h(
-                NuxtLink,
-                {
-                  style:
-                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-                  to: 'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000716',
-                  target: '_blank'
-                },
-                {
-                  default: () => t('ui.publicSecurityRecord')
-                }
-            ),
-            h(
-                'a',
-                {
-                  style:
-                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-                },
-                { default: () => '丨' }
-            ),
-            h(
-                NuxtLink,
-                {
-                  style:
-                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-                  to: 'https://www.helloimg.com/i/2025/01/06/677b702ddaae5.jpg',
-                  target: '_blank'
-                },
-                { default: () => t('ui.fontLicense') }
-            ),
-            h(
-                'a',
-                {
-                  style:
-                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-                },
-                { default: () => '丨' }
-            ),
-            h(
-                NuxtLink,
-                {
-                  style:
-                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-                  to: 'https://12377.qinglangwuhu.cn/',
-                  target: '_blank'
-                },
-                {
-                  default: () => t('ui.reportPhone')
-                }
-            ),
-            h(
-                'a',
-                {
-                  style:
-                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-                },
-                { default: () => '丨' }
-            ),
-            h(
-                NuxtLink,
-                {
-                  style:
-                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-                  to: 'https://12377.qinglangwuhu.cn/',
-                  target: '_blank'
-                },
-                { default: () =>  t('ui.wuhuReportCenter')}
-            ),
-            h(
-                'a',
-                {
-                  style:
-                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
-                },
-                { default: () => '丨' }
-            ),
-            h(
-                NuxtLink,
-                {
-                  style:
-                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-                  to: 'https://www.12377.cn/',
-                  target: '_blank'
-                },
-                { default: () => t('ui.onlineReportArea') }
-            )
-          ]),
-          h('div', { style: 'font-size: 12px;' }, [
-            h(
-                NuxtLink,
-                {
-                  style:
-                      'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
-                  to: 'https://www.cz88.net',
-                  target: '_blank'
-                },
-                { default: () => t('ui.ipDataSupport') }
-            ),
-          ]),
-          h(
-              'div',
-              {
-                style:
-                    'font-size: 12px;color:var(--n-text-color)'
-              },
-              [
-                h(NText, null, {
-                  default: () => 'Copyright © 2024-2025'
-                })
-              ]
-          ),
-          h(
-              'div',
-              {
-                style:
-                    'font-size: 12px;color:var(--n-text-color)'
-              },
-              [
-                h(NText, null, {
-                  default: () => t('ui.company')
-                })
-              ]
-          ),
-          h(
-              'div',
-              {
-                style:
-                    'font-size: 12px;color:var(--n-text-color)'
-              },
-              [
-                h(NText, null, {
-                  default: () =>
-                      t('ui.address')
-                })
-              ]
-          ),
-          h(
-              'div',
-              {
-                style:
-                    'font-size: 12px;color:var(--n-text-color)'
-              },
-              [
-                h(NText, null, {
-                  default: () => `${t('ui.email')}help@chaozj.com`
-                })
-              ]
-          )
-        ])
-      ]
-  )
+	return h(
+		'div',
+		{
+			style:
+				'display: flex; align-items: center; padding: 8px 12px;'
+		},
+		[
+			h('div', null, [
+				h('div', { style: 'font-size: 12px;' }, [
+					h(
+						NuxtLink,
+						{
+							style:
+								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+							to: 'https://beian.miit.gov.cn/',
+							target: '_blank'
+						},
+						{ default: () => t('ui.icpRecord') }
+					),
+					h(
+						'a',
+						{
+							style:
+								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
+						},
+						{ default: () => '丨' }
+					),
+					h(
+						NuxtLink,
+						{
+							style:
+								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+							to: 'https://www.helloimg.com/i/2025/01/06/677b702d6bd5a.jpg',
+							target: '_blank'
+						},
+						{ default: () => t('ui.businessLicense') }
+					),
+					h(
+						'a',
+						{
+							style:
+								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
+						},
+						{ default: () => '丨' }
+					),
+					h(
+						NuxtLink,
+						{
+							style:
+								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+							to: 'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34020202000716',
+							target: '_blank'
+						},
+						{
+							default: () => t('ui.publicSecurityRecord')
+						}
+					),
+					h(
+						'a',
+						{
+							style:
+								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
+						},
+						{ default: () => '丨' }
+					),
+					h(
+						NuxtLink,
+						{
+							style:
+								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+							to: 'https://www.helloimg.com/i/2025/01/06/677b702ddaae5.jpg',
+							target: '_blank'
+						},
+						{ default: () => t('ui.fontLicense') }
+					),
+					h(
+						'a',
+						{
+							style:
+								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
+						},
+						{ default: () => '丨' }
+					),
+					h(
+						NuxtLink,
+						{
+							style:
+								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+							to: 'https://12377.qinglangwuhu.cn/',
+							target: '_blank'
+						},
+						{
+							default: () => t('ui.reportPhone')
+						}
+					),
+					h(
+						'a',
+						{
+							style:
+								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
+						},
+						{ default: () => '丨' }
+					),
+					h(
+						NuxtLink,
+						{
+							style:
+								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+							to: 'https://12377.qinglangwuhu.cn/',
+							target: '_blank'
+						},
+						{ default: () => t('ui.wuhuReportCenter') }
+					),
+					h(
+						'a',
+						{
+							style:
+								'font-size: 12px;color:var(--n-text-color);text-decoration: none;'
+						},
+						{ default: () => '丨' }
+					),
+					h(
+						NuxtLink,
+						{
+							style:
+								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+							to: 'https://www.12377.cn/',
+							target: '_blank'
+						},
+						{ default: () => t('ui.onlineReportArea') }
+					)
+				]),
+				h('div', { style: 'font-size: 12px;' }, [
+					h(
+						NuxtLink,
+						{
+							style:
+								'font-size: 12px;color:var(--n-text-color);text-decoration: none;',
+							to: 'https://www.cz88.net',
+							target: '_blank'
+						},
+						{ default: () => t('ui.ipDataSupport') }
+					)
+				]),
+				h(
+					'div',
+					{
+						style:
+							'font-size: 12px;color:var(--n-text-color)'
+					},
+					[
+						h(NText, null, {
+							default: () => 'Copyright © 2024-2025'
+						})
+					]
+				),
+				h(
+					'div',
+					{
+						style:
+							'font-size: 12px;color:var(--n-text-color)'
+					},
+					[
+						h(NText, null, {
+							default: () => t('ui.company')
+						})
+					]
+				),
+				h(
+					'div',
+					{
+						style:
+							'font-size: 12px;color:var(--n-text-color)'
+					},
+					[
+						h(NText, null, {
+							default: () => t('ui.address')
+						})
+					]
+				),
+				h(
+					'div',
+					{
+						style:
+							'font-size: 12px;color:var(--n-text-color)'
+					},
+					[
+						h(NText, null, {
+							default: () =>
+								`${t('ui.email')}help@chaozj.com`
+						})
+					]
+				)
+			])
+		]
+	)
 }
 
 //endregion

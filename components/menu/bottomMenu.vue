@@ -64,6 +64,7 @@ onMounted(() => {
   noClient.value = false;
   console.log(IsLogin.value, UserInfo.value);
 })
+const {notificationNum} = storeToRefs(useUserStore())
 </script>
 
 <template>
@@ -89,12 +90,6 @@ onMounted(() => {
     <div
         :class="['menu-item my-1 h-4.2dvh w-20dvw flex items-center justify-center',CurrentMenu=='notification'?'menu-item-selected':'']"
         @click="handleClick('notification')">
-      <n-icon
-          size="3dvh"
-          :class="['icon', CurrentMenu=='notification'?'color-[--czjB-7]':'color-[--text-1]']">
-        <RiMessage3Line/>
-      </n-icon>
-
     </div>
     <div
         :class="['menu-item my-1 h-4.2dvh w-20dvw flex items-center justify-center',CurrentMenu=='user'?'menu-item-selected':'']"
@@ -137,12 +132,13 @@ onMounted(() => {
       <div
           :class="['menu-item my-1 h-4.2dvh w-20dvw flex items-center justify-center',CurrentMenu=='notification'?'menu-item-selected':'']"
           @click="handleClick('notification')">
-        <n-icon
-            size="3dvh"
-            :class="['icon', CurrentMenu=='notification'?'color-[--czjB-7]':'color-[--text-1]']">
-          <RiMessage3Line/>
-        </n-icon>
-
+        <n-badge class="scale-80" processing :value="notificationNum" :max="99" >
+          <n-icon
+              size="3dvh"
+              :class="['icon', CurrentMenu=='notification'?'color-[--czjB-7]':'color-[--text-1]']">
+            <RiMessage3Line/>
+          </n-icon>
+        </n-badge>
       </div>
       <div
           :class="['menu-item my-1 h-4.2dvh w-20dvw flex items-center justify-center',CurrentMenu=='user'?'menu-item-selected':'']"

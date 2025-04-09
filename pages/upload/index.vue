@@ -100,16 +100,20 @@ const submit = () => {
 		width: 0,
 		height: 0
 	}
-	NewFeed(
+
+  console.log('当前封面信息', currentCoverInfo.value)
+  console.log('当前封面信息', currentCover.value)
+
+  NewFeed(
 		title.value,
 		EditorTemp.value,
 		EditorTempRaw.value,
 		currentCover.value=== 'xx'
-      ? currentCover.value
-      : '',
+      ? 'xx'
+      : currentCover.value,
 		currentCoverInfo.value === undefined
-			? currentCoverInfo.value
-			: empty,
+			? empty
+			: currentCoverInfo.value,
 		uploadFileData.value.map(img => img.key)
 	).then(res => {
 		console.log(res)
@@ -176,6 +180,10 @@ const remove = ({ file }) => {
 	console.log('当前列表', uploadFileData.value)
 }
 //endregion
+
+// region 管理中心
+const page = ref(1)
+// endregion
 </script>
 
 <template>
@@ -246,7 +254,14 @@ const remove = ({ file }) => {
         </n-scrollbar>
       </n-tab-pane>
       <n-tab-pane name="manager" :tab="t('ui.uploadManager')">
-        xxxx
+        <n-scrollbar id="editorContainer" :class="heightClass">
+          <n-flex :class="heightClass" vertical align="center" justify="space-between">
+            <div>
+
+            </div>
+            <n-pagination class="align-bottom" v-model:page="page" :page-count="100" />
+          </n-flex>
+        </n-scrollbar>
       </n-tab-pane>
     </n-tabs>
 

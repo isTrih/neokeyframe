@@ -5,21 +5,14 @@
 
 <script setup lang="ts">
 
-
-// region 菜单
-//菜单选中值
-
-//endregion
 </script>
 
 <template>
-  <div class="w-full h-full z-9">
-    <menu-bottom-menu/>
-  </div>
+  <n-button @click="useRouter().back()">返回</n-button>
+  <div>这是一个WIKI页面布局</div>
+  <slot />
 </template>
 
 <style scoped>
-:deep(.n-badge){
-  @apply scale-90;
-}
+
 </style>

@@ -47,4 +47,4 @@ const uploadFile = (file :File, t:string)=> {
     return createMultipartUploadV2Task(fileData, config);
 }
 
-export { uploadFile, myTokenProvider }
+export { uploadFile }

@@ -137,10 +137,10 @@ import Button from '~/components/menu/button.vue'
               <n-flex v-show="isVerti" align="center" :size="0">
                 <icons-verti
                     v-if="isVerti&&!isDark"
-                    :class="['rounded-full w-1rem h-1rem z-10 bg-[--bg-2] shadow-[--shadow-1-c]',VertiColor]"/>
+                    :class="['rounded-full w-1.1rem h-1.1rem z-10 bg-[--bg-2]',VertiColor]"/>
                 <icons-verti-d
                     v-if="isVerti&&isDark"
-                    :class="['rounded-full w-1rem h-1rem bg-[--bg-2] shadow-[--shadow-1-c]',VertiColor]"/>
+                    :class="['rounded-full w-1.1rem h-1.1rem bg-[--bg-2]',VertiColor]"/>
                 <my-user-verti-note :user-note="CurrentUser.v_note" :user-type="CurrentUser.type"/>
               </n-flex>
               <n-text class="text-3 font-320 ml-0.1rem" depth="3">
@@ -227,7 +227,7 @@ import Button from '~/components/menu/button.vue'
       </template>
       <template #extra>
         <n-button type="primary" round @click="() => navigateTo('/')">
-          回到首页
+          {{t('ui.backToHome')}}
         </n-button>
       </template>
     </n-empty>

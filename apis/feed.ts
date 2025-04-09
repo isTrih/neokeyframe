@@ -6,7 +6,13 @@
 export const GetFeeds = async (
 	offset: number,
 	query: string
-) => use$Get(`/home/getfeeds?os=${offset}&q=${query}`)
+) => {
+	const url = `/home/getfeeds?os=${offset}&q=${query}`
+	if (query === '') {
+		return use$Get(`/home/getfeeds?os=${offset}`)
+	}
+	return use$Get(url)
+}
 export const GetUserFeeds = async (
 	offset: number,
 	userId: number,

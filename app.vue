@@ -4,27 +4,33 @@
   -->
 
 <template>
+<div>
   <n-config-provider :locale="locale[0]" :date-locale="locale[1]" inline-theme-disabled :theme="theme" :theme-overrides="theme === null ? lightThemeOverrides : darkThemeOverrides">
     <n-message-provider>
       <n-dialog-provider>
         <NuxtLayout>
           <NuxtPage/>
         </NuxtLayout>
-        </n-dialog-provider>
+      </n-dialog-provider>
     </n-message-provider>
   </n-config-provider>
+</div>
 </template>
 <script setup lang="ts">
 import {
-	NConfigProvider,
-	type GlobalThemeOverrides,
-  type NLocale,
+  darkTheme,
+  dateEnGB,
+  dateJaJP,
+  dateZhCN,
+  enGB,
+  type GlobalThemeOverrides,
+  jaJP,
+  NConfigProvider,
   type NDateLocale,
+  type NLocale,
+  zhCN
 } from 'naive-ui'
-import { useColorMode } from '@vueuse/core'
-import { darkTheme } from 'naive-ui'
-import { zhCN, dateZhCN,jaJP,dateJaJP,enGB,dateEnGB} from 'naive-ui'
-import {GetUserRelation} from '~/apis/user';
+import {useColorMode} from '@vueuse/core'
 // import { isMobile } from '~/composables/utils.ts'
 
 const theme = ref<null | typeof darkTheme>(null)
@@ -32,8 +38,8 @@ const lightThemeOverrides: GlobalThemeOverrides = {
 	Scrollbar: {
 		width: '0px',
 		borderRadius: '8px',
-    color:'rgba(39,100,173,0.6)',
-    colorHover:'rgba(69,127,189,0.6)'
+		color: 'rgba(39,100,173,0.6)',
+		colorHover: 'rgba(69,127,189,0.6)'
 	},
 	common: {
 		baseColor: '#FFF',
@@ -63,8 +69,8 @@ const darkThemeOverrides: GlobalThemeOverrides = {
 	Scrollbar: {
 		width: '0px',
 		borderRadius: '8px',
-    color:'rgba(71,128,189,0.6)',
-    colorHover:'rgba(51,107,173,0.6)'
+		color: 'rgba(71,128,189,0.6)',
+		colorHover: 'rgba(51,107,173,0.6)'
 	},
 	common: {
 		primaryColor: '#4780BD',
@@ -128,23 +134,21 @@ watch([ColorMode, colorMode], () => {
 	InitTheme()
 })
 const locale = computed<[NLocale, NDateLocale]>(() => {
-  const lancookie = useCookie('i18n_redirected')
-  if (lancookie.value === 'en') {
-    return [enGB, dateEnGB]
-  }
-  if (lancookie.value === 'ja') {
-    return [jaJP, dateJaJP]
-  }
-  return [zhCN, dateZhCN]
+	const lancookie = useCookie('i18n_redirected')
+	if (lancookie.value === 'en') {
+		return [enGB, dateEnGB]
+	}
+	if (lancookie.value === 'ja') {
+		return [jaJP, dateJaJP]
+	}
+	return [zhCN, dateZhCN]
 })
 onMounted(() => {
 	InitTheme()
-	$fetch('https://api64.ipify.org').then(
-      (res) => {
-			const userIp = useCookie('user_ip')
-			userIp.value = String(res)
-		}
-	)
-  useUserStore().GetUserList()
+	$fetch('https://api64.ipify.org').then(res => {
+		const userIp = useCookie('user_ip')
+		userIp.value = String(res)
+	})
+	useUserStore().GetUserList()
 })
 </script>
