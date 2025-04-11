@@ -47,12 +47,12 @@ export function gzipBase64ToStr(base64Str: string): string | null {
     }
 }
 
-// 示例使用
-const originalStr: string = "Hello, World!";
-const compressedBase64: string | null = strToGzipBase64(originalStr);
-console.log('压缩后的 Base64:', compressedBase64);
-
-if (compressedBase64) {
-    const decompressedStr: string | null = gzipBase64ToStr(compressedBase64);
-    console.log('解压缩后的字符串:', decompressedStr);
-}
+// // 示例使用
+// const originalStr: string = "Hello, World!";
+// const compressedBase64: string | null = strToGzipBase64(originalStr);
+// console.log('压缩后的 Base64:', compressedBase64);
+//
+// if (compressedBase64) {
+//     const decompressedStr: string | null = gzipBase64ToStr(compressedBase64);
+//     console.log('解压缩后的字符串:', decompressedStr);
+// }

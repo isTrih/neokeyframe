@@ -5,7 +5,6 @@
 
 <script setup lang="ts">
 const gridRef = ref(null)
-
 const { WaterFallHeight, ContainerWidth, IsSmall,IsModalSmall } =
 	storeToRefs(useConfigStore())
 const { stop } = useResizeObserver(

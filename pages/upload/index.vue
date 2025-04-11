@@ -4,6 +4,9 @@
   -->
 
 <script setup lang="ts">
+definePageMeta({
+  middleware: ["auth"],
+});
 import type {
 	UploadFileInfo,
 	UploadCustomRequestOptions,
@@ -86,10 +89,10 @@ const submit = () => {
 	if (title.value === '') {
 		return message.warning('标题为空')
 	}
-	// 检测正文
-	if (EditorTemp.value === '') {
-		return message.warning('正文为空')
-	}
+	// // 检测正文
+	// if (EditorTemp.value === '') {
+	// 	return message.warning('正文为空')
+	// }
 	if (messageReactive) {
 		return
 	}

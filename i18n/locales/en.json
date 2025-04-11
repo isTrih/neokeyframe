@@ -73,6 +73,7 @@
     "logout": "Logout",
     "menu": "Menu",
     "must": "",
+    "mustLogin": "",
     "newUpload": "",
     "newUploadText": "",
     "newUploadTitle": "",
@@ -97,6 +98,10 @@
     "searchMoreContent": "Search for more content",
     "sendCode": "Send verification code",
     "set": "Settings",
+    "share": {
+      "copyUrl": "",
+      "shareMessage": ""
+    },
     "socialRules": "Social Rules",
     "submit": "Submit",
     "terms": "Terms of Service",

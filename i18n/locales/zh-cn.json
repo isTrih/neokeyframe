@@ -73,6 +73,7 @@
     "logout": "注销",
     "menu": "菜单",
     "must": "*必填项",
+    "mustLogin": "请先登录哦！",
     "newUpload": "上传图文",
     "newUploadText": "上传纯文字",
     "newUploadTitle": "标题",
@@ -97,6 +98,10 @@
     "searchMoreContent": "搜索更多内容",
     "sendCode": "发送验证码",
     "set": "设置",
+    "share": {
+      "copyUrl": "复制链接",
+      "shareMessage": "扫码分享"
+    },
     "socialRules": "社区规则",
     "submit": "提交",
     "terms": "服务条款",

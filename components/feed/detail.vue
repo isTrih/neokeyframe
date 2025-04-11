@@ -9,6 +9,7 @@ import type { Feed } from '~/types/feed'
 import { ipLocationFormat } from '~/composables/utils'
 import { useRuntimeConfig } from '#app'
 import { ShareFeedXHS } from '~/apis/feed'
+import type MessageApiInjection from 'naive-ui'
 // 组件属性
 const props = defineProps({
 	fid: {
@@ -81,28 +82,7 @@ const userIndex = (uid: number) => {
 }
 // TODO：关注逻辑
 
-declare global {
-	interface Window {
-		xhs: {
-			share: (options: {
-				shareInfo: {
-					type: string
-					title: string
-					content: string
-					images: string[]
-				}
-				verifyConfig: {
-					appKey: string
-					nonce: string
-					timestamp: string
-					signature: string
-				}
-				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-				fail: (e: any) => void
-			}) => void
-		}
-	}
-}
+
 const shareXHS = (
 	images: string[],
 	title: string,
@@ -243,9 +223,9 @@ const mediaLength = computed(()=>{
             {{ data.data.Feed.title }}
           </n-text>
           <client-only>
-            <editor-view :content="data.data.Feed.content" @clickTag="handleClickTag"/>
+            <editor-view v-if="data.data.Feed.content!==''" :content="data.data.Feed.content" @clickTag="handleClickTag"/>
           </client-only>
-          <n-text class="text-3" depth="3">
+          <n-text class="text-3 block" depth="3">
             {{t('ui.editedOn')}}
             <n-time :time="data.data.Feed.publish_time" format="yyyy-MM-dd" unix/>
             &nbsp;

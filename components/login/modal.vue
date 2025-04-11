@@ -4,8 +4,8 @@
   -->
 
 <script setup lang="ts">
-import type { FormInst, FormItemRule } from 'naive-ui'
-import { SendCode } from '~/apis/user'
+import type {FormInst, FormItemRule} from 'naive-ui'
+import {SendCode} from '~/apis/user'
 
 // 关闭弹窗事件
 const emit = defineEmits(['closeLogin'])
@@ -42,9 +42,10 @@ const regFormValue = ref({
 	phone: '',
 	password: '',
 	rePassword: '',
+  czjCode:'',
 	agreement: false
 })
-// 表单验证
+// 注册表单验证
 const regRules = {
 	name: {
 		required: true,
@@ -81,10 +82,13 @@ const regRules = {
 		required: true,
 		trigger: 'blur',
 		message: '请输入正确的手机号',
-		validator: (rule: FormItemRule, value: string) => {
-			console.log(rule, value)
-			return /^1[3456789]\d{9}$/.test(value)
-		}
+		pattern: /^1[3456789]\d{9}$/
+	},
+	czjCode: {
+		required: false,
+		trigger: 'blur',
+		message: '请输入正确的邀请码',
+		pattern: /^[0-9a-f]{16}$/
 	},
 	agreement: {
 		required: true,
@@ -97,6 +101,7 @@ const regRules = {
 	}
 }
 // endregion
+
 // region 登录
 // 登录表单
 const logFormRef = ref<FormInst | null>(null)
@@ -151,7 +156,7 @@ const login = (e: MouseEvent) => {
 					password: logFormValue.value.password
 				})
 				.then(res => {
-          console.log('res', res)
+					console.log('res', res)
 					if (res.code === 0) {
 						message.destroyAll()
 						message.success('登录成功')
@@ -234,6 +239,9 @@ const login = (e: MouseEvent) => {
               <n-form-item path="sms">
                 <n-input v-model:value="regFormValue.sms" round placeholder="请输入验证码"/>
               </n-form-item>
+              <n-form-item path="czjCode">
+                <n-input v-model:value="regFormValue.czjCode" round placeholder="请输入邀请码（如有）"/>
+              </n-form-item>
               <n-form-item path="password">
                 <n-input
                     v-model:value="regFormValue.password" type="password" maxlength="20"
@@ -267,6 +275,7 @@ const login = (e: MouseEvent) => {
                 </n-checkbox>
               </n-form-item>
               <n-form-item>
+<!--                TODO:注册事件-->
                 <n-button class="mt-2" type="primary" round block>{{t('ui.register')}}</n-button>
               </n-form-item>
             </n-form>

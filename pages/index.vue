@@ -7,12 +7,15 @@
 //获取查询参数
 import {GetFeeds} from '~/apis/feed'
 import type {Card} from '~/types/feed'
-
+const message = useMessage()
 const query = computed(() => {
 	const { query } = useRoute()
 	return query.q ? query.q : ''
 })
-
+const redirect = computed(() => {
+  const { query } = useRoute()
+  return query.redirect ? query.redirect : ''
+})
 const cards = ref<Card[]>([])
 const disabled = ref(true) // 初始禁用滚动加载
 
@@ -30,6 +33,9 @@ useHead({
 })
 
 onMounted(async () => {
+  if (redirect.value==='auth') {
+    message.info(t('ui.mustLogin'))
+  }
   GetFeeds(0, query.value as string).then(res=>{
     console.log('data', res)
     cards.value = res.data.feeds

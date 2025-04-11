@@ -4,23 +4,34 @@
   -->
 
 <script setup lang="ts">
-import { useEditor, EditorContent } from '@tiptap/vue-3'
-import Emoji, {
-	emojis
-} from '@tiptap-pro/extension-emoji'
-import { Placeholder } from '@tiptap/extension-placeholder'
+import {EditorContent, useEditor} from '@tiptap/vue-3'
+import Emoji, {emojis} from '@tiptap-pro/extension-emoji'
+import {Placeholder} from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'
-import {
-	CuteEmojis,
-	CuteEmojiShow
-} from '~/types/cuteEmoji'
-import { getRandomText } from '~/composables/randomText'
+import {CuteEmojis, CuteEmojiShow} from '~/types/cuteEmoji'
+import {getRandomText} from '~/composables/randomText'
 import {RiEmojiStickerLine, RiMessage3Line, RiShare2Line} from '@remixicon/vue'
-import type { Feed } from '~/types/feed'
+import type {Feed} from '~/types/feed'
+import {useClipboard} from '@vueuse/core';
 const message = useMessage()
+const { copy, isSupported } = useClipboard()
+
+const handleCopy = (value: string) => {
+	// 检查当前浏览器是否支持 Clipboard API
+	if (!isSupported) {
+		message.error('您的浏览器不支持Clipboard API')
+		return
+	}
+
+	// 调用 copy 方法将目标文本复制到剪贴板
+	copy(value)
+
+	// 提示用户复制成功并展示被复制的内容
+	message.success('复制成功')
+}
 
 const props = defineProps({
-  // 控制单双栏
+	// 控制单双栏
 	isSingle: {
 		type: Boolean,
 		default: false
@@ -29,16 +40,16 @@ const props = defineProps({
 		type: Object as () => Feed,
 		required: true
 	},
-  //是独立的
-  individual: {
-    type: Boolean,
-    default: false
-  },
-  //小弹窗
-  isSmall: {
-    type: Boolean,
-    default: false
-  }
+	//是独立的
+	individual: {
+		type: Boolean,
+		default: false
+	},
+	//小弹窗
+	isSmall: {
+		type: Boolean,
+		default: false
+	}
 })
 // region 表情包
 const showEmoji = ref(false)
@@ -59,7 +70,7 @@ const isDark = computed(() => {
 // region 注册编辑器
 const editor = useEditor({
 	content: '',
-  autofocus:'end',
+	autofocus: 'end',
 	extensions: [
 		StarterKit.configure({
 			history: false,
@@ -168,20 +179,30 @@ const collectNumFormat = useUserStore().collectNumFormat
           <icons-like-b :size='38' :is-liked="checkLike(feed.id)" @toggleHeart="handleLike(feed.id,message)"/>
           <n-text class="text-2.8 color-[--text-1]">{{ likeNumFormat(feed.like_num, feed.id) }}</n-text>
         </n-flex>
-
-
-
         <n-flex align="center" justify="flex-end" :size="[0,0]" >
           <icons-star-b :size='26' :is-collected="checkCollect(feed.id)" @toggleStar="handleCollect(feed.id,message)"/>
           <n-text class="text-2.8 color-[--text-1]">{{ collectNumFormat(feed.collect_num, feed.id) }}</n-text>
         </n-flex>
-
-
         <n-flex align="center" justify="flex-end" :size="[0,0]" >
           <RiMessage3Line @click="isComment = true" size='28' class="color-[--text-1] cursor-pointer"/>
           <n-text class="text-2.8 color-[--text-1]">{{ feed.comment_num }}</n-text>
         </n-flex>
-        <RiShare2Line size='28' class="color-[--text-1] cursor-pointer"/>
+
+        <n-popover trigger="hover">
+          <template #trigger>
+            <RiShare2Line size='28' class="color-[--text-1] cursor-pointer"/>
+          </template>
+              <n-flex vertical align="center" justify="space-between">
+                <n-qr-code class="!pb-0" :value="`https://www.checkpoint321.com/frame/${feed.id}`" />
+                <n-flex align="center" justify="center" class="w-full">
+                  <n-text class="text-2.8 color-[--text-1]">{{t('ui.share.shareMessage')}}</n-text>
+                  <n-text class="text-2.8 color-[--text-1]">|</n-text>
+                  <n-text @click="handleCopy(`https://www.checkpoint321.com/frame/${feed.id}`)" class="cursor-pointer text-2.8 color-[--text-1] hover:color-[--czjB-5]">
+                    {{t('ui.share.copyUrl')}}
+                  </n-text>
+                </n-flex>
+              </n-flex>
+        </n-popover>
       </n-flex>
     </n-flex>
   </transition>

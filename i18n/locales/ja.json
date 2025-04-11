@@ -73,6 +73,7 @@
 		"logout": "ログアウト",
 		"menu": "メニュー",
 		"must": "",
+		"mustLogin": "",
 		"newUpload": "",
 		"newUploadText": "",
 		"newUploadTitle": "",
@@ -97,6 +98,10 @@
 		"searchMoreContent": "もっと内容を検索",
 		"sendCode": "認証コードを送信",
 		"set": "設定",
+		"share": {
+			"copyUrl": "",
+			"shareMessage": ""
+		},
 		"socialRules": "コミュニティルール",
 		"submit": "送信",
 		"terms": "利用規約",

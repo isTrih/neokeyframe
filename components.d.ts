@@ -35,6 +35,7 @@ declare module 'vue' {
     NModalProvider: typeof import('naive-ui')['NModalProvider']
     NPagination: typeof import('naive-ui')['NPagination']
     NPopover: typeof import('naive-ui')['NPopover']
+    NQrCode: typeof import('naive-ui')['NQrCode']
     NScrollbar: typeof import('naive-ui')['NScrollbar']
     NSkeleton: typeof import('naive-ui')['NSkeleton']
     NSpin: typeof import('naive-ui')['NSpin']
