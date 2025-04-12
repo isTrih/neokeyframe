@@ -4,12 +4,19 @@
   -->
 
 <script setup lang="ts">
-import {RiArrowLeftSLine, RiCloseLine} from '@remixicon/vue'
-import type { Feed } from '~/types/feed'
-import { ipLocationFormat } from '~/composables/utils'
-import { useRuntimeConfig } from '#app'
+import {
+	RiArrowLeftSLine,
+	RiCloseLine,
+	RiMessage3Line
+} from '@remixicon/vue'
+import { getCommentList } from '~/apis/comment'
 import { ShareFeedXHS } from '~/apis/feed'
-import type MessageApiInjection from 'naive-ui'
+import type { Feed } from '~/types/feed'
+import type { CommentItem } from '~/types/keyframeGoComponents'
+import { useRuntimeConfig } from '#app'
+// 消息
+const message = useMessage()
+
 // 组件属性
 const props = defineProps({
 	fid: {
@@ -60,8 +67,8 @@ const singleClick = () => {
 
 // region 禁止二次搜索
 const isSearch = computed(() => {
-  const { query } = useRoute()
-  return !!query.q
+	const { query } = useRoute()
+	return !!query.q
 })
 // endregion
 
@@ -69,10 +76,12 @@ const isSearch = computed(() => {
 const handleClickTag = id => {
 	console.log('点击了 # 标记:', id)
 	emit('closeDetail')
-  if(isSearch.value){
-    navigateTo({ name: 'search', query: { q: id } },
-        { open: { target: '_blank'}})
-  }
+	if (isSearch.value) {
+		navigateTo(
+			{ name: 'search', query: { q: id } },
+			{ open: { target: '_blank' } }
+		)
+	}
 	navigateTo({ name: 'search', query: { q: id } })
 }
 // 个人主页按钮
@@ -81,7 +90,6 @@ const userIndex = (uid: number) => {
 	emit('closeDetail')
 }
 // TODO：关注逻辑
-
 
 const shareXHS = (
 	images: string[],
@@ -111,7 +119,12 @@ const shareXHS = (
 		})
 	})
 }
-
+const refreshComments = () => {
+	CurrentPage.value = 0
+	CommentList.value = []
+	HasMoreComment.value = true
+	fetchCommentList()
+}
 const { CurrentColor } = storeToRefs(useConfigStore())
 // 认证信息
 const isVerti = computed(() => {
@@ -142,9 +155,41 @@ const isDark = computed(() => {
 	return CurrentColor.value === 'dark'
 })
 // 图片列表长度
-const mediaLength = computed(()=>{
-  return data.value.data.Feed.media_list.length
+const mediaLength = computed(() => {
+	return data.value.data.Feed.media_list.length
 })
+const CommentList = ref<CommentItem[]>([])
+const total = ref(0)
+const CurrentPage = ref(0)
+const HasMoreComment = ref(true)
+const fetchCommentList = () => {
+	if (HasMoreComment.value) {
+		getCommentList(props.fid, CurrentPage.value).then(
+			res => {
+				if (res.data) {
+					CommentList.value = res.data.comments
+					total.value = res.data.total
+					CurrentPage.value = CurrentPage.value + 1
+					HasMoreComment.value =
+						res.data.comments.length === 20
+				}
+			}
+		)
+	}
+}
+onMounted(() => {
+	fetchCommentList()
+})
+const feedControlBarRef = ref()
+const handleCommentLike = useUserStore().handleCommentLike
+const checkCommentLike = useUserStore().checkCommentLike
+const commentLikeNumFormat =
+	useUserStore().commentLikeNumFormat
+const { UserInfo } = storeToRefs(useUserStore())
+
+const checkUser = (uid: number) => {
+	return UserInfo.value.user_id === uid
+}
 </script>
 
 <template>
@@ -209,7 +254,7 @@ const mediaLength = computed(()=>{
               </n-button>
 
             </n-flex>
-          <n-button v-if="useUserStore().CheckFollow(data.data.Feed.user.user_id)"
+          <n-button v-if="useUserStore().CheckFollow(data.data.Feed.user.user_id)||checkUser(data.data.Feed.user.user_id)"
                     @click="userIndex(data.data.Feed.user.user_id)"
                     class="w-6rem mr-1" strong round secondary type="primary">
             {{ t('ui.userIndex') }}
@@ -225,26 +270,106 @@ const mediaLength = computed(()=>{
           <client-only>
             <editor-view v-if="data.data.Feed.content!==''" :content="data.data.Feed.content" @clickTag="handleClickTag"/>
           </client-only>
-          <n-text class="text-3 block" depth="3">
-            {{t('ui.editedOn')}}
-            <n-time :time="data.data.Feed.publish_time" format="yyyy-MM-dd" unix/>
-            &nbsp;
-            <n-time :time="data.data.Feed.publish_time" type="relative" unix/>
-            &nbsp;{{ipLocationFormat(data.data.Feed.ip_location)}}
-          </n-text>
+          <n-flex justify="space-between" align="center">
+            <n-text class="text-3 block" depth="3">
+              {{t('ui.editedOn')}}
+              <n-time :time="data.data.Feed.publish_time" format="yyyy-MM-dd" unix/>
+              &nbsp;
+              <n-time :time="data.data.Feed.publish_time" type="relative" unix/>
+              &nbsp;{{ipLocationFormat(data.data.Feed.ip_location)}}
+            </n-text>
+            <report-button v-if="!checkUser(data.data.Feed.user.user_id)" :id="data.data.Feed.id" :type="2" :user_id="data.data.Feed.user.user_id" :tiny="true"/>
+          </n-flex>
           <n-divider/>
           <n-text class="text-3" depth="3">
-            {{t('ui.comment1')}}&nbsp;{{data.data.Feed.comment_num}}&nbsp;{{t('ui.comment2')}}
+            {{t('ui.comment1')}}&nbsp;{{total}}&nbsp;{{t('ui.comment2')}}
           </n-text>
-          <div class="bg-blue h-full">
-            评论部分
-          </div>
+            <n-infinite-scroll @load="fetchCommentList()">
+              <n-list class="comment">
+                <n-list-item v-for="item in CommentList" :key="item.id">
+                  <n-thing content-indented>
+                    <template #avatar>
+                      <n-avatar
+                          round
+                          size="medium"
+                          :src="avatarUrl(item.avatar)"
+                          style="border: var(--gray-2) thin solid; border-radius: 100%; transition: all 0.4s ease;"
+                          class="cursor-pointer hover-op-80 relative z-0"
+                          :alt="`${item.nickname}的头像`"
+                      />
+                    </template>
+                    <template  #header>
+                      <span class="text-3.4 color-[--text-2]">{{item.nickname}}</span>
+                    </template>
+                    <template  #header-extra>
+                      <report-button :id="item.id" :type="2" :tiny="true"/>
+                    </template>
+                    <template #footer>
+                      <n-list-item v-for="sub in item.sub_comments" :key="sub.id">
+                        <n-thing content-indented>
+                          <template #avatar>
+                            <n-avatar
+                                round
+                                size="small"
+                                :src="avatarUrl(sub.avatar)"
+                                style="border: var(--gray-2) thin solid; border-radius: 100%; transition: all 0.4s ease;"
+                                class="cursor-pointer hover-op-80 relative z-0"
+                                :alt="`${sub.nickname}的头像`"
+                            />
+                          </template>
+                          <template  #header>
+                            <span class="text-3.4 color-[--text-2]">{{sub.nickname}}&nbsp;</span><span class="text-3 font-normal color-[--text-2]" v-if="sub.parent_user_id!==item.user_id">回复<span class="!text-3.4 color-[--text-2]">&nbsp;{{sub.reply_to_nickname}}</span></span>
+                          </template>
+                          <template  #header-extra>
+                            <report-button :id="sub.id" :type="2" :tiny="true"/>
+                          </template>
+                          <CommentView :content="sub.content"/>
+                          <n-text class="text-2.4 block" depth="3">
+                            <n-time class="text-2.4" :time="Number(sub.create_time)" type="relative" unix/>
+                            &nbsp;
+                            &nbsp;{{ipLocationFormat(sub.ip_location)}}
+                          </n-text>
+                          <n-flex align="center" justify="start" >
+                            <n-flex align="center" justify="flex-end" :size="[0,0]" >
+                              <icons-like-b class="op-100 hover-op-80" :size='22' :is-liked="checkCommentLike(sub.id)" @toggleHeart="handleCommentLike(sub.id,message)"/>
+                              <n-text depth="3" class="text-2.8">{{ commentLikeNumFormat(sub.like_count, sub.id) }}</n-text>
+                            </n-flex>
+                            <n-flex @click="feedControlBarRef.SetParent(sub)" align="center" class="op-100 hover-op-80 cursor-pointer" justify="flex-end" :size="[0,0]" >
+                              <RiMessage3Line class="scale-60 color-[--text-2]"/>
+                              <n-text depth="3" class="text-2.8">回复</n-text>
+                            </n-flex>
+                          </n-flex>
+
+                        </n-thing>
+                      </n-list-item>
+                    </template>
+                    <CommentView :content="item.content"/>
+                    <n-text class="text-2.4 block" depth="3">
+                      <n-time class="text-2.4" :time="Number(item.create_time)" type="relative" unix/>
+                      &nbsp;
+                      &nbsp;{{ipLocationFormat(item.ip_location)}}
+                    </n-text>
+                    <n-flex align="center" justify="start" >
+                      <n-flex align="center" justify="flex-end" :size="[0,0]" >
+                        <icons-like-b class="op-100 hover-op-80" :size='22' :is-liked="checkCommentLike(item.id)" @toggleHeart="handleCommentLike(item.id,message)"/>
+                        <n-text depth="3" class="text-2.8">{{ commentLikeNumFormat(item.like_count, item.id) }}</n-text>
+                      </n-flex>
+                      <n-flex @click="feedControlBarRef.SetParent(item)" align="center" class="op-100 hover-op-80 cursor-pointer" justify="flex-end" :size="[0,0]" >
+                        <RiMessage3Line class="scale-60 color-[--text-2]"/>
+                        <n-text depth="3" class="text-2.8">回复</n-text>
+                      </n-flex>
+                    </n-flex>
+                  </n-thing>
+                </n-list-item>
+              </n-list>
+            </n-infinite-scroll>
         </n-scrollbar>
         <client-only>
-          <feed-control-bar :feed="data.data.Feed" :is-single="mediaLength===0" class="absolute bottom-5.5"/>
+          <feed-control-bar ref="feedControlBarRef" @success="refreshComments" :feed="data.data.Feed" :is-single="mediaLength===0" class="absolute bottom-5.5"/>
         </client-only>
       </n-gi>
     </n-grid>
+    <!--    移动端-->
     <n-flex v-else vertical size="small" class="h-full w-full">
       <n-flex  class="w-full" align="center" justify="space-between">
         <n-flex :size="[0,0]" class="w-full h-2.5rem mb-1rem" justify="space-between" align="center">
@@ -284,7 +409,7 @@ const mediaLength = computed(()=>{
             </n-button>
 
           </n-flex>
-          <n-button v-if="useUserStore().CheckFollow(data.data.Feed.user.user_id)"
+          <n-button v-if="useUserStore().CheckFollow(data.data.Feed.user.user_id)||checkUser(data.data.Feed.user.user_id)"
                     @click="userIndex(data.data.Feed.user.user_id)"
                     class="w-6rem mr-1" strong round secondary type="primary">
             {{ t('ui.userIndex') }}
@@ -315,13 +440,16 @@ const mediaLength = computed(()=>{
           <client-only>
             <editor-view :content="data.data.Feed.content" @clickTag="handleClickTag"/>
           </client-only>
-          <n-text class="text-3" depth="3">
-            {{t('ui.editedOn')}}
-            <n-time :time="data.data.Feed.publish_time" format="yyyy-MM-dd" unix/>
-            &nbsp;
-            <n-time :time="data.data.Feed.publish_time" type="relative" unix/>
-            &nbsp;{{ipLocationFormat(data.data.Feed.ip_location)}}
-          </n-text>
+          <n-flex justify="space-between" align="center">
+            <n-text class="text-3 block" depth="3">
+              {{t('ui.editedOn')}}
+              <n-time :time="data.data.Feed.publish_time" format="yyyy-MM-dd" unix/>
+              &nbsp;
+              <n-time :time="data.data.Feed.publish_time" type="relative" unix/>
+              &nbsp;{{ipLocationFormat(data.data.Feed.ip_location)}}
+            </n-text>
+            <report-button v-if="!checkUser(data.data.Feed.user.user_id)" :id="data.data.Feed.id" :type="2" :user_id="data.data.Feed.user.user_id" :tiny="true"/>
+          </n-flex>
           <n-divider/>
           <n-text class="text-3" depth="3">
             {{t('ui.comment1')}}&nbsp;{{data.data.Feed.comment_num}}&nbsp;{{t('ui.comment2')}}
@@ -330,7 +458,7 @@ const mediaLength = computed(()=>{
             评论部分
           </div>
           <client-only>
-            <feed-control-bar :feed="data.data.Feed" :is-single="true" :individual="single" :is-small="IsModalSmall" class="bg-[--n-color-modal] px-2px absolute bottom-0"/>
+            <feed-control-bar @success="refreshComments" :feed="data.data.Feed" :is-single="true" :individual="single" :is-small="IsModalSmall" class="bg-[--n-color-modal] px-2px absolute bottom-0"/>
           </client-only>
         </n-flex>
       </n-scrollbar>
@@ -340,8 +468,12 @@ const mediaLength = computed(()=>{
 </template>
 
 <style scoped>
-
-
+:deep(.n-thing-main__content){
+  margin:0 !important;
+}
+:deep(.n-thing-main__footer){
+  margin-top:0 !important;
+}
 :deep(.n-divider:not(.n-divider--vertical)){
   @apply my;
 }

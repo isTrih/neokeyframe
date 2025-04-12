@@ -5,10 +5,6 @@
 
 <!--suppress CssNoGenericFontName -->
 <script setup lang="ts">
-import { useEditor, EditorContent } from '@tiptap/vue-3'
-import Emoji, {
-	emojis
-} from '@tiptap-pro/extension-emoji'
 import {
 	RiBilibiliFill,
 	RiBold,
@@ -26,16 +22,20 @@ import {
 	RiSeparator,
 	RiStrikethrough
 } from '@remixicon/vue'
+import Emoji, {
+	emojis
+} from '@tiptap-pro/extension-emoji'
 import { CharacterCount } from '@tiptap/extension-character-count'
 import { Placeholder } from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'
+import { EditorContent, useEditor } from '@tiptap/vue-3'
 import type { FormInst } from 'naive-ui'
+import { gzipBase64ToStr } from '~/composables/gzip'
+import { getRandomText } from '~/composables/randomText'
 import {
-	CuteEmojis,
-	CuteEmojiShow
+	CuteEmojiShow,
+	CuteEmojis
 } from '~/types/cuteEmoji'
-import {getRandomText} from '~/composables/randomText';
-import {gzipBase64ToStr} from '~/composables/gzip';
 
 // region Bilibili按钮
 const showBilibiliModal = ref(false)
@@ -84,52 +84,67 @@ const percentage = computed(() => {
 // region 仅限关键帧项目/深色模式
 const { CurrentColor } = storeToRefs(useConfigStore())
 const isDark = computed(() => {
-  return CurrentColor.value === 'dark'
+	return CurrentColor.value === 'dark'
 })
 // endregion
 // region 注册编辑器
-const {EditorTemp,EditorTempRaw} =storeToRefs(useEditorStore())
+const { EditorTemp, EditorTempRaw } = storeToRefs(
+	useEditorStore()
+)
 const editor = useEditor({
-  content: gzipBase64ToStr(EditorTemp.value)===''?'':JSON.parse(gzipBase64ToStr(EditorTemp.value)),
-  extensions: [
-    StarterKit.configure({
-      history: false
-    }),
-    bilibili,
-    KYTag.configure({
-      allowClick: true,
-      navigate: id => {
-        // 你的路由跳转逻辑，例如：
-        // router.push({ name: 'search', query: { q: id } })
-        console.log('编辑器:', id)
-      }
-    }),
-    Placeholder.configure({
-      // Use a placeholder:
-      placeholder: ({ node }) => {
-        return getRandomText()
-      },
-    }),
-    CharacterCount.configure({
-      limit: lengthLimit.value
-    }),
-    Emoji.configure({
-      emojis: [...emojis, ...CuteEmojis],
-      enableEmoticons: true,
-      HTMLAttributes: {
-        contenteditable:"true"
-      }
-    })
-  ],
-  editable: true,
-  onBlur: ({ editor }) => {
-    EditorTemp.value = strToGzipBase64(JSON.stringify(editor.getJSON()))
-    EditorTempRaw.value = editor.getText({ blockSeparator: ''})
-    // send the content to an API here
-  }
+	content:
+		gzipBase64ToStr(EditorTemp.value) === ''
+			? ''
+			: JSON.parse(gzipBase64ToStr(EditorTemp.value)),
+	extensions: [
+		StarterKit.configure({
+			history: false
+		}),
+		bilibili,
+		KYTag.configure({
+			allowClick: true,
+			navigate: id => {
+				// 你的路由跳转逻辑，例如：
+				// router.push({ name: 'search', query: { q: id } })
+				console.log('编辑器:', id)
+			}
+		}),
+		Placeholder.configure({
+			// Use a placeholder:
+			placeholder: ({ node }) => {
+				return getRandomText()
+			}
+		}),
+		CharacterCount.configure({
+			limit: lengthLimit.value
+		}),
+		Emoji.configure({
+			emojis: [...emojis, ...CuteEmojis],
+			enableEmoticons: true,
+			HTMLAttributes: {
+				contenteditable: 'true'
+			}
+		})
+	],
+	editable: true,
+	onBlur: ({ editor }) => {
+		EditorTemp.value = strToGzipBase64(
+			JSON.stringify(editor.getJSON())
+		)
+		EditorTempRaw.value = editor.getText({
+			blockSeparator: ''
+		})
+		// send the content to an API here
+	}
 })
 // endregion
 // region 卸载编辑器
+function ClearEditor() {
+	editor.value.commands.clearContent()
+}
+defineExpose({
+	ClearEditor
+})
 onUnmounted(() => {
 	editor.value.destroy()
 })

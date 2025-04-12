@@ -3,17 +3,18 @@
  * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
  */
 
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia'
 export const useConfigStore = defineStore(
-	"ConfigStore",
+	'ConfigStore',
 	() => {
-		const ColorMode = ref(0);
-		const CurrentColor = ref("");
-		const CurrentMenu = ref("default");
-		const WaterFallHeight = ref(0);
-		const ContainerWidth = ref(0);
-		const IsSmall = ref(false);
-		const IsModalSmall = ref(false);
+		const ColorMode = ref(0)
+		const CurrentColor = ref('')
+		const CurrentMenu = ref('default')
+		const WaterFallHeight = ref(0)
+		const ContainerWidth = ref(0)
+		const IsSmall = ref(false)
+		const IsModalSmall = ref(false)
+		// const nc = ref<NatsConnection>(null)
 
 		return {
 			ColorMode,
@@ -23,12 +24,12 @@ export const useConfigStore = defineStore(
 			CurrentColor,
 			IsSmall,
 			IsModalSmall
-		};
+		}
 	},
 	{
 		persist: {
 			// 设置存储方式为LocalStorage
-			storage: piniaPluginPersistedstate.localStorage(),
-		},
-	},
-);
+			storage: piniaPluginPersistedstate.localStorage()
+		}
+	}
+)

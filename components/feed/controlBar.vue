@@ -4,15 +4,31 @@
   -->
 
 <script setup lang="ts">
-import {EditorContent, useEditor} from '@tiptap/vue-3'
-import Emoji, {emojis} from '@tiptap-pro/extension-emoji'
-import {Placeholder} from '@tiptap/extension-placeholder'
+import {
+	RiEmojiStickerLine,
+	RiMessage3Line,
+	RiShare2Line
+} from '@remixicon/vue'
+import Emoji, {
+	emojis
+} from '@tiptap-pro/extension-emoji'
+import { Placeholder } from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'
-import {CuteEmojis, CuteEmojiShow} from '~/types/cuteEmoji'
-import {getRandomText} from '~/composables/randomText'
-import {RiEmojiStickerLine, RiMessage3Line, RiShare2Line} from '@remixicon/vue'
-import type {Feed} from '~/types/feed'
-import {useClipboard} from '@vueuse/core';
+import { EditorContent, useEditor } from '@tiptap/vue-3'
+import { useClipboard } from '@vueuse/core'
+import { newComment } from '~/apis/comment'
+import CommentView from '~/components/editor/CommentView.vue'
+import { getRandomText } from '~/composables/randomText'
+import {
+	CuteEmojiShow,
+	CuteEmojis
+} from '~/types/cuteEmoji'
+import type { Feed } from '~/types/feed'
+import type {
+	CommentItem,
+	SubCommentItem
+} from '~/types/keyframeGoComponents'
+
 const message = useMessage()
 const { copy, isSupported } = useClipboard()
 
@@ -51,6 +67,8 @@ const props = defineProps({
 		default: false
 	}
 })
+// 回调事件
+const emit = defineEmits(['success'])
 // region 表情包
 const showEmoji = ref(false)
 const toggleEmoji = () => {
@@ -68,6 +86,8 @@ const isDark = computed(() => {
 })
 // endregion
 // region 注册编辑器
+const raw_content = ref('')
+const content = ref('')
 const editor = useEditor({
 	content: '',
 	autofocus: 'end',
@@ -105,7 +125,12 @@ const editor = useEditor({
 	],
 	editable: true,
 	onBlur: ({ editor }) => {
-		// send the content to an API here
+		content.value = strToGzipBase64(
+			JSON.stringify(editor.getJSON())
+		)
+		raw_content.value = editor.getText({
+			blockSeparator: ''
+		})
 	}
 })
 // endregion
@@ -116,12 +141,63 @@ onUnmounted(() => {
 //endregion
 // region 操作切换
 const isComment = ref(false)
+const isParent = ref(false)
 // endregion
-
+const parentComment = ref<CommentItem | SubCommentItem>({
+	id: 0,
+	user_id: -1,
+	nickname: '',
+	// 添加 SubCommentItem 类型缺少的属性
+	parent_id: 0,
+	parent_user_id: -1,
+	reply_to_nickname: '',
+	avatar: '',
+	content: '',
+	like_count: 0,
+	create_time: '',
+	ip_location: ''
+})
 // region 发送评论
 const sendComment = () => {
-	console.log('发送评论')
+	if (!content.value) {
+		return message.error('请输入评论内容')
+	}
+	console.log(
+		'发送评论',
+		props.feed.id,
+		parentComment.value.id,
+		parentComment.value.user_id
+	)
+	newComment(
+		props.feed.id,
+		content.value,
+		raw_content.value,
+		'parent_id' in parentComment.value &&
+			parentComment.value.parent_id !== 0
+			? parentComment.value.parent_id
+			: parentComment.value.id,
+		parentComment.value.user_id
+	).then(res => {
+		if (res.code === 0) {
+			message.success('评论成功')
+			editor.value.commands.clearContent()
+			emit('success')
+			isComment.value = false
+		} else {
+			message.error(res.msg)
+		}
+	})
 }
+function SetParent(
+	comment: CommentItem | SubCommentItem
+) {
+	parentComment.value = comment
+	isComment.value = true
+	isParent.value = true
+}
+defineExpose({
+	SetParent
+})
 // endregion
 const handleLike = useUserStore().handleLike
 const checkLike = useUserStore().checkLike
@@ -130,12 +206,38 @@ const likeNumFormat = useUserStore().likeNumFormat
 const handleCollect = useUserStore().handleCollect
 const checkCollect = useUserStore().checkCollect
 const collectNumFormat = useUserStore().collectNumFormat
+const handleCancel = () => {
+	parentComment.value = {
+		id: 0,
+		user_id: -1,
+		nickname: '',
+		// 添加 SubCommentItem 类型缺少的属性
+		parent_id: 0,
+		parent_user_id: -1,
+		reply_to_nickname: '',
+		avatar: '',
+		content: '',
+		like_count: 0,
+		create_time: '',
+		ip_location: ''
+	}
+	isComment.value = false
+	isParent.value = false
+}
 </script>
 
 <template>
 <div>
   <transition mode="out-in">
     <n-flex v-if="isComment" class="bg-[--n-color-modal]" vertical >
+		<div v-if="isParent" :class="{'!bg-[--fill-2] !rounded-4 !p-1':true, 'single-ec': !isSmall&&isSingle&&!individual, 'individual-ec': individual||isSmall }">
+      <div class="text-3 font-normal color-[--text-2]">
+        回复<span class="!text-3.4 color-[--text-2]">&nbsp;{{parentComment.nickname}}</span>
+      </div>
+      <client-only>
+        <CommentView class="mx-2" :content="parentComment.content"/>
+      </client-only>
+    </div>
       <div v-if="editor" :class="{'edit-container':true, 'single-ec': !isSmall&&isSingle&&!individual, 'individual-ec': individual||isSmall }">
         <editor-content :editor="editor"/>
       </div>
@@ -161,7 +263,7 @@ const collectNumFormat = useUserStore().collectNumFormat
           </n-tabs>
         </n-popover>
         <n-flex>
-          <n-button @click="isComment = false" round>
+          <n-button @click="handleCancel" round>
             取消
           </n-button>
           <n-button @click="sendComment" round type="primary">

@@ -5,9 +5,12 @@
   -->
 
 <script setup lang="ts">
+import {
+	RiArrowLeftSLine,
+	RiEmotionSadLine
+} from '@remixicon/vue'
 import { GetUserInfo } from '~/apis/user'
 import type { User } from '~/types/user'
-import {RiArrowLeftSLine, RiEmotionSadLine} from '@remixicon/vue'
 
 import { NText } from 'naive-ui'
 import Link from '~/components/menu/link.vue'
@@ -34,18 +37,27 @@ const containerIsSmall = computed(() => {
 })
 // 认证信息
 const isVerti = computed(() => {
-	return CurrentUser.value.type > 199 && CurrentUser.value.type < 900
+	return (
+		CurrentUser.value.type > 199 &&
+		CurrentUser.value.type < 900
+	)
 })
 // 认证颜色配置
 const VertiColor = computed(() => {
-	if (200<=CurrentUser.value.type&& CurrentUser.value.type<300) {
+	if (
+		200 <= CurrentUser.value.type &&
+		CurrentUser.value.type < 300
+	) {
 		// 个人认证
 		return 'color-[--czjB-6]'
 	}
-	if (300<=CurrentUser.value.type&&CurrentUser.value.type<400) {
+	if (
+		300 <= CurrentUser.value.type &&
+		CurrentUser.value.type < 400
+	) {
 		return 'color-[--czjY-6]'
 	}
-	if (400<=CurrentUser.value.type) {
+	if (400 <= CurrentUser.value.type) {
 		return 'color-[--v-1]'
 	}
 	return ''
@@ -74,9 +86,9 @@ onMounted(async () => {
 
 	if (checkUser.value) {
 		InitMenu('user')
-	}else{
-    InitMenu('other')
-  }
+	} else {
+		InitMenu('other')
+	}
 	useHead({
 		title: data ? data.user_name : t('ui.voidUser'),
 		meta: [
@@ -91,7 +103,6 @@ onMounted(async () => {
 	console.log('code', code)
 	Code.value = code
 })
-import Button from '~/components/menu/button.vue'
 </script>
 
 <template>
@@ -105,7 +116,7 @@ import Button from '~/components/menu/button.vue'
         </template>
         {{ t('ui.back') }}
       </n-button>
-      <report-button/>
+      <report-button v-if="!checkUser" :type="1" :user_id="CurrentUser.user_id" :id="CurrentUser.user_id"/>
     </n-flex>
     <div v-if="Code===0" class="w-full">
       <n-grid class="w-full" cols="20 760:24" item-responsive>

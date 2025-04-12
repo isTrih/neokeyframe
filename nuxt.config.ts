@@ -9,8 +9,8 @@ import AutoImport from 'unplugin-auto-import/vite'
 // 引入unplugin-vue-components插件，用于naive-ui组件自动导入
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
-import { currentLocales } from './i18n/config'
 import removeConsole from 'vite-plugin-remove-console'
+import { currentLocales } from './i18n/config'
 export default defineNuxtConfig({
 	plugins: [
 		{
@@ -64,8 +64,15 @@ export default defineNuxtConfig({
 		head: {
 			meta: [
 				{ charset: 'utf-8' },
-				{ name: 'format-detection', content: 'telephone=no' },
-				{ name: 'viewport', content: 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0' },
+				{
+					name: 'format-detection',
+					content: 'telephone=no'
+				},
+				{
+					name: 'viewport',
+					content:
+						'width=device-width, viewport-fit=cover, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0'
+				},
 				{
 					name: 'keywords',
 					content:

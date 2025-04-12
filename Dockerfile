@@ -1,4 +1,4 @@
-FROM node:22.14-alpine
+FROM node:22-alpine
 WORKDIR /app
 
 ENV NUXT_HOST=0.0.0.0

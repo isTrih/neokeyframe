@@ -5,18 +5,18 @@
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: ["auth"],
-});
+	middleware: ['auth']
+})
 import type {
-	UploadFileInfo,
+	MessageReactive,
 	UploadCustomRequestOptions,
-	MessageReactive
+	UploadFileInfo
 } from 'naive-ui'
 
-import type { Img } from '~/types/feed'
 import GraphemeSplitter from 'grapheme-splitter'
-import { removeImgById } from '~/composables/utils'
 import { type CoverInfo, NewFeed } from '~/apis/feed'
+import { removeImgById } from '~/composables/utils'
+import type { Img } from '~/types/feed'
 const { IsSmall } = storeToRefs(useConfigStore())
 const heightClass = computed(() => {
 	return IsSmall.value
@@ -75,7 +75,7 @@ const removeMessage = () => {
 }
 // 切换的时候移除message
 onBeforeUnmount(removeMessage)
-
+const editorRef = ref() // 添加这行获取编辑器引用
 const submit = () => {
 	// 检测图片列表
 	// if (uploadFileData.value.length === 0) {
@@ -104,16 +104,16 @@ const submit = () => {
 		height: 0
 	}
 
-  console.log('当前封面信息', currentCoverInfo.value)
-  console.log('当前封面信息', currentCover.value)
+	console.log('当前封面信息', currentCoverInfo.value)
+	console.log('当前封面信息', currentCover.value)
 
-  NewFeed(
+	NewFeed(
 		title.value,
 		EditorTemp.value,
 		EditorTempRaw.value,
-		currentCover.value=== 'xx'
-      ? 'xx'
-      : currentCover.value,
+		currentCover.value === 'xx'
+			? 'xx'
+			: currentCover.value,
 		currentCoverInfo.value === undefined
 			? empty
 			: currentCoverInfo.value,
@@ -129,7 +129,9 @@ const submit = () => {
 		message.success('发布成功')
 		title.value = ''
 		fileList.value = []
+		// 清空编辑器缓存
 		useEditorStore().CleanEditor()
+		editorRef.value.ClearEditor()
 		currentCover.value = 'xx'
 		currentCoverInfo.value = undefined
 		uploadFileData.value = []
@@ -246,7 +248,7 @@ const page = ref(1)
             <div>
               <n-text class="title">{{ t('ui.uploadContentTitle') }}</n-text>
               <client-only>
-                <editor-default class="myeditor"/>
+                <editor-default ref="editorRef" class="myeditor"/>
               </client-only>
             </div>
             <n-button round strong block type="primary" @click="submit">

@@ -17,20 +17,20 @@
 </div>
 </template>
 <script setup lang="ts">
+import { useColorMode } from '@vueuse/core' // import { isMobile } from '~/composables/utils.ts'
 import {
-  darkTheme,
-  dateEnGB,
-  dateJaJP,
-  dateZhCN,
-  enGB,
-  type GlobalThemeOverrides,
-  jaJP,
-  NConfigProvider,
-  type NDateLocale,
-  type NLocale,
-  zhCN
+	type GlobalThemeOverrides,
+	NConfigProvider,
+	type NDateLocale,
+	type NLocale,
+	darkTheme,
+	dateEnGB,
+	dateJaJP,
+	dateZhCN,
+	enGB,
+	jaJP,
+	zhCN
 } from 'naive-ui'
-import {useColorMode} from '@vueuse/core'
 // import { isMobile } from '~/composables/utils.ts'
 
 const theme = ref<null | typeof darkTheme>(null)
@@ -143,12 +143,43 @@ const locale = computed<[NLocale, NDateLocale]>(() => {
 	}
 	return [zhCN, dateZhCN]
 })
+
 onMounted(() => {
+	document.documentElement.addEventListener(
+		'touchstart',
+		event => {
+			if (event.touches.length > 1) {
+				event.preventDefault()
+			}
+		},
+		false
+	)
+	useUserStore().NatsInit()
+	let lastTouchEnd = 0
+	document.documentElement.addEventListener(
+		'touchend',
+		event => {
+			const now = Date.now()
+			if (now - lastTouchEnd <= 300) {
+				event.preventDefault()
+			}
+			lastTouchEnd = now
+		},
+		false
+	)
+
+	document.addEventListener('gesturestart', event => {
+		event.preventDefault()
+	})
 	InitTheme()
 	$fetch('https://api64.ipify.org').then(res => {
 		const userIp = useCookie('user_ip')
 		userIp.value = String(res)
 	})
 	useUserStore().GetUserList()
+})
+
+onUnmounted(() => {
+	useUserStore().NatsClose()
 })
 </script>
