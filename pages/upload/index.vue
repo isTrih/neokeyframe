@@ -4,9 +4,15 @@
   -->
 
 <script setup lang="ts">
-definePageMeta({
-	middleware: ['auth']
-})
+import {
+	RiBookOpenLine,
+	RiDeleteBinLine,
+	RiEditLine,
+	RiHeart2Fill,
+	RiImageLine,
+	RiMessage3Fill,
+	RiStarFill
+} from '@remixicon/vue'
 import type {
 	MessageReactive,
 	UploadCustomRequestOptions,
@@ -16,12 +22,20 @@ import type {
 import GraphemeSplitter from 'grapheme-splitter'
 import {
 	type CoverInfo,
+	GetFeedDetail,
 	NewFeed,
+	deleteFeed,
 	getFeedList
 } from '~/apis/feed'
 import { removeImgById } from '~/composables/utils'
 import type { Img } from '~/types/feed'
+// region 管理中心
+import type { Feeds } from '~/types/keyframeGoComponents'
 
+definePageMeta({
+	middleware: ['auth']
+})
+const tabsValue = ref('new')
 const { IsSmall } = storeToRefs(useConfigStore())
 const heightClass = computed(() => {
 	return IsSmall.value
@@ -33,7 +47,7 @@ const heightClass = computed(() => {
 const splitter = new GraphemeSplitter()
 const countGraphemes = (value: string) =>
 	splitter.countGraphemes(value)
-
+const feedId = ref(0)
 const fileList = ref<UploadFileInfo[]>([])
 const uploadFileData = ref<Img[]>([])
 // 预览封面id
@@ -119,7 +133,8 @@ const submit = () => {
 		currentCoverInfo.value === undefined
 			? empty
 			: currentCoverInfo.value,
-		uploadFileData.value.map(img => img.key)
+		uploadFileData.value.map(img => img.key),
+		feedId.value
 	).then(res => {
 		console.log(res)
 		if (res.code !== 0) {
@@ -137,6 +152,8 @@ const submit = () => {
 		currentCover.value = 'xx'
 		currentCoverInfo.value = undefined
 		uploadFileData.value = []
+		feedId.value = 0
+		fetchData(currentPage.value)
 	})
 	console.log('提交')
 }
@@ -169,6 +186,7 @@ const customRequest = ({
 		}
 		uploadFileData.value.push(tmpImg)
 		console.log('当前列表', uploadFileData.value)
+
 		onFinish()
 	})
 	// 上传失败
@@ -187,30 +205,68 @@ const remove = ({ file }) => {
 	console.log('当前列表', uploadFileData.value)
 }
 //endregion
-
-// region 管理中心
-import type { Feeds } from '~/types/keyframeGoComponents'
-const page = ref(1)
+const currentPage = ref(1)
 const pageSize = 10
+const total = ref(10)
+const pageTotal = computed(() => {
+	return Math.ceil(total.value / pageSize)
+})
 const FeedList = ref<Feeds[]>([])
+const fetchData = async (page: number) => {
+	const res = await getFeedList((page - 1) * pageSize)
+	if (res.code === 0) {
+		FeedList.value = res.data.feeds
+		total.value = res.data.total
+	} else {
+		message.error(res.msg)
+	}
+}
 onMounted(() => {
 	InitMenu('upload')
+	fetchData(currentPage.value)
+})
 
-	getFeedList((page.value - 1) * pageSize).then(res => {
-		console.log('获取数据', res)
+const doDeleteFeed = (id: number) => {
+	deleteFeed(id).then(res => {
 		if (res.code === 0) {
-			FeedList.value = res.data.feeds
-		} else {
-			message.error(res.msg)
+			fetchData(currentPage.value)
 		}
 	})
-})
+}
+const doEditFeed = (id: number) => {
+	GetFeedDetail(id).then(res => {
+		if (res.code === 0) {
+			console.log(res.data)
+			EditorTemp.value = res.data.Feed.content
+			tabsValue.value = 'new'
+			currentCover.value = res.data.Feed.media_url
+			currentCoverInfo.value = res.data.Feed.media
+			title.value = res.data.Feed.title
+			uploadFileData.value = res.data.Feed.media_list.map(
+				value => ({
+					id: value, // 使用原始值作为 id
+					key: value, // 使用原始值作为 key
+					width: 0, // 默认宽度
+					height: 0 // 默认高度
+				})
+			)
+			fileList.value = uploadFileData.value.map(img => ({
+				id: img.id,
+				name: img.key,
+				status: 'finished',
+				url: imgUrl(img.key),
+				type: 'image/png'
+			}))
+			feedId.value = res.data.Feed.id
+		}
+	})
+}
 // endregion
 </script>
 
 <template>
   <div class="p-2 w-full">
-    <n-tabs type="line" class="pr-4" animated>
+    <n-tabs type="line" v-model:value="tabsValue" class="pr-4" animated>
       <n-tab-pane class="overflow-y-auto" name="new" :tab="t('ui.uploadNew')">
         <n-scrollbar id="editorContainer" :class="heightClass">
           <n-flex vertical justify-center align-center>
@@ -278,8 +334,76 @@ onMounted(() => {
       <n-tab-pane name="manager" :tab="t('ui.uploadManager')">
         <n-scrollbar id="editorContainer" :class="heightClass">
           <n-flex :class="heightClass" vertical align="center" justify="space-between">
-            <n-card v-for="i in FeedList" class="w-full">没有标题</n-card>
-            <n-pagination class="align-bottom" v-model:page="page" :page-count="100" />
+            <n-card v-for="i in FeedList" class="w-full min-h-8rem" content-style="padding: 0;">
+              <n-flex class="!w-full h-full" justify="space-between">
+                <n-flex>
+                  <n-image
+                     :id="`img-${i.id}`"
+                     width="112"
+                     object-fit="cover"
+                     :src="imgUrl(i.cover_url,String(i.author_id))"
+                     :fallback-src="imgUrl('f_4.jpg')"
+                     class="image"
+                     :alt="i.title"
+                 >
+                   <template #error>
+                     <n-flex v-if="i.cover_url!=='xx'"
+                             class="!w-5rem p-xy bg-[--bg-1] rounded-4" vertical justify="center" align="center">
+                       <n-icon class="text-4xl text-[--text-4]">
+                         <RiImageLine/>
+                       </n-icon>
+                       <n-text class="text-3.2 text-[--text-4]">{{ t('ui.imageLoadError') }}</n-text>
+                     </n-flex>
+                     <n-flex v-else class="!w-5rem p-xy bg-[--bg-1] rounded-4" vertical justify="center" align="center">
+                       <n-icon class="text-4xl text-[--text-4]">
+                         <RiBookOpenLine/>
+                       </n-icon>
+                     </n-flex>
+                   </template>
+                 </n-image>
+                  <n-flex class="py-4px" :size="[0,0]" vertical justify="start" align="middle">
+                    <n-text class="text-3.8" strong depth="1">
+                      {{ i.title }}
+                    </n-text>
+                    <n-text class="text-3" depth="3">
+                     发布于&nbsp;<n-time :time="i.publish_time" format="yyyy年MM月dd日 HH:mm" unix/>
+                    </n-text>
+                    <div class="flex items-center text-3 color-[--text-3]" depth="3">
+                      <RiHeart2Fill class="color-[--text-3] scale-64"/>{{i.like_num}}
+                      <RiStarFill class="ml-2 color-[--text-3] scale-64"/>{{i.collect_num}}
+                      <RiMessage3Fill class="ml-2 color-[--text-3] scale-64"/>{{i.comment_num}}
+                    </div>
+
+                  </n-flex>
+                </n-flex>
+                <n-flex class="mr-3 mt-2">
+                  <div class="self-start flex items-center text-3 color-[--text-3]" depth="3">
+<!--                    <div class="self-start flex items-center text-3 color-[&#45;&#45;text-3]" depth="3">-->
+<!--                      <RiEye2Line class="color-[&#45;&#45;text-3] scale-64"/>可见设置-->
+<!--                    </div>-->
+                    <n-popconfirm
+                        @positive-click="doEditFeed(i.id)">
+                      <template #trigger>
+                        <div class="self-start cursor-pointer flex items-center text-3 color-[--text-3] hover:color-[--czjB-5]" depth="3">
+                          <RiEditLine class="ml-2 scale-64"/>编辑
+                        </div>
+                      </template>
+                      是否编辑
+                    </n-popconfirm>
+                    <n-popconfirm
+                        @positive-click="doDeleteFeed(i.id)">
+                      <template #trigger>
+                        <div class="self-start cursor-pointer flex items-center text-3 color-[--text-3] hover:color-[--czjB-5]" depth="3">
+                          <RiDeleteBinLine class="ml-2 scale-64"/>删除
+                        </div>
+                      </template>
+                    确认删除
+                    </n-popconfirm>
+                  </div>
+                </n-flex>
+              </n-flex>
+            </n-card>
+            <n-pagination :on-update-page="(page)=>{fetchData(page)}" class="align-bottom" v-model:page="currentPage" :page-count="pageTotal" />
           </n-flex>
         </n-scrollbar>
       </n-tab-pane>
@@ -292,4 +416,16 @@ onMounted(() => {
 .title{
   @apply text-3.6 font-500
 }
+.image {
+  border-radius: 4px;
+  object-fit: cover;
+  border: var(--gray-4) 1px solid;
+  transition: all 0.18s cubic-bezier(0.19, 0.055, 0.675, 0.55);
+  opacity: 1;
+}
+
+.image:hover {
+  opacity: 0.85;
+}
+
 </style>

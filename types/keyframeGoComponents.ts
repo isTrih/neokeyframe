@@ -16,6 +16,8 @@ export interface Feeds {
 	width: number
 	like_num: number
 	publish_time: number
+	collect_num: number
+	comment_num: number
 }
 export interface GetFeedListResponse {
 	status: string

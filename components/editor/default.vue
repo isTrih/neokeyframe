@@ -43,6 +43,12 @@ const bilibliFormRef = ref<FormInst | null>(null)
 const bilibiliFormValue = ref({
 	bvid: ''
 })
+const props = defineProps({
+	content: {
+		type: String,
+		default: ''
+	}
+})
 const bilibliRules = {
 	bvid: {
 		required: true,
@@ -135,6 +141,13 @@ const editor = useEditor({
 			blockSeparator: ''
 		})
 		// send the content to an API here
+	},
+	onCreate: ({ editor }) => {
+		editor.commands.setContent(
+			gzipBase64ToStr(EditorTemp.value) === ''
+				? ''
+				: JSON.parse(gzipBase64ToStr(EditorTemp.value))
+		)
 	}
 })
 // endregion

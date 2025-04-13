@@ -5,7 +5,7 @@
 
 import type { https } from '~/types/http'
 import type {
-	CommentListResponse,
+	FeedDetail,
 	GetFeedListResponse
 } from '~/types/keyframeGoComponents'
 
@@ -28,8 +28,14 @@ export const GetUserFeeds = async (
 		`/home/userfeeds?uid=${userId}&os=${offset}&ftype=${feedType}`
 	)
 
-export const GetFeedDetail = async (id: number) =>
-	use$Get(`/feed/${id}`)
+export type getFeedDetail = https & {
+	data?: {
+		Feed: FeedDetail
+	}
+}
+export const GetFeedDetail = async (
+	id: number
+): Promise<getFeedDetail> => use$Get(`/feed/${id}`)
 
 export const ShareFeedXHS = async () => {
 	return use$Get('/feed/share/xhs')
@@ -45,7 +51,8 @@ export const NewFeed = async (
 	raw_content: string,
 	cover: string,
 	cover_info: CoverInfo,
-	media: string[]
+	media: string[],
+	id: number
 ) => {
 	return use$Post(
 		'/feed/new',
@@ -55,7 +62,8 @@ export const NewFeed = async (
 			raw_content: raw_content,
 			cover: cover,
 			cover_info: cover_info,
-			media: media
+			media: media,
+			id: id
 		})
 	)
 }
@@ -95,3 +103,16 @@ export const getFeedList = async (
 	offset: number
 ): Promise<getFeedListRes> =>
 	use$Get(`/feed/feedlist/get?o=${offset}`)
+
+export const deleteFeed = async (
+	id: number
+): Promise<
+	https & {
+		data?: {
+			status: string
+		}
+	}
+> =>
+	use$Post('/feed/delete', {
+		id: id
+	})
