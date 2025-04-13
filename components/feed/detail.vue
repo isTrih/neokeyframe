@@ -190,6 +190,9 @@ const { UserInfo } = storeToRefs(useUserStore())
 const checkUser = (uid: number) => {
 	return UserInfo.value.user_id === uid
 }
+onUnmounted(() => {
+	useUserStore().ClearActionCache()
+})
 </script>
 
 <template>
@@ -323,7 +326,7 @@ const checkUser = (uid: number) => {
                           <template  #header-extra>
                             <report-button :id="sub.id" :type="2" :tiny="true"/>
                           </template>
-                          <CommentView :content="sub.content"/>
+                          <editor-comment-view :content="sub.content"/>
                           <n-text class="text-2.4 block" depth="3">
                             <n-time class="text-2.4" :time="Number(sub.create_time)" type="relative" unix/>
                             &nbsp;
@@ -343,7 +346,7 @@ const checkUser = (uid: number) => {
                         </n-thing>
                       </n-list-item>
                     </template>
-                    <CommentView :content="item.content"/>
+                    <editor-comment-view :content="item.content"/>
                     <n-text class="text-2.4 block" depth="3">
                       <n-time class="text-2.4" :time="Number(item.create_time)" type="relative" unix/>
                       &nbsp;

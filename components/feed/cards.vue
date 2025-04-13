@@ -5,10 +5,10 @@
 
 <script setup lang="ts">
 import { RiHeart2Line, RiImageLine } from '@remixicon/vue'
-import type { Card } from '~/types/feed'
-import { h } from 'vue'
-import { FeedDetail } from '#components'
 import { useModal } from 'naive-ui'
+import { h } from 'vue'
+import type { Card } from '~/types/feed'
+import { FeedDetail } from '#components'
 const message = useMessage()
 // 监听容器宽度
 const { ContainerWidth, IsSmall } = storeToRefs(

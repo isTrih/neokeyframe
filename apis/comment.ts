@@ -39,3 +39,17 @@ export const newComment = async (
 		})
 	)
 }
+
+export const likeComment = async (
+	comment_id: number
+): Promise<
+	https & {
+		data?: {
+			status: string
+		}
+	}
+> => {
+	return use$Post('/comment/like', {
+		comment_id: comment_id
+	})
+}

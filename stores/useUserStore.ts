@@ -2,7 +2,10 @@
  * 版权所有(c) Trih(HUA Haohui) 2025 - 2025
  * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
  */
-import { jetstream } from '@nats-io/jetstream'
+import {
+	type JetStreamClient,
+	jetstream
+} from '@nats-io/jetstream'
 import {
 	type Codec,
 	type NatsConnection,
@@ -10,6 +13,7 @@ import {
 } from '@nats-io/nats-core'
 import type { MessageApiInjection } from 'naive-ui/es/message/src/MessageProvider'
 import { defineStore } from 'pinia'
+import { likeComment } from '~/apis/comment'
 import { GetUserRelation, Login } from '~/apis/user'
 
 export interface UserInfo {
@@ -34,7 +38,23 @@ export const useUserStore = defineStore(
 		const LikeFeeds = ref<number[]>([])
 		// 用户评论点赞
 		const LikeComments = ref<number[]>([])
+		// 用户操作临时缓存
+		const LikeCommentsADD = []
+		const LikeCommentsMINUS = []
+		const LikeFeedsADD = []
+		const LikeFeedsMINUS = []
+		const CollectFeedsADD = []
+		const CollectFeedsMINUS = []
 
+		// 用来清除临时缓存
+		function ClearActionCache() {
+			LikeCommentsADD.length = 0
+			LikeCommentsMINUS.length = 0
+			LikeFeedsADD.length = 0
+			LikeFeedsMINUS.length = 0
+			CollectFeedsADD.length = 0
+			CollectFeedsMINUS.length = 0
+		}
 		const CheckFollow = (uid: number) => {
 			return FollowUsers.value.includes(uid)
 		}
@@ -50,7 +70,7 @@ export const useUserStore = defineStore(
 					CollectFeeds.value = res.data.collect_feeds
 						.split(',')
 						.map(Number)
-					LikeFeeds.value = res.data.like_comments
+					LikeFeeds.value = res.data.like_feeds
 						.split(',')
 						.map(Number)
 					LikeComments.value = res.data.like_comments
@@ -74,9 +94,11 @@ export const useUserStore = defineStore(
 			if (num > 100000) {
 				return `10${t('ui.w')}+`
 			}
-			return LikeFeeds.value.includes(id)
+			return LikeFeedsADD.includes(id)
 				? (num + 1).toString()
-				: num.toString()
+				: LikeFeedsMINUS.includes(id)
+					? (num + -1).toString()
+					: num.toString()
 		}
 		const checkLike = (id: number) => {
 			return LikeFeeds.value.includes(id)
@@ -93,9 +115,11 @@ export const useUserStore = defineStore(
 				console.log('取消点赞', id)
 				// 这是移除本地点赞缓存
 				removeItem(LikeFeeds.value, id)
+				LikeFeedsMINUS.push(id)
 			} else {
 				console.log('点赞', id)
 				LikeFeeds.value.push(id)
+				LikeFeedsADD.push(id)
 			}
 		}
 
@@ -115,9 +139,11 @@ export const useUserStore = defineStore(
 			if (num > 100000) {
 				return `10${t('ui.w')}+`
 			}
-			return LikeComments.value.includes(id)
+			return LikeCommentsADD.includes(id)
 				? (num + 1).toString()
-				: num.toString()
+				: LikeCommentsMINUS.includes(id)
+					? (num + -1).toString()
+					: num.toString()
 		}
 
 		const checkCommentLike = (id: number) => {
@@ -131,14 +157,23 @@ export const useUserStore = defineStore(
 				message.warning('请先登录')
 				return
 			}
-			if (LikeComments.value.includes(id)) {
-				console.log('取消点赞', id)
-				// 这是移除本地点赞缓存
-				removeItem(LikeComments.value, id)
-			} else {
-				console.log('点赞', id)
-				LikeComments.value.push(id)
-			}
+			likeComment(id).then(res => {
+				if (res.code === 0 && res.data.status === 'ok') {
+					message.success('操作成功')
+					if (LikeComments.value.includes(id)) {
+						console.log('取消点赞', id)
+						// 这是移除本地点赞缓存
+						removeItem(LikeComments.value, id)
+						LikeCommentsMINUS.push(id)
+					} else {
+						console.log('点赞', id)
+						LikeComments.value.push(id)
+						LikeCommentsADD.push(id)
+					}
+				} else {
+					message.error(res.msg)
+				}
+			})
 		}
 
 		const collectNumFormat = (
@@ -157,9 +192,11 @@ export const useUserStore = defineStore(
 			if (num > 100000) {
 				return `10${t('ui.w')}+`
 			}
-			return CollectFeeds.value.includes(id)
+			return CollectFeedsADD.includes(id)
 				? (num + 1).toString()
-				: num.toString()
+				: CollectFeedsMINUS.includes(id)
+					? (num + -1).toString()
+					: num.toString()
 		}
 		const checkCollect = (id: number) => {
 			return CollectFeeds.value.includes(id)
@@ -176,9 +213,11 @@ export const useUserStore = defineStore(
 				console.log('取消收藏', id)
 				// 这是移除本地点赞缓存
 				removeItem(CollectFeeds.value, id)
+				CollectFeedsMINUS.push(id)
 			} else {
 				console.log('收藏', id)
 				CollectFeeds.value.push(id)
+				CollectFeedsADD.push(id)
 			}
 		}
 		// endregion
@@ -220,6 +259,7 @@ export const useUserStore = defineStore(
 
 		// NATS 连接和 JetStream
 		const nc = ref<NatsConnection>(null)
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		const js = ref<any>(null) // JetStream 客户端
 		// 使用 Codec<string> 来处理消息的编解码
 		const codec: Codec<string> = {
@@ -252,7 +292,7 @@ export const useUserStore = defineStore(
 					const consumerMessages = await consumer.consume(
 						{}
 					)
-					;(async () => {
+					await (async () => {
 						for await (const m of consumerMessages) {
 							const msg = codec.decode(m.data)
 							console.log('收到消息:', msg)
@@ -291,6 +331,7 @@ export const useUserStore = defineStore(
 			return notificationNum.value
 		}
 		return {
+			ClearActionCache,
 			NatsClose,
 			NatsInit,
 			UserLogout,
