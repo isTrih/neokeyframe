@@ -4,6 +4,11 @@
   -->
 
 <script setup lang="ts">
+definePageMeta({
+	middleware: ['auth']
+})
+
+
 onMounted(() => {
 InitMenu('notification')
 })

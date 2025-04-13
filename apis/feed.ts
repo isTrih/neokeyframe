@@ -3,6 +3,12 @@
  * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
  */
 
+import type { https } from '~/types/http'
+import type {
+	CommentListResponse,
+	GetFeedListResponse
+} from '~/types/keyframeGoComponents'
+
 export const GetFeeds = async (
 	offset: number,
 	query: string
@@ -48,8 +54,44 @@ export const NewFeed = async (
 			content: content,
 			raw_content: raw_content,
 			cover: cover,
-			cover_info:cover_info,
+			cover_info: cover_info,
 			media: media
 		})
 	)
 }
+
+export const likeFeed = async (
+	id: number
+): Promise<
+	https & {
+		data?: {
+			status: string
+		}
+	}
+> => {
+	return use$Post('/feed/like', {
+		id: id
+	})
+}
+export const collectFeed = async (
+	id: number
+): Promise<
+	https & {
+		data?: {
+			status: string
+		}
+	}
+> => {
+	return use$Post('/feed/collect', {
+		id: id
+	})
+}
+
+export type getFeedListRes = https & {
+	data?: GetFeedListResponse
+}
+
+export const getFeedList = async (
+	offset: number
+): Promise<getFeedListRes> =>
+	use$Get(`/feed/feedlist/get?o=${offset}`)

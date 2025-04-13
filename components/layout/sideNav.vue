@@ -64,7 +64,7 @@ const menuOptions = computed(() => [
 			h(
 				NuxtLink,
 				{
-					to: '/'
+					to: '/',
 				},
 				{ default: () => t('ui.home') }
 			),
@@ -76,7 +76,16 @@ const menuOptions = computed(() => [
 			h(
 				NuxtLink,
 				{
-					to: '/upload'
+					to: '/upload',
+					onClick: (e) => {
+						try {
+							if (!e.defaultPrevented) {
+								console.log("无法跳转")
+							}
+						} catch {
+							console.log("无法跳转")
+						}
+					}
 				},
 				{ default: () => t('ui.uploadCenter') }
 			),

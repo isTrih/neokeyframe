@@ -11,13 +11,18 @@ import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import removeConsole from 'vite-plugin-remove-console'
 import { currentLocales } from './i18n/config'
+
 export default defineNuxtConfig({
 	plugins: [
 		{
 			src: '~/plugins/disable-scale.ts',
 			mode: 'client'
 		},
-		{ src: '~/plugins/solve-style.ts', mode: 'server' }
+		{ src: '~/plugins/solve-style.ts', mode: 'server' },
+		{
+			src: '~/plugins/cropper.client.ts',
+			mode: 'client'
+		}
 	],
 	runtimeConfig: {
 		public: {

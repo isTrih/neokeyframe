@@ -47,4 +47,14 @@ const uploadFile = (file :File, t:string)=> {
     return createMultipartUploadV2Task(fileData, config);
 }
 
-export { uploadFile }
+const uploadFileBuffer = (file : ArrayBuffer, t:string)=> {
+    // 文件数据
+    const fileData: FileData = { type: 'array-buffer', data:  file }
+    // 上传配置
+    const config: UploadConfig = {
+        tokenProvider: t==='img'?imgTokenProvider:t==='avatar'?avatarTokenProvider:vTokenProvider,
+    }
+    return createMultipartUploadV2Task(fileData, config);
+}
+
+export { uploadFile,uploadFileBuffer }

@@ -14,17 +14,19 @@ import type {
 } from 'naive-ui'
 
 import GraphemeSplitter from 'grapheme-splitter'
-import { type CoverInfo, NewFeed } from '~/apis/feed'
+import {
+	type CoverInfo,
+	NewFeed,
+	getFeedList
+} from '~/apis/feed'
 import { removeImgById } from '~/composables/utils'
 import type { Img } from '~/types/feed'
+
 const { IsSmall } = storeToRefs(useConfigStore())
 const heightClass = computed(() => {
 	return IsSmall.value
 		? 'h-[calc(100dvh-6dvh-12px-34px-42px-3rem)]'
 		: 'h-[calc(100dvh-12px-34px-42px-3rem)]'
-})
-onMounted(() => {
-	InitMenu('upload')
 })
 //region  表单
 //标题计数
@@ -187,7 +189,22 @@ const remove = ({ file }) => {
 //endregion
 
 // region 管理中心
+import type { Feeds } from '~/types/keyframeGoComponents'
 const page = ref(1)
+const pageSize = 10
+const FeedList = ref<Feeds[]>([])
+onMounted(() => {
+	InitMenu('upload')
+
+	getFeedList((page.value - 1) * pageSize).then(res => {
+		console.log('获取数据', res)
+		if (res.code === 0) {
+			FeedList.value = res.data.feeds
+		} else {
+			message.error(res.msg)
+		}
+	})
+})
 // endregion
 </script>
 
@@ -261,9 +278,7 @@ const page = ref(1)
       <n-tab-pane name="manager" :tab="t('ui.uploadManager')">
         <n-scrollbar id="editorContainer" :class="heightClass">
           <n-flex :class="heightClass" vertical align="center" justify="space-between">
-            <div>
-
-            </div>
+            <n-card v-for="i in FeedList" class="w-full">没有标题</n-card>
             <n-pagination class="align-bottom" v-model:page="page" :page-count="100" />
           </n-flex>
         </n-scrollbar>

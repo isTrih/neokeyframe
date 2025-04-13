@@ -2,10 +2,7 @@
  * 版权所有(c) Trih(HUA Haohui) 2025 - 2025
  * Copyright (c)Trih(HUA Haohui) 2025 - 2025, All Rights Reserved.
  */
-import {
-	type JetStreamClient,
-	jetstream
-} from '@nats-io/jetstream'
+import { jetstream } from '@nats-io/jetstream'
 import {
 	type Codec,
 	type NatsConnection,
@@ -14,6 +11,7 @@ import {
 import type { MessageApiInjection } from 'naive-ui/es/message/src/MessageProvider'
 import { defineStore } from 'pinia'
 import { likeComment } from '~/apis/comment'
+import { collectFeed, likeFeed } from '~/apis/feed'
 import { GetUserRelation, Login } from '~/apis/user'
 
 export interface UserInfo {
@@ -39,21 +37,25 @@ export const useUserStore = defineStore(
 		// 用户评论点赞
 		const LikeComments = ref<number[]>([])
 		// 用户操作临时缓存
-		const LikeCommentsADD = []
-		const LikeCommentsMINUS = []
-		const LikeFeedsADD = []
-		const LikeFeedsMINUS = []
-		const CollectFeedsADD = []
-		const CollectFeedsMINUS = []
+		const LikeCommentsADD = ref<number[]>([])
+		const LikeCommentsMINUS = ref<number[]>([])
+		const LikeFeedsADD = ref<number[]>([])
+		const LikeFeedsMINUS = ref<number[]>([])
+		const CollectFeedsADD = ref<number[]>([])
+		const CollectFeedsMINUS = ref<number[]>([])
 
 		// 用来清除临时缓存
 		function ClearActionCache() {
-			LikeCommentsADD.length = 0
-			LikeCommentsMINUS.length = 0
-			LikeFeedsADD.length = 0
-			LikeFeedsMINUS.length = 0
-			CollectFeedsADD.length = 0
-			CollectFeedsMINUS.length = 0
+			LikeCommentsADD.value.length = 0
+			LikeCommentsMINUS.value.length = 0
+			LikeFeedsADD.value.length = 0
+			LikeFeedsMINUS.value.length = 0
+			CollectFeedsADD.value.length = 0
+			CollectFeedsMINUS.value.length = 0
+		}
+		function ClearCommentActionCache() {
+			LikeCommentsADD.value.length = 0
+			LikeCommentsMINUS.value.length = 0
 		}
 		const CheckFollow = (uid: number) => {
 			return FollowUsers.value.includes(uid)
@@ -94,14 +96,14 @@ export const useUserStore = defineStore(
 			if (num > 100000) {
 				return `10${t('ui.w')}+`
 			}
-			return LikeFeedsADD.includes(id)
+			return LikeFeedsADD.value.includes(id)
 				? (num + 1).toString()
-				: LikeFeedsMINUS.includes(id)
+				: LikeFeedsMINUS.value.includes(id)
 					? (num + -1).toString()
 					: num.toString()
 		}
 		const checkLike = (id: number) => {
-			return LikeFeeds.value.includes(id)
+			return LikeFeeds.value.includes(id)||LikeFeedsADD.value.includes(id)
 		}
 		const handleLike = (
 			id: number,
@@ -111,16 +113,32 @@ export const useUserStore = defineStore(
 				message.warning('请先登录')
 				return
 			}
-			if (LikeFeeds.value.includes(id)) {
-				console.log('取消点赞', id)
-				// 这是移除本地点赞缓存
-				removeItem(LikeFeeds.value, id)
-				LikeFeedsMINUS.push(id)
-			} else {
-				console.log('点赞', id)
-				LikeFeeds.value.push(id)
-				LikeFeedsADD.push(id)
-			}
+			likeFeed(id).then(res => {
+				if (res.code === 0 && res.data.status === 'ok') {
+					message.success('操作成功')
+					if (LikeFeeds.value.includes(id)||LikeFeedsADD.value.includes(id)) {
+						console.log('取消点赞', id)
+						// 这是移除本地点赞缓存
+						removeItem(LikeFeedsADD.value, id)
+						if (!LikeFeeds.value.includes(id)) {
+							console.log('本地取消点赞', id)
+						}else{
+							LikeFeedsMINUS.value.push(id)
+							removeItem(LikeFeeds.value, id)
+						}						
+					} else {
+						console.log('点赞', id)
+						if (!LikeFeedsMINUS.value.includes(id)) {
+							LikeFeedsADD.value.push(id)
+						}else{
+							LikeFeeds.value.push(id)
+						}
+						removeItem(LikeFeedsMINUS.value, id)
+					}
+				} else {
+					message.error(res.msg)
+				}
+			})
 		}
 
 		function commentLikeNumFormat(
@@ -139,15 +157,15 @@ export const useUserStore = defineStore(
 			if (num > 100000) {
 				return `10${t('ui.w')}+`
 			}
-			return LikeCommentsADD.includes(id)
+			return LikeCommentsADD.value.includes(id)
 				? (num + 1).toString()
-				: LikeCommentsMINUS.includes(id)
+				: LikeCommentsMINUS.value.includes(id)
 					? (num + -1).toString()
 					: num.toString()
 		}
 
 		const checkCommentLike = (id: number) => {
-			return LikeComments.value.includes(id)
+			return LikeComments.value.includes(id)||LikeCommentsADD.value.includes(id)
 		}
 		const handleCommentLike = (
 			id: number,
@@ -160,15 +178,24 @@ export const useUserStore = defineStore(
 			likeComment(id).then(res => {
 				if (res.code === 0 && res.data.status === 'ok') {
 					message.success('操作成功')
-					if (LikeComments.value.includes(id)) {
+					if (LikeComments.value.includes(id)||LikeCommentsADD.value.includes(id)) {
 						console.log('取消点赞', id)
 						// 这是移除本地点赞缓存
-						removeItem(LikeComments.value, id)
-						LikeCommentsMINUS.push(id)
+						removeItem(LikeCommentsADD.value, id)
+						if (!LikeComments.value.includes(id)) {
+							console.log('本地取消点赞', id)
+						}else{
+							LikeCommentsMINUS.value.push(id)
+							removeItem(LikeComments.value, id)
+						}						
 					} else {
 						console.log('点赞', id)
-						LikeComments.value.push(id)
-						LikeCommentsADD.push(id)
+						if (!LikeCommentsMINUS.value.includes(id)) {
+							LikeCommentsADD.value.push(id)
+						}else{
+							LikeComments.value.push(id)
+						}
+						removeItem(LikeCommentsMINUS.value, id)
 					}
 				} else {
 					message.error(res.msg)
@@ -192,14 +219,14 @@ export const useUserStore = defineStore(
 			if (num > 100000) {
 				return `10${t('ui.w')}+`
 			}
-			return CollectFeedsADD.includes(id)
+			return CollectFeedsADD.value.includes(id)
 				? (num + 1).toString()
-				: CollectFeedsMINUS.includes(id)
+				: CollectFeedsMINUS.value.includes(id)
 					? (num + -1).toString()
 					: num.toString()
 		}
 		const checkCollect = (id: number) => {
-			return CollectFeeds.value.includes(id)
+			return CollectFeeds.value.includes(id)||CollectFeedsADD.value.includes(id)
 		}
 		const handleCollect = (
 			id: number,
@@ -209,16 +236,32 @@ export const useUserStore = defineStore(
 				message.warning('请先登录')
 				return
 			}
-			if (CollectFeeds.value.includes(id)) {
-				console.log('取消收藏', id)
-				// 这是移除本地点赞缓存
-				removeItem(CollectFeeds.value, id)
-				CollectFeedsMINUS.push(id)
-			} else {
-				console.log('收藏', id)
-				CollectFeeds.value.push(id)
-				CollectFeedsADD.push(id)
-			}
+			collectFeed(id).then(res => {
+				if (res.code === 0 && res.data.status === 'ok') {
+					message.success('操作成功')
+					if (CollectFeeds.value.includes(id)||CollectFeedsADD.value.includes(id)) {
+						console.log('取消点赞', id)
+						// 这是移除本地点赞缓存
+						removeItem(CollectFeedsADD.value, id)
+						if (!CollectFeeds.value.includes(id)) {
+							console.log('本地取消点赞', id)
+						}else{
+							CollectFeedsMINUS.value.push(id)
+							removeItem(CollectFeeds.value, id)
+						}						
+					} else {
+						console.log('点赞', id)
+						if (!CollectFeedsMINUS.value.includes(id)) {
+							CollectFeedsADD.value.push(id)
+						}else{
+							CollectFeeds.value.push(id)
+						}
+						removeItem(CollectFeedsMINUS.value, id)
+					}
+				} else {
+					message.error(res.msg)
+				}
+			})
 		}
 		// endregion
 
@@ -232,7 +275,7 @@ export const useUserStore = defineStore(
 				password
 			)
 			console.log(data, msg, data)
-			//TODO：可能获取其他用户信息
+			//TODO：可能获取其他用户信息，获取通知
 			if (code === 0) {
 				console.log('success', data)
 				UserInfo.value = {
@@ -331,6 +374,7 @@ export const useUserStore = defineStore(
 			return notificationNum.value
 		}
 		return {
+			ClearCommentActionCache,
 			ClearActionCache,
 			NatsClose,
 			NatsInit,

@@ -6,6 +6,7 @@
 import {$fetch} from 'ofetch'
 import {useRuntimeConfig} from '#app'
 import {useUserStore} from '~/stores/useUserStore'
+import { e } from 'unocss'
 
 interface RequestOptions {
 	[key: string]: any
@@ -24,43 +25,61 @@ function handleRequest(options: RequestOptions) {
 		KIP: userIp.value?userIp.value:'unknown',
 	}
 }
-// 响应拦截器
+// 修改响应拦截器
 function handleResponse(response: any) {
-	if (response.error) {
-		throw new Error(response.error.message || '响应错误')
-	}
-	return response
+  // 成功响应直接返回数据
+  return response?._data || response
 }
 
-/**
- * 创建请求方法
- * @param method
- */
+// 修改请求方法中的catch处理
 function createDollarFetchRequest(method: HttpMethod) {
-	return async (
-		url: string,
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-		data?: any,
-		options: RequestOptions = {}
-	) => {
-		const baseURL = useRuntimeConfig().public.baseUrl as string
-		const fullPath = `${baseURL}${url}`
+  const eventBus = useEventBus<{type: string, msg: string}>('msg')
 
-		// const requestUrl = new URL(fullPath).toString();
+  return async (
+    url: string,
+    data?: any,
+    options: RequestOptions = {}
+  ) => {
+    const baseURL = useRuntimeConfig().public.baseUrl as string
+    const fullPath = `${baseURL}${url}`
 
-		try {
-			handleRequest(options)
-			const response = await $fetch(fullPath, {
-				method,
-				body: data,
-				...options
-			})
-			return handleResponse(response)
-		} catch (error) {
-			console.error('请求错误:', error)
-			throw error
-		}
-	}
+    try {
+      handleRequest(options)
+      const response = await $fetch(fullPath, {
+        method,
+        body: data,
+        ...options,
+        // 强制解析错误响应
+        onResponseError({ response }) {
+          // 统一处理HTTP错误
+          const error = new Error(response._data?.message || '请求失败') as any
+          error.statusCode = response.status
+          throw error
+        }
+      })
+      return handleResponse(response)
+    } catch (error: any) {
+      console.error('[HTTP Error]', error)
+      
+      // 处理401未授权
+      if (error.statusCode === 401) {
+        const userStore = useUserStore()
+        userStore.UserLogout()
+        eventBus.emit({ type: 'info', msg: '登录以获得更好体验！' })
+      }
+      else if (error.statusCode === 403) {
+        eventBus.emit({ type: 'info', msg: '权限不足' })
+      }else{
+      // 显示错误提示
+      const message = error.statusCode === 500 
+      ? '服务器内部错误' 
+      : error.message || `请求失败 (${error.statusCode})`
+      eventBus.emit({ type: 'error', msg: message })     
+      }
+ 
+      throw error
+    }
+  }
 }
 
 // 提供 $fetch & HTTP 方法 - 统一管理请求 - 再到组件中使用

@@ -42,6 +42,7 @@
     "pinia-plugin-persistedstate": "^4.2.0",
     "qiniu-js": "4.0.0-beta.6",
     "vue": "latest",
+    "vue-cropper": "^1.1.4",
     "vue-router": "latest"
   },
   "packageManager": "pnpm@9.14.4",

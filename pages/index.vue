@@ -5,16 +5,16 @@
 
 <script setup lang="ts">
 //获取查询参数
-import {GetFeeds} from '~/apis/feed'
-import type {Card} from '~/types/feed'
+import { GetFeeds } from '~/apis/feed'
+import type { Card } from '~/types/feed'
 const message = useMessage()
 const query = computed(() => {
 	const { query } = useRoute()
 	return query.q ? query.q : ''
 })
 const redirect = computed(() => {
-  const { query } = useRoute()
-  return query.redirect ? query.redirect : ''
+	const { query } = useRoute()
+	return query.redirect ? query.redirect : ''
 })
 const cards = ref<Card[]>([])
 const disabled = ref(true) // 初始禁用滚动加载
@@ -26,26 +26,32 @@ const card_columns = ref({})
 const arrHeight = ref([])
 
 useHead({
-  title: '每一秒都是关键帧',
-  meta: [
-    { name: 'keywords', content: '关键帧, 关键帧社区, 关键帧动画, 动画社区, 二次元社区, 半次元, 二次元, 约稿, 米画师，画加, 优动漫, csp ,动画, 小红书' }
-  ]
+	title: '每一秒都是关键帧',
+	meta: [
+		{
+			name: 'keywords',
+			content:
+				'关键帧, 关键帧社区, 关键帧动画, 动画社区, 二次元社区, 半次元, 二次元, 约稿, 米画师，画加, 优动漫, csp ,动画, 小红书'
+		}
+	]
 })
 
 onMounted(async () => {
-  if (redirect.value==='auth') {
-    message.info(t('ui.mustLogin'))
-  }
-  GetFeeds(0, query.value as string).then(res=>{
-    console.log('data', res)
-    cards.value = res.data.feeds
-    waterFallInit(columns, card_columns, arrHeight, cards)
+	useUserStore().ClearActionCache()
+	GetFeeds(0, query.value as string).then(res => {
+		console.log('data', res)
+		cards.value = res.data.feeds
+		waterFallInit(columns, card_columns, arrHeight, cards)
 
-    isload.value = false // 加载完成
-    disabled.value = false // 启用滚动加载
-    resizeWaterFall(columns, card_columns, arrHeight, cards)
-    InitMenu('home')
-  })
+		isload.value = false // 加载完成
+		disabled.value = false // 启用滚动加载
+		resizeWaterFall(
+			columns,
+			card_columns,
+			arrHeight,
+			cards
+		)
+	})
 })
 
 const showDetail = () => {
@@ -65,7 +71,7 @@ const load = async () => {
 			offset,
 			query.value as string
 		)
-    console.log('load:res', res)
+		console.log('load:res', res)
 		const more = res.data.feeds
 		if (more.length === 0) {
 			disabled.value = true

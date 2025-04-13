@@ -191,7 +191,7 @@ const checkUser = (uid: number) => {
 	return UserInfo.value.user_id === uid
 }
 onUnmounted(() => {
-	useUserStore().ClearActionCache()
+	useUserStore().ClearCommentActionCache()
 })
 </script>
 

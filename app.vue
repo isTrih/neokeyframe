@@ -18,6 +18,7 @@
 </template>
 <script setup lang="ts">
 import { useColorMode } from '@vueuse/core' // import { isMobile } from '~/composables/utils.ts'
+
 import {
 	type GlobalThemeOverrides,
 	NConfigProvider,
@@ -143,8 +144,8 @@ const locale = computed<[NLocale, NDateLocale]>(() => {
 	}
 	return [zhCN, dateZhCN]
 })
-
 onMounted(() => {
+
 	document.documentElement.addEventListener(
 		'touchstart',
 		event => {

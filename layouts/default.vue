@@ -26,8 +26,15 @@ const { stop } = useResizeObserver(
 	}, 30)
 )
 const notClient = ref(true)
+const eventBus = useEventBus<{type: string, msg: string}>('msg')
+const message = useMessage()
+
 onMounted(() => {
 	notClient.value = false
+  eventBus.on(({type, msg}: {type: string, msg: string}) => {
+    // 在这里处理接收到的字符串参数
+    message[type](msg)
+  })
 })
 onUnmounted(() => {
 	stop()

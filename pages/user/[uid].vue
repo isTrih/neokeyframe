@@ -9,11 +9,12 @@ import {
 	RiArrowLeftSLine,
 	RiEmotionSadLine
 } from '@remixicon/vue'
-import { GetUserInfo } from '~/apis/user'
+import { EditUserInfo, GetUserInfo } from '~/apis/user'
 import type { User } from '~/types/user'
 
 import { NText } from 'naive-ui'
-import Link from '~/components/menu/link.vue'
+import MyProfileEditor from '~/components/my/ProfileEditor.vue'
+
 const { ContainerWidth, CurrentColor } = storeToRefs(
 	useConfigStore()
 )
@@ -26,7 +27,10 @@ const signatureFormat = (signature: string) => {
 	}
 	return signature
 }
-
+const eventBus = useEventBus<{
+	type: string
+	msg: string
+}>('msg')
 // 检查是否是自己
 const checkUser = computed(() => {
 	return UserInfo.value.user_id === Number(userId)
@@ -73,6 +77,31 @@ const Code = ref(1101)
 const router = useRouter()
 
 const isFullSignature = ref(false)
+const showProfileEditor = ref(false)
+
+const handleProfileUpdate = (updatedUser: User) => {
+	console.log('更改内容', updatedUser)
+	EditUserInfo(
+		updatedUser.user_name,
+		updatedUser.signature,
+		updatedUser.avatar
+	).then(res => {
+		console.log('更改结果', res)
+		if (res.code === 0) {
+			CurrentUser.value = {
+				...CurrentUser.value,
+				...updatedUser
+			}
+			UserInfo.value = {
+				...UserInfo.value,
+				...updatedUser
+			}
+			eventBus.emit({ type: 'success', msg: '更改成功' })
+		} else {
+			eventBus.emit({ type: 'error', msg: res.msg })
+		}
+	})
+}
 
 // 显示签名详情
 const showSig = computed(() => {
@@ -217,9 +246,7 @@ onMounted(async () => {
                 <n-button v-if="useUserStore().CheckFollow(Number(userId))" class="w-6rem" strong round secondary>
                   {{ t('ui.unfollow') }}
                 </n-button>
-                <n-button v-else-if="checkUser" class="w-6rem" strong round type="primary">
-                  {{ t('ui.editProfile') }}
-                </n-button>
+                <my-profile-editor v-else-if="checkUser" :user="CurrentUser" @update:user="handleProfileUpdate"/>
                 <n-button v-else class="w-6rem" strong round type="primary">
                   {{ t('ui.follow') }}
                 </n-button>
