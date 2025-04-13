@@ -12,6 +12,7 @@ import type { MessageApiInjection } from 'naive-ui/es/message/src/MessageProvide
 import { defineStore } from 'pinia'
 import { likeComment } from '~/apis/comment'
 import { collectFeed, likeFeed } from '~/apis/feed'
+import { toggleFollow } from '~/apis/follow'
 import { GetUserRelation, Login } from '~/apis/user'
 
 export interface UserInfo {
@@ -26,6 +27,10 @@ export interface UserInfo {
 export const useUserStore = defineStore(
 	'UserStore',
 	() => {
+		const eventBus = useEventBus<{
+			type: string
+			msg: string
+		}>('msg')
 		// 用户信息
 		const UserInfo = ref<UserInfo>({})
 		// 用户关注
@@ -62,7 +67,7 @@ export const useUserStore = defineStore(
 		}
 
 		// 获取用户关注、收藏、喜欢列表
-		const GetUserList = async () => {
+		const GetUserList = () => {
 			GetUserRelation().then(res => {
 				console.log('UserRelation', res)
 				if (res.code === 0) {
@@ -82,6 +87,25 @@ export const useUserStore = defineStore(
 			})
 		}
 
+		function handleFollow(userid: number) {
+			if (FollowUsers.value.includes(userid)) {
+				// 移除用户关注
+				removeItem(FollowUsers.value, userid)
+			} else {
+				// 添加用户关注
+				FollowUsers.value.push(userid)
+			}
+			toggleFollow(userid).then(res => {
+				if (res.code === 0) {
+					eventBus.emit({
+						type: 'success',
+						msg: '操作成功'
+					})
+				} else {
+					eventBus.emit({ type: 'error', msg: res.msg })
+				}
+			})
+		}
 		// region 点赞收藏
 		function likeNumFormat(num: number, id: number) {
 			if (1000 <= num && num < 10000) {
@@ -103,7 +127,10 @@ export const useUserStore = defineStore(
 					: num.toString()
 		}
 		const checkLike = (id: number) => {
-			return LikeFeeds.value.includes(id)||LikeFeedsADD.value.includes(id)
+			return (
+				LikeFeeds.value.includes(id) ||
+				LikeFeedsADD.value.includes(id)
+			)
 		}
 		const handleLike = (
 			id: number,
@@ -116,21 +143,24 @@ export const useUserStore = defineStore(
 			likeFeed(id).then(res => {
 				if (res.code === 0 && res.data.status === 'ok') {
 					message.success('操作成功')
-					if (LikeFeeds.value.includes(id)||LikeFeedsADD.value.includes(id)) {
+					if (
+						LikeFeeds.value.includes(id) ||
+						LikeFeedsADD.value.includes(id)
+					) {
 						console.log('取消点赞', id)
 						// 这是移除本地点赞缓存
 						removeItem(LikeFeedsADD.value, id)
 						if (!LikeFeeds.value.includes(id)) {
 							console.log('本地取消点赞', id)
-						}else{
+						} else {
 							LikeFeedsMINUS.value.push(id)
 							removeItem(LikeFeeds.value, id)
-						}						
+						}
 					} else {
 						console.log('点赞', id)
 						if (!LikeFeedsMINUS.value.includes(id)) {
 							LikeFeedsADD.value.push(id)
-						}else{
+						} else {
 							LikeFeeds.value.push(id)
 						}
 						removeItem(LikeFeedsMINUS.value, id)
@@ -165,7 +195,10 @@ export const useUserStore = defineStore(
 		}
 
 		const checkCommentLike = (id: number) => {
-			return LikeComments.value.includes(id)||LikeCommentsADD.value.includes(id)
+			return (
+				LikeComments.value.includes(id) ||
+				LikeCommentsADD.value.includes(id)
+			)
 		}
 		const handleCommentLike = (
 			id: number,
@@ -178,21 +211,24 @@ export const useUserStore = defineStore(
 			likeComment(id).then(res => {
 				if (res.code === 0 && res.data.status === 'ok') {
 					message.success('操作成功')
-					if (LikeComments.value.includes(id)||LikeCommentsADD.value.includes(id)) {
+					if (
+						LikeComments.value.includes(id) ||
+						LikeCommentsADD.value.includes(id)
+					) {
 						console.log('取消点赞', id)
 						// 这是移除本地点赞缓存
 						removeItem(LikeCommentsADD.value, id)
 						if (!LikeComments.value.includes(id)) {
 							console.log('本地取消点赞', id)
-						}else{
+						} else {
 							LikeCommentsMINUS.value.push(id)
 							removeItem(LikeComments.value, id)
-						}						
+						}
 					} else {
 						console.log('点赞', id)
 						if (!LikeCommentsMINUS.value.includes(id)) {
 							LikeCommentsADD.value.push(id)
-						}else{
+						} else {
 							LikeComments.value.push(id)
 						}
 						removeItem(LikeCommentsMINUS.value, id)
@@ -226,7 +262,10 @@ export const useUserStore = defineStore(
 					: num.toString()
 		}
 		const checkCollect = (id: number) => {
-			return CollectFeeds.value.includes(id)||CollectFeedsADD.value.includes(id)
+			return (
+				CollectFeeds.value.includes(id) ||
+				CollectFeedsADD.value.includes(id)
+			)
 		}
 		const handleCollect = (
 			id: number,
@@ -239,21 +278,24 @@ export const useUserStore = defineStore(
 			collectFeed(id).then(res => {
 				if (res.code === 0 && res.data.status === 'ok') {
 					message.success('操作成功')
-					if (CollectFeeds.value.includes(id)||CollectFeedsADD.value.includes(id)) {
+					if (
+						CollectFeeds.value.includes(id) ||
+						CollectFeedsADD.value.includes(id)
+					) {
 						console.log('取消点赞', id)
 						// 这是移除本地点赞缓存
 						removeItem(CollectFeedsADD.value, id)
 						if (!CollectFeeds.value.includes(id)) {
 							console.log('本地取消点赞', id)
-						}else{
+						} else {
 							CollectFeedsMINUS.value.push(id)
 							removeItem(CollectFeeds.value, id)
-						}						
+						}
 					} else {
 						console.log('点赞', id)
 						if (!CollectFeedsMINUS.value.includes(id)) {
 							CollectFeedsADD.value.push(id)
-						}else{
+						} else {
 							CollectFeeds.value.push(id)
 						}
 						removeItem(CollectFeedsMINUS.value, id)
@@ -325,7 +367,7 @@ export const useUserStore = defineStore(
 					const consumer = await js.value.consumers.get(
 						'MESSAGES',
 						{
-							filterSubjects: [
+							filter_subjects: [
 								`KEYFRAME.MSG.${UserInfo.value.user_id}`
 							],
 							deliver_policy: 'new',
@@ -374,6 +416,7 @@ export const useUserStore = defineStore(
 			return notificationNum.value
 		}
 		return {
+			handleFollow,
 			ClearCommentActionCache,
 			ClearActionCache,
 			NatsClose,

@@ -11,6 +11,7 @@ import {
 	RiHeart2Fill,
 	RiImageLine,
 	RiMessage3Fill,
+	RiShieldCheckLine,
 	RiStarFill
 } from '@remixicon/vue'
 import type {
@@ -262,6 +263,26 @@ const doEditFeed = (id: number) => {
 	})
 }
 // endregion
+function getTextByNumber(num: number): string {
+	switch (num) {
+		case 0:
+			return '正常'
+		case 1:
+			return '色情'
+		case 2:
+			return '骚扰'
+		case 3:
+			return '广告'
+		case 4:
+			return '政治'
+		case 5:
+			return '引战'
+		case 6:
+			return '辱骂'
+		default:
+			return '其他'
+	}
+}
 </script>
 
 <template>
@@ -333,8 +354,8 @@ const doEditFeed = (id: number) => {
       </n-tab-pane>
       <n-tab-pane name="manager" :tab="t('ui.uploadManager')">
         <n-scrollbar id="editorContainer" :class="heightClass">
-          <n-flex :class="heightClass" vertical align="center" justify="space-between">
-            <n-card v-for="i in FeedList" class="w-full min-h-8rem" content-style="padding: 0;">
+          <n-flex :class="heightClass" vertical align="center" justify="start">
+            <n-card v-for="i in FeedList" :key="i.id" class="w-full min-h-8rem" content-style="padding: 0;">
               <n-flex class="!w-full h-full" justify="space-between">
                 <n-flex>
                   <n-image
@@ -361,30 +382,72 @@ const doEditFeed = (id: number) => {
                      </n-flex>
                    </template>
                  </n-image>
-                  <n-flex class="py-4px" :size="[0,0]" vertical justify="start" align="middle">
+                  <n-flex class="py-4px !h-90%" :size="[0,0]" vertical justify="space-between" align="middle">
                     <n-text class="text-3.8" strong depth="1">
                       {{ i.title }}
                     </n-text>
                     <n-text class="text-3" depth="3">
                      发布于&nbsp;<n-time :time="i.publish_time" format="yyyy年MM月dd日 HH:mm" unix/>
                     </n-text>
-                    <div class="flex items-center text-3 color-[--text-3]" depth="3">
+                    <div class="flex items-center text-3 color-[--text-3]">
                       <RiHeart2Fill class="color-[--text-3] scale-64"/>{{i.like_num}}
                       <RiStarFill class="ml-2 color-[--text-3] scale-64"/>{{i.collect_num}}
                       <RiMessage3Fill class="ml-2 color-[--text-3] scale-64"/>{{i.comment_num}}
                     </div>
-
+                    <n-flex v-if="IsSmall" class="mr-3 mt-2">
+                      <n-tag v-if="i.ai_insp!=0&&i.insp==1" round class="flex justify-center w-6rem items-center  text-2.8" :bordered="false" type="warning">
+                        疑似：{{getTextByNumber(i.ai_insp)}}
+                        <template #icon>
+                          <n-icon :component="RiShieldCheckLine" />
+                        </template>
+                      </n-tag>
+                      <n-tag v-else-if="i.ai_insp!=0&&i.insp==2" round class="flex justify-center w-6rem items-center  text-2.8" :bordered="false" type="error">
+                        确认：{{getTextByNumber(i.ai_insp)}}
+                        <template #icon>
+                          <n-icon :component="RiShieldCheckLine" />
+                        </template>
+                      </n-tag>
+                      <n-tag v-else round class="flex justify-center w-6rem items-center  text-2.8" :bordered="false" type="success">
+                        状态：正常
+                        <template #icon>
+                          <n-icon :component="RiShieldCheckLine" />
+                        </template>
+                      </n-tag>
+                      <div class="self-start flex items-center text-3 color-[--text-3]">
+                        <!--                    <div class="self-start flex items-center text-3 color-[&#45;&#45;text-3]" depth="3">-->
+                        <!--                      <RiEye2Line class="color-[&#45;&#45;text-3] scale-64"/>可见设置-->
+                        <!--                    </div>-->
+                        <n-popconfirm
+                            @positive-click="doEditFeed(i.id)">
+                          <template #trigger>
+                            <div class="self-start cursor-pointer flex items-center text-3 color-[--text-3] hover:color-[--czjB-5]">
+                              <RiEditLine class="ml-2 scale-64"/>编辑
+                            </div>
+                          </template>
+                          是否编辑
+                        </n-popconfirm>
+                        <n-popconfirm
+                            @positive-click="doDeleteFeed(i.id)">
+                          <template #trigger>
+                            <div class="self-start cursor-pointer flex items-center text-3 color-[--text-3] hover:color-[--czjB-5]" depth="3">
+                              <RiDeleteBinLine class="ml-2 scale-64"/>删除
+                            </div>
+                          </template>
+                          确认删除
+                        </n-popconfirm>
+                      </div>
+                    </n-flex>
                   </n-flex>
                 </n-flex>
-                <n-flex class="mr-3 mt-2">
-                  <div class="self-start flex items-center text-3 color-[--text-3]" depth="3">
+                <n-flex v-if="!IsSmall" class="mr-3 mt-2">
+                  <div class="self-start flex items-center text-3 color-[--text-3]">
 <!--                    <div class="self-start flex items-center text-3 color-[&#45;&#45;text-3]" depth="3">-->
 <!--                      <RiEye2Line class="color-[&#45;&#45;text-3] scale-64"/>可见设置-->
 <!--                    </div>-->
                     <n-popconfirm
                         @positive-click="doEditFeed(i.id)">
                       <template #trigger>
-                        <div class="self-start cursor-pointer flex items-center text-3 color-[--text-3] hover:color-[--czjB-5]" depth="3">
+                        <div class="self-start cursor-pointer flex items-center text-3 color-[--text-3] hover:color-[--czjB-5]">
                           <RiEditLine class="ml-2 scale-64"/>编辑
                         </div>
                       </template>

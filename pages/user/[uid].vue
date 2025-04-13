@@ -243,11 +243,11 @@ onMounted(async () => {
                 <my-user-count :name="t('ui.posts')" :value="CurrentUser.feed_count"/>
               </n-flex>
               <n-flex size="small">
-                <n-button v-if="useUserStore().CheckFollow(Number(userId))" class="w-6rem" strong round secondary>
+                <n-button @click="()=>useUserStore().handleFollow(Number(userId))" v-if="useUserStore().CheckFollow(Number(userId))" class="w-6rem" strong round secondary>
                   {{ t('ui.unfollow') }}
                 </n-button>
                 <my-profile-editor v-else-if="checkUser" :user="CurrentUser" @update:user="handleProfileUpdate"/>
-                <n-button v-else class="w-6rem" strong round type="primary">
+                <n-button v-else class="w-6rem" @click="()=>useUserStore().handleFollow(Number(userId))" strong round type="primary">
                   {{ t('ui.follow') }}
                 </n-button>
 

@@ -18,6 +18,8 @@ export interface Feeds {
 	publish_time: number
 	collect_num: number
 	comment_num: number
+	insp: number
+	ai_insp: number
 }
 export interface GetFeedListResponse {
 	status: string

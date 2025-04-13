@@ -197,7 +197,7 @@ onUnmounted(() => {
 
 <template>
 
-  <div class="h-full">
+  <div class="h-full" v-bind="$attrs">
     <n-tooltip v-if="!IsModalSmall&&!single" trigger="hover" :show-arrow="false" class="z-50"
                :style="[{fontSize: '0.6rem'},{height: '1rem'},{ width: '2.8rem' },{ background: `var(--bg-2)`},{ color: `var(--text-1)` }]">
       <template #trigger>
@@ -262,7 +262,7 @@ onUnmounted(() => {
                     class="w-6rem mr-1" strong round secondary type="primary">
             {{ t('ui.userIndex') }}
           </n-button>
-          <n-button v-else class="w-6rem mr-1" strong round type="primary">
+          <n-button @click="useUserStore().handleFollow(data.data.Feed.user.user_id)" v-else class="w-6rem mr-1" strong round type="primary">
             {{ t('ui.follow') }}
           </n-button>
         </n-flex>
@@ -287,7 +287,7 @@ onUnmounted(() => {
           <n-text class="text-3" depth="3">
             {{t('ui.comment1')}}&nbsp;{{total}}&nbsp;{{t('ui.comment2')}}
           </n-text>
-            <n-infinite-scroll @load="fetchCommentList()">
+          <n-infinite-scroll @load="fetchCommentList()">
               <n-list class="comment">
                 <n-list-item v-for="item in CommentList" :key="item.id">
                   <n-thing content-indented>
@@ -417,13 +417,13 @@ onUnmounted(() => {
                     class="w-6rem mr-1" strong round secondary type="primary">
             {{ t('ui.userIndex') }}
           </n-button>
-          <n-button v-else class="w-6rem mr-1" strong round type="primary">
+          <n-button @click="useUserStore().handleFollow(data.data.Feed.user.user_id)" v-else class="w-6rem mr-1" strong round type="primary">
             {{ t('ui.follow') }}
           </n-button>
         </n-flex>
 
       </n-flex>
-      <n-scrollbar :style="{maxHeight: 80+'dvh'}">
+      <n-scrollbar :style="{maxHeight: 'calc(100dvh - 76px - 24px)'}">
         <n-flex vertical>
           <div class="else">
             <n-carousel v-if="mediaLength!==0" autoplay :show-arrow="mediaLength>1" :centered-slides="true" class="bg-black carousel" >
@@ -455,13 +455,94 @@ onUnmounted(() => {
           </n-flex>
           <n-divider/>
           <n-text class="text-3" depth="3">
-            {{t('ui.comment1')}}&nbsp;{{data.data.Feed.comment_num}}&nbsp;{{t('ui.comment2')}}
+            {{t('ui.comment1')}}&nbsp;{{total}}&nbsp;{{t('ui.comment2')}}
           </n-text>
-          <div class="bg-blue h-full mb-3rem">
-            评论部分
-          </div>
+          <n-infinite-scroll @load="fetchCommentList()">
+            <n-list class="comment">
+              <n-list-item v-for="item in CommentList" :key="item.id">
+                <n-thing content-indented>
+                  <template #avatar>
+                    <n-avatar
+                        round
+                        size="medium"
+                        :src="avatarUrl(item.avatar)"
+                        style="border: var(--gray-2) thin solid; border-radius: 100%; transition: all 0.4s ease;"
+                        class="cursor-pointer hover-op-80 relative z-0"
+                        :alt="`${item.nickname}的头像`"
+                    />
+                  </template>
+                  <template  #header>
+                    <span class="text-3.4 color-[--text-2]">{{item.nickname}}</span>
+                  </template>
+                  <template  #header-extra>
+                    <report-button :id="item.id" :type="2" :tiny="true"/>
+                  </template>
+                  <template #footer>
+                    <n-list-item v-for="sub in item.sub_comments" :key="sub.id">
+                      <n-thing content-indented>
+                        <template #avatar>
+                          <n-avatar
+                              round
+                              size="small"
+                              :src="avatarUrl(sub.avatar)"
+                              style="border: var(--gray-2) thin solid; border-radius: 100%; transition: all 0.4s ease;"
+                              class="cursor-pointer hover-op-80 relative z-0"
+                              :alt="`${sub.nickname}的头像`"
+                          />
+                        </template>
+                        <template  #header>
+                          <span class="text-3.4 color-[--text-2]">{{sub.nickname}}&nbsp;</span><span class="text-3 font-normal color-[--text-2]" v-if="sub.parent_user_id!==item.user_id">回复<span class="!text-3.4 color-[--text-2]">&nbsp;{{sub.reply_to_nickname}}</span></span>
+                        </template>
+                        <template  #header-extra>
+                          <report-button :id="sub.id" :type="2" :tiny="true"/>
+                        </template>
+                        <editor-comment-view :content="sub.content"/>
+                        <n-text class="text-2.4 block" depth="3">
+                          <n-time class="text-2.4" :time="Number(sub.create_time)" type="relative" unix/>
+                          &nbsp;
+                          &nbsp;{{ipLocationFormat(sub.ip_location)}}
+                        </n-text>
+                        <n-flex align="center" justify="start" >
+                          <n-flex align="center" justify="flex-end" :size="[0,0]" >
+                            <icons-like-b class="op-100 hover-op-80" :size='22' :is-liked="checkCommentLike(sub.id)" @toggleHeart="handleCommentLike(sub.id,message)"/>
+                            <n-text depth="3" class="text-2.8">{{ commentLikeNumFormat(sub.like_count, sub.id) }}</n-text>
+                          </n-flex>
+                          <n-flex @click="feedControlBarRef.SetParent(sub)" align="center" class="op-100 hover-op-80 cursor-pointer" justify="flex-end" :size="[0,0]" >
+                            <RiMessage3Line class="scale-60 color-[--text-2]"/>
+                            <n-text depth="3" class="text-2.8">回复</n-text>
+                          </n-flex>
+                        </n-flex>
+
+                      </n-thing>
+                    </n-list-item>
+                  </template>
+                  <editor-comment-view :content="item.content"/>
+                  <n-text class="text-2.4 block" depth="3">
+                    <n-time class="text-2.4" :time="Number(item.create_time)" type="relative" unix/>
+                    &nbsp;
+                    &nbsp;{{ipLocationFormat(item.ip_location)}}
+                  </n-text>
+                  <n-flex align="center" justify="start" >
+                    <n-flex align="center" justify="flex-end" :size="[0,0]" >
+                      <icons-like-b class="op-100 hover-op-80" :size='22' :is-liked="checkCommentLike(item.id)" @toggleHeart="handleCommentLike(item.id,message)"/>
+                      <n-text depth="3" class="text-2.8">{{ commentLikeNumFormat(item.like_count, item.id) }}</n-text>
+                    </n-flex>
+                    <n-flex @click="feedControlBarRef.SetParent(item)" align="center" class="op-100 hover-op-80 cursor-pointer" justify="flex-end" :size="[0,0]" >
+                      <RiMessage3Line class="scale-60 color-[--text-2]"/>
+                      <n-text depth="3" class="text-2.8">回复</n-text>
+                    </n-flex>
+                  </n-flex>
+                </n-thing>
+              </n-list-item>
+              <n-list-item>
+                <div class="w-full text-2.6 color-[--text-3] mb-42px flex justify-center" content-indented>
+                  没有更多了哦！
+                </div>
+              </n-list-item>
+            </n-list>
+          </n-infinite-scroll>
           <client-only>
-            <feed-control-bar @success="refreshComments" :feed="data.data.Feed" :is-single="true" :individual="single" :is-small="IsModalSmall" class="bg-[--n-color-modal] px-2px absolute bottom-0"/>
+            <feed-control-bar @success="refreshComments" :feed="data.data.Feed" :is-single="true" :individual="single" :is-small="IsModalSmall" class="bg-[--n-color-modal] px-2px absolute bottom-0 pb-3px"/>
           </client-only>
         </n-flex>
       </n-scrollbar>

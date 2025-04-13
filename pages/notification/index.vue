@@ -8,18 +8,34 @@ definePageMeta({
 	middleware: ['auth']
 })
 
-
 onMounted(() => {
-InitMenu('notification')
+	InitMenu('notification')
 })
 </script>
 
 <template>
-  <div class="h-full w-full flex flex-col justify-center">
-    <client-only>
-      <n-empty size="huge" description="通知" />
-    </client-only>
-  </div>
+    <n-tabs animated class="p-4 h-full w-full">
+      <n-tab-pane
+        name="like"
+      tab="点赞通知">
+
+      </n-tab-pane>
+      <n-tab-pane
+          name="comment"
+          tab="评论通知">
+
+      </n-tab-pane>
+      <n-tab-pane
+          name="collect"
+          tab="收藏通知">
+
+      </n-tab-pane>
+      <n-tab-pane
+          name="follow"
+          tab="关注通知">
+
+      </n-tab-pane>
+    </n-tabs>
 </template>
 
 <style scoped></style>
