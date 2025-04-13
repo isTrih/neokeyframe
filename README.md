@@ -1,41 +1,61 @@
-# 开发手册
+## NeoKeyframe 前端 Docker 部署指南
 
-### 获取环境变量
-
-```typescript
-const runtimeConfig = useRuntimeConfig();
-console.log(runtimeConfig.public.baseUrl);
+1. 拉取最新镜像:
+```bash
+docker pull swr.cn-east-3.myhuaweicloud.com/keyframe/neo-keyframe:latest
 ```
 
-```typescript
-onMounted()
-{
+2. 运行容器:
+```bash
+docker run -d \
+  --name neo-keyframe \
+  -p 3000:${NUXT_PORT} \
+  -e NUXT_PORT=${NUXT_PORT} \
+  -e NUXT_HOST=${NUXT_HOST} \
+  -e NUXT_PUBLIC_BASE_URL=${NUXT_PUBLIC_BASE_URL} \
+  -e NUXT_PUBLIC_IMG_URL=${NUXT_PUBLIC_IMG_URL} \
+  swr.cn-east-3.myhuaweicloud.com/keyframe/neo-keyframe:latest
+```
+
+## 环境变量说明
+
+| 变量名 | 默认值 | 说明 |
+|--------|--------|------|
+| NUXT_PORT | 3000 | 应用内部端口 |
+| NUXT_HOST | 0.0.0.0 | 应用监听地址 |
+| NUXT_PUBLIC_BASE_URL | https://api.example.com/v1 | 后端API地址 |
+| NUXT_PUBLIC_IMG_URL | https://cdn.example.com | 图片CDN地址 |
+
+## 反向代理配置示例(Nginx)
+
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
 }
-// 生命周期是在客户端渲染、无法收录
-// SEO不友好
 ```
 
-### TIPS
+## 使用docker-compose部署
 
-| TIPS                                       | 来源        | 版本    |
-|--------------------------------------------|:----------|:------|
-| 你知道吗？关键帧还有一个名字叫做“正片叠底”                     | 三氢        | α.0.1 |
-| CheckPoint也是关键帧的意思                         | 三氢        | α.0.1 |
-| Persicum somnium frigida, te videre cupio. | 三氢        | α.0.1 |
-| 超正经科技中，绝大部分人都是INFP                         | 三氢        | α.0.1 |
-| 不知道说什么了，随便再来一条                             | 三氢        | α.0.1 |
-| 讨厌上大学                                      | 三氢        | α.0.1 |
-| 如果一天有48小时就好了                               | 三氢        | α.0.1 |
-| 希望可以每天多睡一会                                 | 三氢        | α.0.1 |
-| 不去想两小时之后和八公里以外的事                           | Eternity. | α.0.1 |
-| 有好多废话要讲                                    | Eternity. | α.0.1 |
-| 被爱包围的杂七杂八                                  | Eternity. | α.0.1 |
-| 世界是一张密密麻麻的备忘录                              | Eternity. | α.0.1 |
-| 人总是在无限接近幸福的时候最幸福                           | Eternity. | α.0.1 |
-| Noli de mundo meo evanescere               | 三氢        | α.0.1 |
-| 咕嘟咕嘟                                       | Eternity. | α.0.1 |
-| 希望有一天我可以看懂所有的艺术，看不懂也没关系，我原谅自己              | 叶璃        | α.0.1 |
-| 是某一天是一瞬间                                   | Eternity. | α.0.1 |
-| I CAN STILL FEEL YOU                       | Eternity. | α.0.1 |
-| 此刻我安宁                                      | 凌茶/酿理     | α.0.1 |
-| 花香蕉的钱就只能请到猴子                               | 魔法飞鱼      | α.0.1 |
+```yaml
+version: '3.3'
+services:
+  neo-keyframe:
+    image: swr.cn-east-3.myhuaweicloud.com/keyframe/neo-keyframe:latest
+    container_name: neo-keyframe
+    restart: unless-stopped
+    ports:
+      - 3000:${NUXT_PORT}
+    environment:
+      - NUXT_PORT=${NUXT_PORT}
+      - NUXT_HOST=${NUXT_HOST}
+      - NUXT_PUBLIC_BASE_URL=${NUXT_PUBLIC_BASE_URL}
+      - NUXT_PUBLIC_IMG_URL=${NUXT_PUBLIC_IMG_URL}
+```
