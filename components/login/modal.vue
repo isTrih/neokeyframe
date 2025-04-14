@@ -4,8 +4,8 @@
   -->
 
 <script setup lang="ts">
-import type {FormInst, FormItemRule} from 'naive-ui'
-import {SendCode} from '~/apis/user'
+import type { FormInst, FormItemRule } from 'naive-ui'
+import { SendCode } from '~/apis/user'
 
 // 关闭弹窗事件
 const emit = defineEmits(['closeLogin'])
@@ -30,7 +30,29 @@ function logCheck(checked: boolean) {
 
 // region 注册
 function sendSms() {
-	SendCode('18655311015')
+	SendCode(regFormValue.value.phone)
+		.then(res => {
+			if (
+				res.code === 0 &&
+				res.data.status === 'success'
+			) {
+				message.success('验证码发送成功')
+			} else if (
+				res.code === 0 &&
+				res.data.status === 'temp'
+			) {
+				message.success(
+					`临时验证码为：${res.data.temp_code}`,
+					{ duration: 2400 }
+				)
+			} else {
+				message.error(res.msg)
+			}
+		})
+		.catch(err => {
+			console.error(err)
+			message.error('验证码发送失败')
+		})
 }
 
 // 表单对象
@@ -42,7 +64,7 @@ const regFormValue = ref({
 	phone: '',
 	password: '',
 	rePassword: '',
-  czjCode:'',
+	czjCode: '',
 	agreement: false
 })
 // 注册表单验证
@@ -99,6 +121,39 @@ const regRules = {
 			return value
 		}
 	}
+}
+
+const register = (e: MouseEvent) => {
+	e.preventDefault()
+	regFormRef.value?.validate(errors => {
+		if (errors) {
+			message.error('请检查填写要求', { duration: 1800 })
+		} else {
+			message.loading('注册中...')
+			const useUser = useUserStore()
+			useUser
+				.UserRegister({
+					mobile: regFormValue.value.phone,
+					password: regFormValue.value.password,
+					czj_code: regFormValue.value.czjCode
+						? regFormValue.value.czjCode
+						: null,
+					sms: regFormValue.value.sms,
+					name: regFormValue.value.name
+				})
+				.then(res => {
+					console.log('res', res)
+					if (res.code === 0) {
+						message.destroyAll()
+						message.success('注册成功')
+						emit('closeLogin')
+					} else {
+						message.destroyAll()
+						message.error(res.msg)
+					}
+				})
+		}
+	})
 }
 // endregion
 
@@ -275,8 +330,7 @@ const login = (e: MouseEvent) => {
                 </n-checkbox>
               </n-form-item>
               <n-form-item>
-<!--                TODO:注册事件-->
-                <n-button class="mt-2" type="primary" round block>{{t('ui.register')}}</n-button>
+                <n-button @click="register" class="mt-2" type="primary" round block>{{t('ui.register')}}</n-button>
               </n-form-item>
             </n-form>
           </n-tab-pane>

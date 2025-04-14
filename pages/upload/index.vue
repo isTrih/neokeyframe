@@ -394,7 +394,27 @@ function getTextByNumber(num: number): string {
                       <RiStarFill class="ml-2 color-[--text-3] scale-64"/>{{i.collect_num}}
                       <RiMessage3Fill class="ml-2 color-[--text-3] scale-64"/>{{i.comment_num}}
                     </div>
-                    <n-flex v-if="IsSmall" class="mr-3 mt-2">
+                    <n-flex v-if="!IsSmall" class="">
+                      <n-tag v-if="i.ai_insp!=0&&i.insp==1" round class="flex justify-center w-6rem items-center  text-2.8" :bordered="false" type="warning">
+                        疑似：{{getTextByNumber(i.ai_insp)}}
+                        <template #icon>
+                          <n-icon :component="RiShieldCheckLine" />
+                        </template>
+                      </n-tag>
+                      <n-tag v-else-if="i.ai_insp!=0&&i.insp==2" round class="flex justify-center w-6rem items-center  text-2.8" :bordered="false" type="error">
+                        确认：{{getTextByNumber(i.ai_insp)}}
+                        <template #icon>
+                          <n-icon :component="RiShieldCheckLine" />
+                        </template>
+                      </n-tag>
+                      <n-tag v-else round class="flex justify-center w-6rem items-center  text-2.8" :bordered="false" type="success">
+                        状态：正常
+                        <template #icon>
+                          <n-icon :component="RiShieldCheckLine" />
+                        </template>
+                      </n-tag>
+                    </n-flex>
+                    <n-flex v-else class="mr-3 mt-2">
                       <n-tag v-if="i.ai_insp!=0&&i.insp==1" round class="flex justify-center w-6rem items-center  text-2.8" :bordered="false" type="warning">
                         疑似：{{getTextByNumber(i.ai_insp)}}
                         <template #icon>

@@ -181,6 +181,7 @@ onMounted(() => {
 	fetchCommentList()
 })
 const feedControlBarRef = ref()
+const feedControlBarSmallRef = ref()
 const handleCommentLike = useUserStore().handleCommentLike
 const checkCommentLike = useUserStore().checkCommentLike
 const commentLikeNumFormat =
@@ -507,7 +508,7 @@ onUnmounted(() => {
                             <icons-like-b class="op-100 hover-op-80" :size='22' :is-liked="checkCommentLike(sub.id)" @toggleHeart="handleCommentLike(sub.id,message)"/>
                             <n-text depth="3" class="text-2.8">{{ commentLikeNumFormat(sub.like_count, sub.id) }}</n-text>
                           </n-flex>
-                          <n-flex @click="feedControlBarRef.SetParent(sub)" align="center" class="op-100 hover-op-80 cursor-pointer" justify="flex-end" :size="[0,0]" >
+                          <n-flex @click="feedControlBarSmallRef.SetParent(sub)" align="center" class="op-100 hover-op-80 cursor-pointer" justify="flex-end" :size="[0,0]" >
                             <RiMessage3Line class="scale-60 color-[--text-2]"/>
                             <n-text depth="3" class="text-2.8">回复</n-text>
                           </n-flex>
@@ -527,7 +528,7 @@ onUnmounted(() => {
                       <icons-like-b class="op-100 hover-op-80" :size='22' :is-liked="checkCommentLike(item.id)" @toggleHeart="handleCommentLike(item.id,message)"/>
                       <n-text depth="3" class="text-2.8">{{ commentLikeNumFormat(item.like_count, item.id) }}</n-text>
                     </n-flex>
-                    <n-flex @click="feedControlBarRef.SetParent(item)" align="center" class="op-100 hover-op-80 cursor-pointer" justify="flex-end" :size="[0,0]" >
+                    <n-flex @click="feedControlBarSmallRef.SetParent(item)" align="center" class="op-100 hover-op-80 cursor-pointer" justify="flex-end" :size="[0,0]" >
                       <RiMessage3Line class="scale-60 color-[--text-2]"/>
                       <n-text depth="3" class="text-2.8">回复</n-text>
                     </n-flex>
@@ -542,7 +543,7 @@ onUnmounted(() => {
             </n-list>
           </n-infinite-scroll>
           <client-only>
-            <feed-control-bar @success="refreshComments" :feed="data.data.Feed" :is-single="true" :individual="single" :is-small="IsModalSmall" class="bg-[--n-color-modal] px-2px absolute bottom-0 pb-3px"/>
+            <feed-control-bar ref="feedControlBarSmallRef" @success="refreshComments" :feed="data.data.Feed" :is-single="true" :individual="single" :is-small="IsModalSmall" class="bg-[--n-color-modal] px-2px absolute bottom-0 pb-3px"/>
           </client-only>
         </n-flex>
       </n-scrollbar>

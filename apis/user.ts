@@ -33,17 +33,16 @@ export const Register = async (
 	name: string,
 	mobile: string,
 	password: string,
-	sms: string
+	sms: string,
+	czj_code: string | null
 ) =>
-	use$Post(
-		'/user/register',
-		JSON.stringify({
-			user_name: name,
-			password: password,
-			mobile: mobile,
-			verifyCode: sms
-		})
-	)
+	use$Post('/user/register', {
+		user_name: name,
+		password: password,
+		mobile: mobile,
+		verifyCode: sms,
+		czj_code: czj_code
+	})
 
 export const GetUserRelation = async () =>
 	use$Get('/user/relation')

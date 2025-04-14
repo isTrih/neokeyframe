@@ -12,11 +12,11 @@ const { IsSmall } = storeToRefs(useConfigStore())
 </script>
 
 <template>
-  <div v-if="IsSmall" class="pt-16 flex items-center">
+  <div v-if="!IsSmall" class="pt-16 flex items-center">
       <feed-detail :fid="Number(fid)" :single="true"/>
   </div>
-  <div v-else class="">
-    <feed-detail :fid="Number(fid)" :single="true"/>
+  <div v-else >
+    <feed-detail class="mb-8" :fid="Number(fid)" :single="true"/>
   </div>
 </template>
 

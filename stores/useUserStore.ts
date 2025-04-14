@@ -13,7 +13,11 @@ import { defineStore } from 'pinia'
 import { likeComment } from '~/apis/comment'
 import { collectFeed, likeFeed } from '~/apis/feed'
 import { toggleFollow } from '~/apis/follow'
-import { GetUserRelation, Login } from '~/apis/user'
+import {
+	GetUserRelation,
+	Login,
+	Register
+} from '~/apis/user'
 
 export interface UserInfo {
 	avatar?: string
@@ -318,6 +322,7 @@ export const useUserStore = defineStore(
 			)
 			console.log(data, msg, data)
 			//TODO：可能获取其他用户信息，获取通知
+			NatsClose()
 			if (code === 0) {
 				console.log('success', data)
 				UserInfo.value = {
@@ -328,6 +333,40 @@ export const useUserStore = defineStore(
 					user_name: data.user_name,
 					type: data.type
 				}
+				NatsInit()
+				await GetUserList()
+			}
+			return { code, msg, data }
+		}
+
+		const UserRegister = async ({
+			name,
+			mobile,
+			password,
+			sms,
+			czj_code = null
+		}) => {
+			const { code, msg, data } = await Register(
+				name,
+				mobile,
+				password,
+				sms,
+				czj_code
+			)
+			console.log(data, msg, data)
+			//TODO：可能获取其他用户信息，获取通知
+			NatsClose()
+			if (code === 0) {
+				console.log('success', data)
+				UserInfo.value = {
+					avatar: data.avatar,
+					signature: data.signature,
+					token: data.token,
+					user_id: data.user_id,
+					user_name: data.user_name,
+					type: data.type
+				}
+				NatsInit()
 				await GetUserList()
 			}
 			return { code, msg, data }
@@ -335,6 +374,7 @@ export const useUserStore = defineStore(
 		// 用户退出
 		const UserLogout = () => {
 			UserInfo.value = {}
+			NatsClose()
 		}
 		const IsLogin = computed(() => {
 			return Object.keys(UserInfo.value).length > 0
@@ -423,6 +463,7 @@ export const useUserStore = defineStore(
 			NatsInit,
 			UserLogout,
 			UserLogin,
+			UserRegister,
 			UserInfo,
 			CollectFeeds,
 			LikeComments,
